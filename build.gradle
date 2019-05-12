@@ -1,0 +1,47 @@
+task('build').dependsOn(":backend:build")
+
+task generateLatexDocuments {
+    dependsOn(':documentation:generateHTML', 'convertHtmlToLatexFiles', 'copyLatexFilesIntoBA', 'copyImagesIntoBA', 'deleteConvertedLatexFiles')
+}
+
+task convertHtmlToLatexFiles {
+    dependsOn(':documentation:generateHTML')
+    doLast {
+        def htmlFiles = fileTree(dir: "${project(":documentation").buildDir}/asciidoc/html5", include: '**.html')
+        htmlFiles.visit { FileVisitDetails element ->
+            exec {
+                workingDir "${project(":documentation").buildDir}/asciidoc/html5"
+                commandLine "pandoc", "-f", "html", "-t", "latex", "-o", "${element.name}.tex", "${element.name}"
+            }
+        }
+    }
+}
+
+task copyLatexFilesIntoBA {
+    dependsOn(':documentation:generateHTML')
+    doLast {
+        copy {
+            from "${project(":documentation").buildDir}/asciidoc/html5"
+            into "/Users/donkey/Nextcloud/Studium/Bachelor/6. Semester/Bachelorarbeit/Bachelorarbeit/latex/chapter/asciidoc"
+            include '*.tex'
+        }
+    }
+}
+
+task copyImagesIntoBA {
+    dependsOn(':documentation:generateHTML')
+    doLast {
+        copy {
+            from "${project(":documentation").buildDir}/asciidoc/html5"
+            into "/Users/donkey/Nextcloud/Studium/Bachelor/6. Semester/Bachelorarbeit/Bachelorarbeit/latex"
+            include 'images/**'
+        }
+    }
+}
+
+task deleteConvertedLatexFiles {
+    dependsOn(':documentation:generateHTML')
+    doLast {
+        delete fileTree(dir: "${project(":documentation").buildDir}/asciidoc/html5", include: '*.tex')
+    }
+}

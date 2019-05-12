@@ -1,0 +1,53 @@
+plugins {
+    id 'java'
+	id 'org.springframework.boot' version '2.1.4.RELEASE'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'io.jsonwebtoken:jjwt-api:0.10.5'
+    runtimeOnly 'mysql:mysql-connector-java'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+}
+
+group = 'sh.stern'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+def webappDir = "$rootProject.projectDir/frontend"
+
+jar {
+    
+    manifest {
+        attributes "Main-Class": "sh.stern.cobralist.CobraListApplication"
+    }
+    
+    doFirst {
+        from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    }
+
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+}
+
+// sourceSets wird um den Ordner erweitert, in dem die gebaute Angular-Anwendung abgelegt wird
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["$webappDir/dist", "$projectDir/src/main/resources"]
+        }
+    }
+}
+
+// processResources wird um den Task buildAngular erweitert
+processResources {
+    dependsOn ":frontend:buildWebApp"
+}

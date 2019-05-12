@@ -1,0 +1,52 @@
+import org.asciidoctor.gradle.AsciidoctorTask
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.6.0'
+        classpath 'org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.16'
+        classpath 'org.asciidoctor:asciidoctorj-diagram:1.5.16'
+    }
+}
+
+plugins {
+    id 'com.github.jruby-gradle.base' version '1.6.0'
+    id 'org.asciidoctor.convert' version '1.6.0'
+}
+
+dependencies {
+    gems 'rubygems:asciidoctor-diagram:1.5.16'
+}
+
+tasks.withType(AsciidoctorTask) { docTask ->
+    attributes  'toc': 'left',
+                'pdf-stylesdir': 'theme',
+                'pdf-style': 'basic',
+                'imagesdir': 'images'
+    logDocuments = true
+    version = '1.0'
+    requires = ['asciidoctor-diagram']
+}
+
+task generateHTML (
+        type: AsciidoctorTask,
+        description: 'use html5 as asciidoc backend') {
+    attributes 'diagram': ''
+    backends = ['html5']
+
+    dependsOn jrubyPrepare
+    gemPath = jrubyPrepare.outputDir
+}
+
+task generatePDF (
+        type: AsciidoctorTask,
+        description: 'use pdf as asciidoc backend') {
+    attributes 'diagram': file('build/docs/images/diagram/').path
+    backends = ['pdf']
+
+    dependsOn jrubyPrepare
+    gemPath = jrubyPrepare.outputDir
+}
