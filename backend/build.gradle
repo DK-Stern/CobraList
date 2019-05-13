@@ -1,6 +1,14 @@
+buildscript {
+    dependencies {
+        classpath 'org.mariadb.jdbc:mariadb-java-client:2.3.0'
+    }
+}
+
+
 plugins {
     id 'java'
 	id 'org.springframework.boot' version '2.1.4.RELEASE'
+    id "org.flywaydb.flyway" version "5.2.4"
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -14,7 +22,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'io.jsonwebtoken:jjwt-api:0.10.5'
-    runtimeOnly 'mysql:mysql-connector-java'
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:2.3.0'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 }
@@ -50,4 +58,10 @@ sourceSets {
 // processResources wird um den Task buildAngular erweitert
 processResources {
     dependsOn ":frontend:buildWebApp"
+}
+
+flyway {
+    url = 'jdbc:mariadb://localhost:3306/cobralist'
+    user = 'cobra'
+    password = 'cobrapw'
 }
