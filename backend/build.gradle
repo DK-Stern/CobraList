@@ -4,7 +4,6 @@ buildscript {
     }
 }
 
-
 plugins {
     id 'java'
 	id 'org.springframework.boot' version '2.1.4.RELEASE'
@@ -46,7 +45,6 @@ jar {
     exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
 }
 
-// sourceSets wird um den Ordner erweitert, in dem die gebaute Angular-Anwendung abgelegt wird
 sourceSets {
     main {
         resources {
@@ -55,7 +53,6 @@ sourceSets {
     }
 }
 
-// processResources wird um den Task buildAngular erweitert
 processResources {
     dependsOn ":frontend:buildWebApp"
 }

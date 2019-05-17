@@ -1,9 +1,12 @@
 CREATE TABLE Benutzer
 (
-    id         INT          NOT NULL AUTO_INCREMENT,
-    namen      VARCHAR(100) NOT NULL,
-    spotify_id VARCHAR(255) NOT NULL,
-    datum      DATE         NOT NULL,
+    id                    INT          NOT NULL AUTO_INCREMENT,
+    namen                 VARCHAR(100) NOT NULL,
+    spotify_id            VARCHAR(255) NOT NULL,
+    spotify_token         VARCHAR(255),
+    spotify_refresh_token VARCHAR(255),
+    spotify_expires_in    INT,
+    datum                 DATE         NOT NULL,
     PRIMARY KEY (id)
 );
 
