@@ -1,64 +1,63 @@
-CREATE TABLE Benutzer
+CREATE TABLE User
 (
-    id                    INT          NOT NULL AUTO_INCREMENT,
-    namen                 VARCHAR(100) NOT NULL,
-    spotify_id            VARCHAR(255) NOT NULL,
-    spotify_token         VARCHAR(255),
-    spotify_refresh_token VARCHAR(255),
-    spotify_expires_in    INT,
-    datum                 DATE         NOT NULL,
-    PRIMARY KEY (id)
+    id          BIGINT       NOT NULL AUTO_INCREMENT,
+    name        VARCHAR(100) NOT NULL,
+    email       VARCHAR(255) NOT NULL,
+    provider    VARCHAR(30)  NOT NULL,
+    provider_id VARCHAR(255),
+    PRIMARY KEY (id),
+    UNIQUE KEY (email)
 );
 
-CREATE TABLE Gast
+CREATE TABLE Guest
 (
-    id    INT          NOT NULL AUTO_INCREMENT,
-    namen VARCHAR(100) NOT NULL,
+    id   BIGINT       NOT NULL AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE Party
 (
-    id           INT          NOT NULL AUTO_INCREMENT,
-    benutzer_id  INT          NOT NULL,
-    name         VARCHAR(255) NOT NULL,
-    passwort     VARCHAR(255),
-    vote_down    BOOLEAN DEFAULT TRUE,
-    datum        DATE         NOT NULL,
-    archiviert   BOOLEAN DEFAULT FALSE,
-    beschreibung VARCHAR(500),
+    id            BIGINT       NOT NULL AUTO_INCREMENT,
+    user_id       BIGINT       NOT NULL,
+    name          VARCHAR(255) NOT NULL,
+    password      VARCHAR(255),
+    vote_down     BOOLEAN DEFAULT TRUE,
+    creation_date DATE         NOT NULL,
+    archived      BOOLEAN DEFAULT FALSE,
+    description   VARCHAR(500),
     PRIMARY KEY (id),
-    CONSTRAINT `fk_party_benutzer_id`
-        FOREIGN KEY (benutzer_id) REFERENCES Benutzer (id)
+    CONSTRAINT `fk_party_user_id`
+        FOREIGN KEY (user_id) REFERENCES User (id)
             ON DELETE CASCADE
             ON UPDATE RESTRICT
 );
 
-CREATE TABLE Musikwunsch
+CREATE TABLE Music_Request
 (
-    id        INT          NOT NULL AUTO_INCREMENT,
-    interpret VARCHAR(255) NOT NULL,
-    titel     VARCHAR(255) NOT NULL,
+    id          BIGINT       NOT NULL AUTO_INCREMENT,
+    interpreter VARCHAR(255) NOT NULL,
+    title       VARCHAR(255) NOT NULL,
     PRIMARY KEY (id)
 );
 
-CREATE TABLE Abstimmung
+CREATE TABLE Vote
 (
-    id             INT NOT NULL AUTO_INCREMENT,
-    musikwunsch_id INT NOT NULL,
-    benutzer_id    INT,
-    gast_id        INT,
+    id               BIGINT NOT NULL AUTO_INCREMENT,
+    music_request_id BIGINT NOT NULL,
+    user_id          BIGINT,
+    guest_id         BIGINT,
     PRIMARY KEY (id),
-    CONSTRAINT `fk_abstimmung_musikwunsch_id`
-        FOREIGN KEY (musikwunsch_id) REFERENCES Musikwunsch (id)
+    CONSTRAINT `fk_voted_music_request_id`
+        FOREIGN KEY (music_request_id) REFERENCES Music_Request (id)
             ON DELETE CASCADE
             ON UPDATE RESTRICT,
-    CONSTRAINT `fk_abstimmung_benutzer_id`
-        FOREIGN KEY (benutzer_id) REFERENCES Benutzer (id)
+    CONSTRAINT `fk_voted_user_id`
+        FOREIGN KEY (user_id) REFERENCES User (id)
             ON DELETE CASCADE
             ON UPDATE RESTRICT,
-    CONSTRAINT `fk_abstimmung_gast_id`
-        FOREIGN KEY (gast_id) REFERENCES Gast (id)
+    CONSTRAINT `fk_voted_guest_id`
+        FOREIGN KEY (guest_id) REFERENCES Guest (id)
             ON DELETE CASCADE
             ON UPDATE RESTRICT
 );

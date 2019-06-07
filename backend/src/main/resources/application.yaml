@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/cobralist?useSSL=false
+    username: cobra
+    password: cobrapw
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDB103Dialect
+  security:
+    oauth2:
+      client:
+        registration:
+          spotify:
+            clientId: <client-id>
+            clientSecret: <client-secret>
+            redirectUriTemplate: "{baseUrl}/oauth2/callback/{registrationId}"
+            authorization-grant-type: authorization_code
+            scope:
+              - user-read-private
+              - user-read-email
+        provider:
+          spotify:
+            authorizationUri: https://accounts.SPOTIFY.com/authorize
+            tokenUri: https://accounts.SPOTIFY.com/api/token
+            userInfoUri: https://api.SPOTIFY.com/v1/me
+app:
+  auth:
+    tokenSecret: token-secret
+    tokenExpirationMsec: 864000000
+  oauth2:
+    authorizedRedirectUris:
+      - http://localhost:8080/oauth2/redirect
