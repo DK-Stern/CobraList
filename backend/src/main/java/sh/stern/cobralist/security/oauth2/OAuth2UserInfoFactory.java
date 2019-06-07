@@ -12,12 +12,11 @@ public class OAuth2UserInfoFactory {
 
 
     public OAuth2UserInfo createUserInfo(String registrationId, Map<String, Object> attributes) {
-        if (registrationId.equalsIgnoreCase(AuthProvider.SPOTIFY.toString())) {
+        if (registrationId.equalsIgnoreCase(AuthProvider.spotify.toString())) {
             return new SpotifyOAuth2UserInfo(attributes);
         } else {
             throw new OAuth2AuthenticationProcessingException(String.format("Sorry!, Login with '%s' is not supported" +
-                    " " +
-                    "yet.", registrationId));
+                    " yet.", registrationId));
         }
     }
 }

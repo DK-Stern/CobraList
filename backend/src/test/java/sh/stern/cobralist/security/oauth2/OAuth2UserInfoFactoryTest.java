@@ -22,7 +22,7 @@ public class OAuth2UserInfoFactoryTest {
     @Test
     public void createUserInfoForSpotifyProvider() {
         // given
-        final String registrationId = "SPOTIFY";
+        final String registrationId = "spotify";
         final HashMap<String, Object> attributes = new HashMap<>();
 
         // when

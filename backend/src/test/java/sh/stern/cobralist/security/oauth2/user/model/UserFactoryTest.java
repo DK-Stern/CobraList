@@ -18,7 +18,7 @@ public class UserFactoryTest {
         // given
         final String name = "name";
         final String email = "email@email.de";
-        final AuthProvider authProvider = AuthProvider.SPOTIFY;
+        final AuthProvider authProvider = AuthProvider.spotify;
         final String providerId = "providerId";
 
         // when

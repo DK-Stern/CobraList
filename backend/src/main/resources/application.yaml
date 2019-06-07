@@ -7,7 +7,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
       naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
     properties:
       hibernate:
@@ -26,10 +26,12 @@ spring:
               - user-read-email
         provider:
           spotify:
-            authorizationUri: https://accounts.SPOTIFY.com/authorize
-            tokenUri: https://accounts.SPOTIFY.com/api/token
-            userInfoUri: https://api.SPOTIFY.com/v1/me
+            authorizationUri: https://accounts.spotify.com/authorize
+            tokenUri: https://accounts.spotify.com/api/token
+            userInfoUri: https://api.spotify.com/v1/me
+            user-name-attribute: display_name
 app:
+  devMode: true
   auth:
     tokenSecret: token-secret
     tokenExpirationMsec: 864000000

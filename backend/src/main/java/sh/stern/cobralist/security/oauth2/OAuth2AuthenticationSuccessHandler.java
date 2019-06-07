@@ -86,7 +86,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .stream()
                 .anyMatch(isAuthorizedRedirectUri -> {
                     final URI authorizedUri = URI.create(isAuthorizedRedirectUri);
-                    return authorizedUri.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
+                    return appProperties.isDevMode() || authorizedUri.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
                             && authorizedUri.getPort() == clientRedirectUri.getPort();
                 });
     }

@@ -1,4 +1,4 @@
-CREATE TABLE User
+CREATE TABLE user
 (
     id          BIGINT       NOT NULL AUTO_INCREMENT,
     name        VARCHAR(100) NOT NULL,
@@ -9,14 +9,14 @@ CREATE TABLE User
     UNIQUE KEY (email)
 );
 
-CREATE TABLE Guest
+CREATE TABLE guest
 (
     id   BIGINT       NOT NULL AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     PRIMARY KEY (id)
 );
 
-CREATE TABLE Party
+CREATE TABLE party
 (
     id            BIGINT       NOT NULL AUTO_INCREMENT,
     user_id       BIGINT       NOT NULL,
@@ -28,12 +28,12 @@ CREATE TABLE Party
     description   VARCHAR(500),
     PRIMARY KEY (id),
     CONSTRAINT `fk_party_user_id`
-        FOREIGN KEY (user_id) REFERENCES User (id)
+        FOREIGN KEY (user_id) REFERENCES user (id)
             ON DELETE CASCADE
             ON UPDATE RESTRICT
 );
 
-CREATE TABLE Music_Request
+CREATE TABLE music_request
 (
     id          BIGINT       NOT NULL AUTO_INCREMENT,
     interpreter VARCHAR(255) NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE Music_Request
     PRIMARY KEY (id)
 );
 
-CREATE TABLE Vote
+CREATE TABLE vote
 (
     id               BIGINT NOT NULL AUTO_INCREMENT,
     music_request_id BIGINT NOT NULL,
@@ -49,15 +49,15 @@ CREATE TABLE Vote
     guest_id         BIGINT,
     PRIMARY KEY (id),
     CONSTRAINT `fk_voted_music_request_id`
-        FOREIGN KEY (music_request_id) REFERENCES Music_Request (id)
+        FOREIGN KEY (music_request_id) REFERENCES music_request (id)
             ON DELETE CASCADE
             ON UPDATE RESTRICT,
     CONSTRAINT `fk_voted_user_id`
-        FOREIGN KEY (user_id) REFERENCES User (id)
+        FOREIGN KEY (user_id) REFERENCES user (id)
             ON DELETE CASCADE
             ON UPDATE RESTRICT,
     CONSTRAINT `fk_voted_guest_id`
-        FOREIGN KEY (guest_id) REFERENCES Guest (id)
+        FOREIGN KEY (guest_id) REFERENCES guest (id)
             ON DELETE CASCADE
             ON UPDATE RESTRICT
 );

@@ -21,7 +21,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.Mockito.*;
-import static sh.stern.cobralist.security.oauth2.user.model.AuthProvider.SPOTIFY;
+import static sh.stern.cobralist.security.oauth2.user.model.AuthProvider.spotify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CustomOAuth2UserServiceTest {
@@ -58,7 +58,7 @@ public class CustomOAuth2UserServiceTest {
         // given
         final OAuth2UserRequest userRequestMock = mock(OAuth2UserRequest.class);
         final ClientRegistration clientRegistration = mock(ClientRegistration.class);
-        final String registrationId = "SPOTIFY";
+        final String registrationId = "spotify";
         when(userRequestMock.getClientRegistration()).thenReturn(clientRegistration);
         when(clientRegistration.getRegistrationId()).thenReturn(registrationId);
 
@@ -75,7 +75,7 @@ public class CustomOAuth2UserServiceTest {
         final User user = new User();
         final long userId = 1L;
         user.setId(userId);
-        user.setProvider(SPOTIFY);
+        user.setProvider(spotify);
         when(userRepositoryMock.findByEmail(email)).thenReturn(Optional.of(user));
 
         when(userRepositoryMock.save(user)).thenReturn(user);
@@ -113,14 +113,14 @@ public class CustomOAuth2UserServiceTest {
         when(userInfoFactoryMock.createUserInfo(registrationId, attributes)).thenReturn(oAuth2UserInfoMock);
 
         final User user = new User();
-        user.setProvider(SPOTIFY);
+        user.setProvider(spotify);
         when(userRepositoryMock.findByEmail(email)).thenReturn(Optional.of(user));
 
         // then
         assertThatCode(() -> testSubjectSpy.loadUser(userRequestMock))
                 .isInstanceOf(OAuth2AuthenticationProcessingException.class)
                 .withFailMessage("Looks like you're signed up with 'otherProvider' " +
-                        "account. Please use your 'SPOTIFY' account to login.");
+                        "account. Please use your 'spotify' account to login.");
     }
 
     @Test
@@ -128,7 +128,7 @@ public class CustomOAuth2UserServiceTest {
         // given
         final OAuth2UserRequest userRequestMock = mock(OAuth2UserRequest.class);
         final ClientRegistration clientRegistration = mock(ClientRegistration.class);
-        final String registrationId = "SPOTIFY";
+        final String registrationId = "spotify";
         when(userRequestMock.getClientRegistration()).thenReturn(clientRegistration);
         when(clientRegistration.getRegistrationId()).thenReturn(registrationId);
 
@@ -151,7 +151,7 @@ public class CustomOAuth2UserServiceTest {
         user.setId(userId);
         user.setName(name);
         user.setEmail(email);
-        when(userFactoryMock.create(name, email, SPOTIFY, providerId)).thenReturn(user);
+        when(userFactoryMock.create(name, email, spotify, providerId)).thenReturn(user);
 
         when(userRepositoryMock.save(user)).thenReturn(user);
 
