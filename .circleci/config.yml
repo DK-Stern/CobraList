@@ -2,6 +2,7 @@ version: 2.1
 
 jobs:
   build:
+    working_directory: ~/my-project
     docker:
       - image: circleci/openjdk:11-jdk
     steps:
@@ -12,11 +13,8 @@ jobs:
             curl -sSL "https://nodejs.org/dist/v11.10.0/node-v11.10.0-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v11.10.0-linux-x64/bin/node
             curl https://www.npmjs.com/install.sh | sudo bash
       - run:
-          name: Install angularcli
-          command: sudo npm install -g @angular/cli@latest
-      - run:
           name: Build Project
-          command: ./gradlew build
+          command: ./gradlew build -scan
 
 workflows:
   version: 2.1
