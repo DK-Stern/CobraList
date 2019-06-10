@@ -27,10 +27,7 @@ jobs:
           name: Flyway Migrate
           command: ./gradlew flywayMigrate
       - run:
-          name: Build Project
-          command: ./gradlew build -scan
-      - run:
-          name: Generate Backend Code Coverage
+          name: Build Project and Generating Code Coverage
           command: ./gradlew jacocoTestReport
       - store_artifacts:
           path:  backend/build
