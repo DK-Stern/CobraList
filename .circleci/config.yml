@@ -7,7 +7,7 @@ jobs:
   build:
     working_directory: ~/cobralist
     docker:
-      - image: circleci/openjdk:11-jdk
+      - image: circleci/openjdk:11-jdk-browsers
       - image: circleci/mariadb:latest
         environment:
           - MYSQL_DATABASE: cobralist
@@ -29,11 +29,23 @@ jobs:
       - run:
           name: Build Project and Generating Code Coverage
           command: ./gradlew build jacocoTestReport
+      - run:
+          name: Build Frontend Code Coverage
+          command: |-
+            cd frontend/
+            npm test --- --watch=false --code-coverage
       - store_artifacts:
           path:  backend/build
       - codecov/upload:
           file: backend/build/reports/jacoco/test/jacocoTestReport.xml
           flags: backend
+      - store_artifacts:
+          path:  frontend/coverage
+      - store_artifacts:
+          path:  frontend/dist
+      - codecov/upload:
+          file: frontend/coverage/cobra-list/coverage-final.json
+          flags: frontend
 
 workflows:
   version: 2.1
