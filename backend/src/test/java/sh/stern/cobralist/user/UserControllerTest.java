@@ -22,7 +22,6 @@ import java.util.Optional;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -84,7 +83,6 @@ public class UserControllerTest {
         // when
         final MvcResult result = mockMvc.perform(get("/api/user/me")
                 .header("Authorization", "Bearer " + token))
-                .andDo(print())
                 .andReturn();
 
         // then
