@@ -2,9 +2,14 @@ version: 2.1
 
 jobs:
   build:
-    working_directory: ~/my-project
+    working_directory: ~/cobralist
     docker:
       - image: circleci/openjdk:11-jdk
+      - image: circleci/mariadb:latest
+        environment:
+          - MYSQL_DATABASE: cobralist
+          - MYSQL_USER: cobra
+          - MYSQL_PASSWORD: cobrapw
     steps:
       - checkout
       - run:
