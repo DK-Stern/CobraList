@@ -29,10 +29,13 @@ jobs:
       - run:
           name: Build Project
           command: ./gradlew build -scan
+      - run:
+          name: Generate Backend Code Coverage
+          command: ./gradlew jacocoTestReport
       - store_artifacts:
           path:  backend/build
       - codecov/upload:
-          file: backend/build/jacoco/test.exec
+          file: backend/build/reports/jacoco/test/jacocoTestReport.xml
           flags: backend
 
 workflows:

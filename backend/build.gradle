@@ -69,3 +69,10 @@ flyway {
     user = 'cobra'
     password = 'cobrapw'
 }
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+        csv.enabled = false
+    }
+}
