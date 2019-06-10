@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import sh.stern.cobralist.security.ResourceNotFoundException;
 import sh.stern.cobralist.security.TokenProvider;
 import sh.stern.cobralist.security.oauth2.user.UserPrincipal;
 import sh.stern.cobralist.security.oauth2.user.model.AuthProvider;
@@ -69,7 +70,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void findMeNot() throws Exception {
+    public void findMeNot() {
         // given
         final Authentication authenticationMock = mock(Authentication.class);
         final UserPrincipal userPrincipal = new UserPrincipal();
@@ -81,15 +82,17 @@ public class UserControllerTest {
         when(userRepositoryMock.findById(userId)).thenReturn(Optional.empty());
 
         // when
-        final MvcResult result = mockMvc.perform(get("/api/user/me")
-                .header("Authorization", "Bearer " + token))
-                .andReturn();
+        try {
+            final MvcResult result = mockMvc.perform(get("/api/user/me")
+                    .header("Authorization", "Bearer " + token))
+                    .andReturn();
 
-        // then
-        final SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(result.getResponse().getStatus()).isEqualTo(401);
-        softly.assertThat(result.getResponse().getErrorMessage()).isEqualTo("Full authentication is required to " +
-                "access this resource");
-        softly.assertAll();
+        } catch (Exception e) {
+            // then
+            final SoftAssertions softly = new SoftAssertions();
+            softly.assertThat(e).isInstanceOf(ResourceNotFoundException.class);
+            softly.assertThat(e).withFailMessage("User not found with id : 1");
+            softly.assertAll();
+        }
     }
 }
