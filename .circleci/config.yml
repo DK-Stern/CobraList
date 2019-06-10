@@ -32,7 +32,7 @@ jobs:
       - store_artifacts:
           path:  backend/build
       - codecov/upload:
-          file: { backend/build/jacoco/test.exec }
+          file: backend/build/jacoco/test.exec
           flags: backend
 
 workflows:
