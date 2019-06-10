@@ -33,7 +33,7 @@ jobs:
           path:  backend/build
       - codecov/upload:
           file: { backend/build/jacoco/test.exec }
-          flag: backend
+          flags: backend
 
 workflows:
   version: 2.1
