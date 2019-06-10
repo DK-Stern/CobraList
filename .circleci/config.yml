@@ -12,7 +12,7 @@ jobs:
             curl https://www.npmjs.com/install.sh | sudo bash
           name: Update Node.js and npm
       - run:
-          command: .gradlew build
+          command: ./gradlew build
           name: Build Project
 
 workflows:
