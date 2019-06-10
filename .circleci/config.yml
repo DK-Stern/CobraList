@@ -28,7 +28,7 @@ jobs:
           command: ./gradlew flywayMigrate
       - run:
           name: Build Project and Generating Code Coverage
-          command: ./gradlew jacocoTestReport
+          command: ./gradlew build jacocoTestReport
       - store_artifacts:
           path:  backend/build
       - codecov/upload:
