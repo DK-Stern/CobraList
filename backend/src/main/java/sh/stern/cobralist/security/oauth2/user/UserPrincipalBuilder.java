@@ -1,6 +1,5 @@
 package sh.stern.cobralist.security.oauth2.user;
 
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +21,7 @@ public class UserPrincipalBuilder {
 
     private Map<String, Object> attributes;
 
-    private Collection<? extends GrantedAuthority> authorities;
+    private Collection<SimpleGrantedAuthority> authorities;
 
     public UserPrincipalBuilder withId(Long id) {
         this.id = id;
@@ -44,7 +43,7 @@ public class UserPrincipalBuilder {
         return this;
     }
 
-    public UserPrincipalBuilder withAuthorities(Collection<? extends GrantedAuthority> authorities) {
+    public UserPrincipalBuilder withAuthorities(Collection<SimpleGrantedAuthority> authorities) {
         this.authorities = authorities;
         return this;
     }

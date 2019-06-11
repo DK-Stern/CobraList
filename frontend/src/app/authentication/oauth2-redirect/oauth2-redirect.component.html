@@ -1,8 +1,19 @@
 <mat-card>
-  <p *ngIf="token">
-    Token: {{ token }}
-  </p>
-  <p *ngIf="error">
-    Error: {{ error }}
-  </p>
+  <mat-card-content>
+
+    <mat-spinner
+      *ngIf="!user"
+      mode="indeterminate">
+    </mat-spinner>
+
+    <p *ngIf="token">
+      Token: {{ token }}
+    </p>
+    <p *ngIf="user">
+      Benutzername: {{ user.name }}
+    </p>
+    <p *ngIf="error">
+      Error: {{ error }}
+    </p>
+  </mat-card-content>
 </mat-card>

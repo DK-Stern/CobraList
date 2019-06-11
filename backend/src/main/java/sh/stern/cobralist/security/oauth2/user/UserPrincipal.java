@@ -1,6 +1,6 @@
 package sh.stern.cobralist.security.oauth2.user;
 
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
@@ -12,7 +12,7 @@ public class UserPrincipal implements OAuth2User, UserDetails {
     private Long id;
     private String name;
     private String email;
-    private Collection<? extends GrantedAuthority> authorities;
+    private Collection<SimpleGrantedAuthority> authorities;
     private Map<String, Object> attributes;
 
     public Long getId() {
@@ -41,11 +41,11 @@ public class UserPrincipal implements OAuth2User, UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<SimpleGrantedAuthority> getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+    public void setAuthorities(Collection<SimpleGrantedAuthority> authorities) {
         this.authorities = authorities;
     }
 

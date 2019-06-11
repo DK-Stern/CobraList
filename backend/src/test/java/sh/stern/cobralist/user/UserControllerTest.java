@@ -66,7 +66,7 @@ public class UserControllerTest {
                 .andExpect(content().json("{ id: " + userId
                         + ", name: '" + username
                         + "', email: '" + email
-                        + "', provider: 'spotify'}"));
+                        + "', authorities:[{authority:ROLE_USER}]}"));
     }
 
     @Test
