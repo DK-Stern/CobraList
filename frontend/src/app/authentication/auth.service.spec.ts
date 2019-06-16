@@ -1,13 +1,13 @@
 import {TestBed} from '@angular/core/testing';
 
-import {AuthService} from './auth.service';
+import {UserApiService} from './user-api.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {environment} from '../../environments/environment';
-import {UserValueObject} from './UserValueObject';
+import {UserValueObject} from './user.value.object';
 
-describe('AuthService', () => {
+describe('UserApiService', () => {
 
-  let testSubject: AuthService;
+  let testSubject: UserApiService;
   let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
@@ -17,13 +17,12 @@ describe('AuthService', () => {
       ]
     });
 
-    testSubject = TestBed.get(AuthService);
+    testSubject = TestBed.get(UserApiService);
     httpTestingController = TestBed.get(HttpTestingController);
   });
 
   it('should be created', () => {
-    const service: AuthService = TestBed.get(AuthService);
-    expect(service).toBeTruthy();
+    expect(testSubject).toBeTruthy();
   });
 
   it('function get users should use http client', () => {

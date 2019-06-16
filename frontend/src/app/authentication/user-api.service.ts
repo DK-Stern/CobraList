@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {UserValueObject} from './UserValueObject';
+import {UserValueObject} from './user.value.object';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs';
@@ -7,7 +7,7 @@ import {Observable} from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class UserApiService {
 
   constructor(private http: HttpClient) {
   }

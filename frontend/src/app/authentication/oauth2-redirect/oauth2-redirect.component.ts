@@ -1,11 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {UserValueObject} from '../UserValueObject';
+import {UserValueObject} from '../user.value.object';
 import {Store} from '@ngrx/store';
 import {loggedIn} from '../auth.actions';
 import {AppState} from '../../storage/appStateReducer';
 import {Observable} from 'rxjs';
 import * as auth from '../auth.reducers';
+import {MatIconRegistry} from '@angular/material';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-oauth2-redirect',
@@ -23,7 +25,12 @@ export class Oauth2RedirectComponent implements OnInit {
 
 
   constructor(private route: ActivatedRoute,
-              private store: Store<AppState>) {
+              private store: Store<AppState>,
+              private iconRegistry: MatIconRegistry,
+              private sanitizer: DomSanitizer) {
+    iconRegistry.addSvgIcon(
+      'thumbs-up',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/img/examples/thumbup-icon.svg'));
   }
 
   ngOnInit() {
