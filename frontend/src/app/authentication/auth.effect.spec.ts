@@ -26,11 +26,11 @@ describe('AuthEffects', () => {
   });
 
   beforeEach(() => {
-    user = new class implements UserValueObject {
-      authorities: ['USER'];
-      email: 'email@mail.de';
-      id: 1;
-      name: 'Max';
+    user = {
+      authorities: ['USER'],
+      email: 'email@mail.de',
+      id: 1,
+      name: 'Max'
     };
 
     const userApiServiceSpy = jasmine.createSpyObj('UserApiService', ['getUser']);
