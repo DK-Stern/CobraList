@@ -4,19 +4,24 @@ import {catchError, map, mergeMap} from 'rxjs/operators';
 import {UserApiService} from './user-api.service';
 import {EMPTY} from 'rxjs';
 import {loadedUser, loggedIn} from './auth.actions';
+import {LocalStorageService, STORAGE_KEY} from '../storage/local-storage.service';
 
 @Injectable()
 export class AuthEffects {
 
   constructor(private actions$: Actions,
-              private userApiService: UserApiService) {
+              private userApiService: UserApiService,
+              private localStorageService: LocalStorageService) {
   }
 
   loadUser$ = createEffect(() => this.actions$.pipe(
     ofType(loggedIn),
     mergeMap(() => this.userApiService.getUser()
       .pipe(
-        map(user => loadedUser({user: user})),
+        map(user => {
+          this.localStorageService.saveItem(STORAGE_KEY.USER, user);
+          return loadedUser({user: user})
+        }),
         catchError(() => EMPTY)
       ))
   ));

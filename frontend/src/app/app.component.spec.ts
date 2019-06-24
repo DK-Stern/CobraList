@@ -5,10 +5,11 @@ import {MatCardModule, MatToolbarModule} from '@angular/material';
 import {MockStore, provideMockStore} from '@ngrx/store/testing';
 import {AppState} from './storage/appStateReducer';
 import {Store} from '@ngrx/store';
+import {LocalStorageService, STORAGE_KEY} from './storage/local-storage.service';
 
 describe('AppComponent', () => {
 
-  let store: MockStore<AppState>;
+  let mockStore: MockStore<AppState>;
   let initialState = {
     authState: {
       isAuthenticated: false,
@@ -16,6 +17,7 @@ describe('AppComponent', () => {
       user: null
     }
   };
+  let localStorageService: LocalStorageService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -25,6 +27,7 @@ describe('AppComponent', () => {
         MatCardModule
       ],
       providers: [
+        LocalStorageService,
         provideMockStore({initialState})
       ],
       declarations: [
@@ -32,7 +35,10 @@ describe('AppComponent', () => {
       ],
     }).compileComponents();
 
-    store = TestBed.get(Store);
+    localStorageService = TestBed.get(LocalStorageService);
+    spyOn(localStorageService, 'loadItem').withArgs(STORAGE_KEY.USER).and.returnValue(null);
+
+    mockStore = TestBed.get(Store);
   }));
 
   it('should create the app', () => {
@@ -52,7 +58,7 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const expectedName = 'Max';
 
-    store.setState({
+    mockStore.setState({
       authState: {
         isAuthenticated: true,
         token: '123',
@@ -78,6 +84,7 @@ describe('AppComponent', () => {
   it('should show login on nav if no user found', () => {
     // given
     const fixture = TestBed.createComponent(AppComponent);
+    mockStore.setState(initialState);
 
     // when
     fixture.detectChanges();

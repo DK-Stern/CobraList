@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {UserValueObject} from '../user.value.object';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Store} from '@ngrx/store';
 import {loggedIn} from '../auth.actions';
 import {AppState} from '../../storage/appStateReducer';
@@ -20,11 +19,11 @@ export class Oauth2RedirectComponent implements OnInit {
   authState$: Observable<auth.State> = this.store.select(state => state.authState);
 
   token: string;
-  user: UserValueObject;
   error: string;
 
 
   constructor(private route: ActivatedRoute,
+              private router: Router,
               private store: Store<AppState>,
               private iconRegistry: MatIconRegistry,
               private sanitizer: DomSanitizer) {
@@ -43,7 +42,7 @@ export class Oauth2RedirectComponent implements OnInit {
       }
 
       this.authState$.subscribe(auth => {
-        this.user = auth.user;
+        this.router.navigateByUrl('user');
       })
     })
   }

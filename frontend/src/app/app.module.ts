@@ -3,7 +3,14 @@ import {NgModule} from '@angular/core';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {MatCardModule, MatIconModule, MatProgressSpinnerModule, MatToolbarModule} from '@angular/material';
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatIconModule,
+  MatMenuModule,
+  MatProgressSpinnerModule,
+  MatToolbarModule
+} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HomeComponent} from './home/home.component';
 import {Oauth2RedirectComponent} from './authentication/oauth2-redirect/oauth2-redirect.component';
@@ -13,6 +20,7 @@ import {StoreModule} from '@ngrx/store';
 import {AppStateReducer} from './storage/appStateReducer';
 import {EffectsModule} from '@ngrx/effects';
 import {AuthEffects} from './authentication/auth.effect';
+import {UserRoutingModule} from './user/user-routing.module';
 
 @NgModule({
   declarations: [
@@ -24,9 +32,13 @@ import {AuthEffects} from './authentication/auth.effect';
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
+    UserRoutingModule,
     BrowserAnimationsModule,
     MatToolbarModule,
     MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
     MatProgressSpinnerModule,
     MatIconModule,
     StoreModule.forRoot(AppStateReducer),

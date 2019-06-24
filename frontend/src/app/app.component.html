@@ -1,11 +1,21 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row class="main-menu">
     {{ title }}
+
+    <button *ngIf="username" mat-button routerLink="user" routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }">
+      Dashboard
+    </button>
+    <button *ngIf="username" mat-button routerLink="user/party/create" routerLinkActive="active">
+      Party erstellen
+    </button>
+
     <!-- This fills the remaining space of the current row -->
     <span class="fill-remaining-space"></span>
 
     <span *ngIf="!username"><a id="login" [href]="spotify_auth_url">Login mit Spotify</a></span>
     <span id="user-nav" *ngIf="username">Willkommen {{ username }}!</span>
+
   </mat-toolbar-row>
 </mat-toolbar>
 

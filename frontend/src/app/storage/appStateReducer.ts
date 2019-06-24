@@ -6,4 +6,4 @@ export const AppStateReducer = {
 
 export class AppState {
   authState: auth.State
-};
+}

@@ -2,12 +2,13 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {Oauth2RedirectComponent} from './oauth2-redirect.component';
 import {MatCardModule, MatProgressSpinnerModule} from '@angular/material';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {MockStore, provideMockStore} from '@ngrx/store/testing';
 import {ActivedRouteStub} from '../../testing/actived-route-stub';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../storage/appStateReducer';
 import {loggedIn} from '../auth.actions';
+import createSpyObj = jasmine.createSpyObj;
 
 describe('Oauth2RedirectComponent', () => {
   let component: Oauth2RedirectComponent;
@@ -23,9 +24,12 @@ describe('Oauth2RedirectComponent', () => {
 
   let store: MockStore<AppState>;
   let activatedRouteStub: ActivedRouteStub;
+  let routerStub: Router;
 
   beforeEach(async(() => {
     activatedRouteStub = new ActivedRouteStub({token: null});
+
+    routerStub = createSpyObj('Router', ['navigateByUrl']);
 
     TestBed.configureTestingModule({
       imports: [
@@ -37,6 +41,10 @@ describe('Oauth2RedirectComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: activatedRouteStub,
+        },
+        {
+          provide: Router,
+          useValue: routerStub
         }
       ],
       declarations: [Oauth2RedirectComponent]
@@ -73,5 +81,29 @@ describe('Oauth2RedirectComponent', () => {
 
     // then
     expect(store.dispatch).toHaveBeenCalledTimes(0);
+  });
+
+  it('should redirect of user is logged in', () => {
+    // given
+    store.setState({
+      authState: {
+        isAuthenticated: false,
+        token: null,
+        user: {
+          name: 'Max',
+          authorities: [],
+          email: '',
+          id: 1
+        }
+      }
+    });
+
+    // when
+    fixture.detectChanges();
+
+    // then
+    const routerSpy = routerStub.navigateByUrl as jasmine.Spy;
+    const navArgs = routerSpy.calls.first().args[0];
+    expect(navArgs).toBe('user', 'should nav to dashboard');
   });
 });

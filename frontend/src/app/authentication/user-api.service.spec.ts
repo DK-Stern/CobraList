@@ -20,7 +20,7 @@ describe('UserApiService', () => {
     httpMock = TestBed.get(HttpTestingController);
   });
 
-  it('should request api to load user object', () => {
+  it('should request api to loadItem user object', () => {
     // when
     testSubject.getUser().subscribe(user => expect(user).toBeTruthy());
 
