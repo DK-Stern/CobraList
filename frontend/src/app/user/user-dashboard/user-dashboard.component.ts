@@ -10,7 +10,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 })
 export class UserDashboardComponent implements OnInit {
 
-  constructor(private router: Router, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+  constructor(public router: Router, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon(
       'music-note',
       sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/baseline-music_note-24px.svg'));
