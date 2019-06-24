@@ -10,3 +10,8 @@ export const loadedUser = createAction(
   '[User API] User Loaded Success',
   props<{ user: UserValueObject }>()
 );
+
+export const loadedUserFail = createAction(
+  '[User API] User Loaded Success',
+  props<{error: Error}>()
+);

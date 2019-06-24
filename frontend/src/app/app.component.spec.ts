@@ -6,6 +6,7 @@ import {MockStore, provideMockStore} from '@ngrx/store/testing';
 import {AppState} from './storage/appStateReducer';
 import {Store} from '@ngrx/store';
 import {LocalStorageService, STORAGE_KEY} from './storage/local-storage.service';
+import {loadedUser} from './authentication/auth.actions';
 
 describe('AppComponent', () => {
 
@@ -14,10 +15,12 @@ describe('AppComponent', () => {
     authState: {
       isAuthenticated: false,
       token: null,
-      user: null
+      user: null,
+      error: null
     }
   };
-  let localStorageService: LocalStorageService;
+  let localStorageServiceLoadItemSpy;
+
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -35,8 +38,9 @@ describe('AppComponent', () => {
       ],
     }).compileComponents();
 
-    localStorageService = TestBed.get(LocalStorageService);
-    spyOn(localStorageService, 'loadItem').withArgs(STORAGE_KEY.USER).and.returnValue(null);
+    const localStorageService = TestBed.get(LocalStorageService);
+    localStorageServiceLoadItemSpy = spyOn(localStorageService, 'loadItem').withArgs(STORAGE_KEY.USER).and.returnValue(null);
+    spyOn(localStorageService, 'saveItem');
 
     mockStore = TestBed.get(Store);
   }));
@@ -62,6 +66,7 @@ describe('AppComponent', () => {
       authState: {
         isAuthenticated: true,
         token: '123',
+        error: null,
         user: {
           authorities: ['USER'],
           email: 'email@mail.de',
@@ -94,5 +99,55 @@ describe('AppComponent', () => {
     expect(loginEl.textContent).toEqual('Login mit Spotify');
     const userEl = fixture.nativeElement.querySelector('#user-nav');
     expect(userEl).toBeNull();
+  });
+
+  it('should load user from store', () => {
+    // given
+    const expectedName = 'peter';
+    const fixture = TestBed.createComponent(AppComponent);
+
+    let state: AppState = {
+        authState: {
+          isAuthenticated: false,
+          token: null,
+          error: null,
+          user: {
+            id: 1,
+            name: expectedName,
+            email: 'email@email.de',
+            authorities: ['USER']
+          }
+        }
+      };
+    mockStore.setState(state);
+    let dispatchSpy = spyOn(mockStore, 'dispatch');
+
+    // when
+    fixture.detectChanges();
+
+    // then
+    const userEl = fixture.nativeElement.querySelector('#user-nav');
+    expect(userEl.textContent).toEqual(`Willkommen ${expectedName}!`);
+    expect(dispatchSpy).toHaveBeenCalledTimes(0);
+  });
+
+  it('should load user from LocalStorageService', () => {
+    // given
+    const fixture = TestBed.createComponent(AppComponent);
+    const expectedName = 'peter';
+    let user = {
+      id: 1,
+      name: expectedName,
+      email: 'email@email.de',
+      authorities: ['USER']
+    };
+    localStorageServiceLoadItemSpy.withArgs(STORAGE_KEY.USER).and.returnValue(user);
+    let dispatchSpy = spyOn(mockStore, 'dispatch');
+
+    // when
+    fixture.detectChanges();
+
+    // then
+    expect(dispatchSpy).toHaveBeenCalledWith(loadedUser({user: user}));
   });
 });

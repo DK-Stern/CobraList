@@ -18,7 +18,8 @@ describe('Oauth2RedirectComponent', () => {
     authState: {
       isAuthenticated: false,
       token: null,
-      user: null
+      user: null,
+      error: null
     }
   };
 
@@ -89,6 +90,7 @@ describe('Oauth2RedirectComponent', () => {
       authState: {
         isAuthenticated: false,
         token: null,
+        error: null,
         user: {
           name: 'Max',
           authorities: [],

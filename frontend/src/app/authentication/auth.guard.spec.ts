@@ -13,7 +13,8 @@ describe('AuthGuard', () => {
     authState: {
       isAuthenticated: false,
       token: null,
-      user: null
+      user: null,
+      error: null
     }
   };
 
@@ -35,7 +36,8 @@ describe('AuthGuard', () => {
       authState: {
         isAuthenticated: true,
         user: null,
-        token: null
+        token: null,
+        error: null
       }
     });
 
@@ -47,15 +49,6 @@ describe('AuthGuard', () => {
   }));
 
   it('can not activate route after authState is set to isAuthenticated "false"', inject([AuthGuard], (guard: AuthGuard) => {
-    // given
-    storageSpy.setState({
-      authState: {
-        isAuthenticated: false,
-        user: null,
-        token: null
-      }
-    });
-
     // when
     const resultedCanActivate = testSubject.canActivate(null, null);
 
@@ -69,7 +62,8 @@ describe('AuthGuard', () => {
       authState: {
         isAuthenticated: true,
         user: null,
-        token: null
+        token: null,
+        error: null
       }
     });
 
@@ -81,15 +75,6 @@ describe('AuthGuard', () => {
   }));
 
   it('can not activate child route after authState is set to isAuthenticated "false"', inject([AuthGuard], (guard: AuthGuard) => {
-    // given
-    storageSpy.setState({
-      authState: {
-        isAuthenticated: false,
-        user: null,
-        token: null
-      }
-    });
-
     // when
     const resultedCanActivate = testSubject.canActivateChild(null, null);
 
@@ -103,7 +88,8 @@ describe('AuthGuard', () => {
       authState: {
         isAuthenticated: true,
         user: null,
-        token: null
+        token: null,
+        error: null
       }
     });
 
@@ -115,15 +101,6 @@ describe('AuthGuard', () => {
   }));
 
   it('can not loadItem route after authState is set to isAuthenticated "false"', inject([AuthGuard], (guard: AuthGuard) => {
-    // given
-    storageSpy.setState({
-      authState: {
-        isAuthenticated: false,
-        user: null,
-        token: null
-      }
-    });
-
     // when
     const resultedCanActivate = testSubject.canLoad(null, null);
 

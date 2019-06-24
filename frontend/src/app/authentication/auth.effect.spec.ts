@@ -1,17 +1,19 @@
 import {AuthEffects} from './auth.effect';
-import {Observable, of} from 'rxjs';
+import {EMPTY, Observable, of} from 'rxjs';
 import {TestBed} from '@angular/core/testing';
 import {provideMockActions} from '@ngrx/effects/testing';
 import {UserApiService} from './user-api.service';
-import {loadedUser, loggedIn} from './auth.actions';
+import {loadedUser, loadedUserFail, loggedIn} from './auth.actions';
 import {addMatchers, cold, getTestScheduler, hot, initTestScheduler, resetTestScheduler} from 'jasmine-marbles';
 import {UserValueObject} from './user.value.object';
+import {LocalStorageService, STORAGE_KEY} from '../storage/local-storage.service';
 
 describe('AuthEffects', () => {
 
   let testSubject: AuthEffects;
   let actions: Observable<any>;
   let user: UserValueObject;
+  let localStorageServiceSaveItemSpy;
 
   // configure matchers for jasmine-marbles
   jasmine.getEnv().beforeAll(() => {
@@ -33,6 +35,7 @@ describe('AuthEffects', () => {
       name: 'Max'
     };
 
+
     const userApiServiceSpy = jasmine.createSpyObj('UserApiService', ['getUser']);
     userApiServiceSpy.getUser.and.returnValue(of(user));
 
@@ -43,10 +46,13 @@ describe('AuthEffects', () => {
           provide: UserApiService,
           useValue: userApiServiceSpy
         },
-        provideMockActions(() => actions)
+        provideMockActions(() => actions),
+        LocalStorageService
       ]
     });
 
+    const localStorageService = TestBed.get(LocalStorageService);
+    localStorageServiceSaveItemSpy = spyOn(localStorageService, 'saveItem');
     testSubject = TestBed.get(AuthEffects);
   });
 
@@ -61,4 +67,18 @@ describe('AuthEffects', () => {
     expect(testSubject.loadUser$).toBeObservable(expected);
   });
 
+  it('should return LoadUserFailAction if an error occures on saving user', () => {
+    // given
+    localStorageServiceSaveItemSpy.withArgs(STORAGE_KEY.USER, user).and.throwError('error');
+    const loggedInAction = loggedIn({token: '123'});
+    const loadedUserFailInAction = loadedUserFail({error: new Error('error')});
+    actions = hot('--a-', {a: loggedInAction});
+    const expected = cold('--b', {b: loadedUserFailInAction});
+
+    // when
+    const loadUser$ = testSubject.loadUser$;
+
+    // then
+    expect(loadUser$).toBeObservable(expected);
+  });
 });
