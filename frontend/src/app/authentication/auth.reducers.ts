@@ -1,5 +1,5 @@
 import {Action, createReducer, on} from '@ngrx/store';
-import {UserValueObject} from './user.value.object';
+import {UserValueObject} from '../user/user.value.object';
 import {loadedUser, loadedUserFail, loggedIn} from './auth.actions';
 
 export interface AuthState {

@@ -1,11 +1,11 @@
 import {AuthEffects} from './auth.effect';
-import {EMPTY, Observable, of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {TestBed} from '@angular/core/testing';
 import {provideMockActions} from '@ngrx/effects/testing';
-import {UserApiService} from './user-api.service';
+import {UserApiService} from '../user/user-api.service';
 import {loadedUser, loadedUserFail, loggedIn} from './auth.actions';
 import {addMatchers, cold, getTestScheduler, hot, initTestScheduler, resetTestScheduler} from 'jasmine-marbles';
-import {UserValueObject} from './user.value.object';
+import {UserValueObject} from '../user/user.value.object';
 import {LocalStorageService, STORAGE_KEY} from '../storage/local-storage.service';
 
 describe('AuthEffects', () => {

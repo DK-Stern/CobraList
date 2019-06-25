@@ -6,7 +6,7 @@ import {AppState} from '../../storage/appStateReducer';
 import {MatIconRegistry} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
 import {LocalStorageService, STORAGE_KEY} from '../../storage/local-storage.service';
-import {UserValueObject} from '../user.value.object';
+import {UserValueObject} from '../../user/user.value.object';
 
 @Component({
   selector: 'app-oauth2-redirect',
@@ -43,7 +43,7 @@ export class Oauth2RedirectComponent implements OnInit {
       }
 
       this.user$.subscribe(user => {
-        if (this.user$) {
+        if (user) {
           this.router.navigateByUrl('user');
         }
       });

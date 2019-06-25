@@ -1,10 +1,10 @@
-import {UserApiService} from './user-api.service';
+import {UserApiService} from '../user/user-api.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {TestBed} from '@angular/core/testing';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AuthTokenInterceptor} from './auth-token.interceptor';
 import {environment} from '../../environments/environment';
-import {UserValueObject} from './user.value.object';
+import {UserValueObject} from '../user/user.value.object';
 import {MockStore, provideMockStore} from '@ngrx/store/testing';
 import {AppState} from '../storage/appStateReducer';
 

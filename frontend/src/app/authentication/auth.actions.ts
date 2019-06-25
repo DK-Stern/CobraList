@@ -1,5 +1,5 @@
 import {createAction, props} from '@ngrx/store';
-import {UserValueObject} from './user.value.object';
+import {UserValueObject} from '../user/user.value.object';
 
 export const loggedIn = createAction(
   '[OAuth2 Redirect Page] Login Success',

@@ -1,9 +1,9 @@
 import {TestBed} from '@angular/core/testing';
 
-import {UserApiService} from './user-api.service';
+import {UserApiService} from '../user/user-api.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {environment} from '../../environments/environment';
-import {UserValueObject} from './user.value.object';
+import {UserValueObject} from '../user/user.value.object';
 
 describe('UserApiService', () => {
 
