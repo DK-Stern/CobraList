@@ -12,6 +12,6 @@ export const loadedUser = createAction(
 );
 
 export const loadedUserFail = createAction(
-  '[User API] User Loaded Success',
-  props<{error: Error}>()
+  '[User API] User Loaded Error',
+  props<{ error: Error }>()
 );

@@ -3,8 +3,7 @@ import {environment} from '../environments/environment';
 import {select, Store} from '@ngrx/store';
 import {AppState} from './storage/appStateReducer';
 import {LocalStorageService, STORAGE_KEY} from './storage/local-storage.service';
-import {loadedUser} from './authentication/auth.actions';
-import {UserValueObject} from './authentication/user.value.object';
+import {loggedIn} from './authentication/auth.actions';
 
 @Component({
   selector: 'app-root',
@@ -21,17 +20,19 @@ export class AppComponent implements OnInit {
   username: string = '';
 
   ngOnInit() {
-    this.store.pipe(select(state => state.authState))
-      .subscribe(authState => {
-        if (authState.user) {
-          this.username = authState.user.name;
-        } else {
-          let user = <UserValueObject>this.localStorageService.loadItem(STORAGE_KEY.USER);
-          if (user) {
-            this.username = user.name;
-            this.store.dispatch(loadedUser({user: user}));
+    this.store.pipe(select(state => state.authState.token))
+      .subscribe(tokenState => {
+        if (tokenState === null) {
+          let token = <string>this.localStorageService.loadItem(STORAGE_KEY.TOKEN);
+          if (token) {
+            this.store.dispatch(loggedIn({token: token}));
           }
         }
       });
+
+    this.store.select(state => state.authState.user).subscribe(user =>
+      user !== null
+        ? this.username = user.name
+        : this.username = '');
   }
 }

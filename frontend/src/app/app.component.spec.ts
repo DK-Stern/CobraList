@@ -6,7 +6,6 @@ import {MockStore, provideMockStore} from '@ngrx/store/testing';
 import {AppState} from './storage/appStateReducer';
 import {Store} from '@ngrx/store';
 import {LocalStorageService, STORAGE_KEY} from './storage/local-storage.service';
-import {loadedUser} from './authentication/auth.actions';
 
 describe('AppComponent', () => {
 
@@ -131,23 +130,23 @@ describe('AppComponent', () => {
     expect(dispatchSpy).toHaveBeenCalledTimes(0);
   });
 
-  it('should load user from LocalStorageService', () => {
-    // given
-    const fixture = TestBed.createComponent(AppComponent);
-    const expectedName = 'peter';
-    let user = {
-      id: 1,
-      name: expectedName,
-      email: 'email@email.de',
-      authorities: ['USER']
-    };
-    localStorageServiceLoadItemSpy.withArgs(STORAGE_KEY.USER).and.returnValue(user);
-    let dispatchSpy = spyOn(mockStore, 'dispatch');
-
-    // when
-    fixture.detectChanges();
-
-    // then
-    expect(dispatchSpy).toHaveBeenCalledWith(loadedUser({user: user}));
-  });
+  // it('should load user from LocalStorageService', () => {
+  //   // given
+  //   const fixture = TestBed.createComponent(AppComponent);
+  //   const expectedName = 'peter';
+  //   let user = {
+  //     id: 1,
+  //     name: expectedName,
+  //     email: 'email@email.de',
+  //     authorities: ['USER']
+  //   };
+  //   localStorageServiceLoadItemSpy.withArgs(STORAGE_KEY.USER).and.returnValue(user);
+  //   let dispatchSpy = spyOn(mockStore, 'dispatch');
+  //
+  //   // when
+  //   fixture.detectChanges();
+  //
+  //   // then
+  //   expect(dispatchSpy).toHaveBeenCalledWith(loadedUser({user: user}));
+  // });
 });

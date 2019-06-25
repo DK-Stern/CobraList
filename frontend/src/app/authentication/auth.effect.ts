@@ -2,9 +2,9 @@ import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {catchError, map, mergeMap} from 'rxjs/operators';
 import {UserApiService} from './user-api.service';
-import {EMPTY, of} from 'rxjs';
+import {of} from 'rxjs';
 import {loadedUser, loadedUserFail, loggedIn} from './auth.actions';
-import {LocalStorageService, STORAGE_KEY} from '../storage/local-storage.service';
+import {LocalStorageService} from '../storage/local-storage.service';
 
 @Injectable()
 export class AuthEffects {
@@ -18,10 +18,7 @@ export class AuthEffects {
     ofType(loggedIn),
     mergeMap(() => this.userApiService.getUser()
       .pipe(
-        map(user => {
-          this.localStorageService.saveItem(STORAGE_KEY.USER, user);
-          return loadedUser({user: user})
-        }),
+        map(user => loadedUser({user: user})),
         catchError(error => of(loadedUserFail({error: error})))
       ))
   ));

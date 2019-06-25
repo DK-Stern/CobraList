@@ -3,10 +3,10 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Store} from '@ngrx/store';
 import {loggedIn} from '../auth.actions';
 import {AppState} from '../../storage/appStateReducer';
-import {Observable} from 'rxjs';
-import * as auth from '../auth.reducers';
 import {MatIconRegistry} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
+import {LocalStorageService, STORAGE_KEY} from '../../storage/local-storage.service';
+import {UserValueObject} from '../user.value.object';
 
 @Component({
   selector: 'app-oauth2-redirect',
@@ -15,18 +15,18 @@ import {DomSanitizer} from '@angular/platform-browser';
 })
 export class Oauth2RedirectComponent implements OnInit {
 
-
-  authState$: Observable<auth.State> = this.store.select(state => state.authState);
-
   token: string;
   error: string;
 
+  user$ = this.store.select(state => state.authState.user);
+  user: UserValueObject = null;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
               private store: Store<AppState>,
               private iconRegistry: MatIconRegistry,
-              private sanitizer: DomSanitizer) {
+              private sanitizer: DomSanitizer,
+              private localStorageService: LocalStorageService) {
     iconRegistry.addSvgIcon(
       'thumbs-up',
       sanitizer.bypassSecurityTrustResourceUrl('assets/img/examples/thumbup-icon.svg'));
@@ -38,12 +38,15 @@ export class Oauth2RedirectComponent implements OnInit {
       this.error = params["error"];
 
       if (this.token != null) {
+        this.localStorageService.saveItem(STORAGE_KEY.TOKEN, this.token);
         this.store.dispatch(loggedIn({token: this.token}));
       }
 
-      this.authState$.subscribe(auth => {
-        this.router.navigateByUrl('user');
-      })
+      this.user$.subscribe(user => {
+        if (this.user$) {
+          this.router.navigateByUrl('user');
+        }
+      });
     })
   }
 }

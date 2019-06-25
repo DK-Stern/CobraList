@@ -21,6 +21,8 @@ import {AppStateReducer} from './storage/appStateReducer';
 import {EffectsModule} from '@ngrx/effects';
 import {AuthEffects} from './authentication/auth.effect';
 import {UserRoutingModule} from './user/user-routing.module';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {environment} from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,10 @@ import {UserRoutingModule} from './user/user-routing.module';
     MatProgressSpinnerModule,
     MatIconModule,
     StoreModule.forRoot(AppStateReducer),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production
+    }),
     EffectsModule.forRoot([AuthEffects])
   ],
   providers: [
