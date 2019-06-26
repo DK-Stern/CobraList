@@ -1,6 +1,9 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {CreatePartyComponent} from './create-party.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatCardModule, MatCheckboxModule, MatFormFieldModule, MatInputModule, MatSelectModule} from '@angular/material';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('CreatePartyComponent', () => {
   let component: CreatePartyComponent;
@@ -8,7 +11,17 @@ describe('CreatePartyComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CreatePartyComponent]
+      declarations: [CreatePartyComponent],
+      imports: [
+        MatCardModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatCheckboxModule,
+        MatSelectModule,
+        BrowserAnimationsModule
+      ]
     })
       .compileComponents();
   }));

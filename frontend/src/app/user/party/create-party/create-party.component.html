@@ -5,7 +5,13 @@
     <form [formGroup]="partyForm" (ngSubmit)="createParty()">
       <mat-form-field>
         <input #partyname matInput formControlName="partyName" placeholder="Name der Party" required>
-        <label *ngIf="partyForm.get('partyName').errors && partyForm.get('partyName').errors.validPartyname">Partyname ist ungültig.</label>
+        <mat-error *ngIf="partyForm.get('partyName').errors && partyForm.get('partyName').errors.required">
+          Bitte geben Sie einen Partynamen an.
+        </mat-error>
+        <mat-error
+          *ngIf="partyForm.get('partyName').errors && partyForm.get('partyName').errors.validPartyname">Der Partyname
+          darf nicht nur aus Leerzeichen bestehen oder damit anfangen.
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field>

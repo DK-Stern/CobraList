@@ -6,14 +6,13 @@ import {UserApiService} from '../user/user-api.service';
 import {loadedUser, loadedUserFail, loggedIn} from './auth.actions';
 import {addMatchers, cold, getTestScheduler, hot, initTestScheduler, resetTestScheduler} from 'jasmine-marbles';
 import {UserValueObject} from '../user/user.value.object';
-import {LocalStorageService, STORAGE_KEY} from '../storage/local-storage.service';
 
 describe('AuthEffects', () => {
 
   let testSubject: AuthEffects;
   let actions: Observable<any>;
   let user: UserValueObject;
-  let localStorageServiceSaveItemSpy;
+  let userApiServiceSpy;
 
   // configure matchers for jasmine-marbles
   jasmine.getEnv().beforeAll(() => {
@@ -36,7 +35,7 @@ describe('AuthEffects', () => {
     };
 
 
-    const userApiServiceSpy = jasmine.createSpyObj('UserApiService', ['getUser']);
+    userApiServiceSpy = jasmine.createSpyObj('UserApiService', ['getUser']);
     userApiServiceSpy.getUser.and.returnValue(of(user));
 
     TestBed.configureTestingModule({
@@ -46,13 +45,10 @@ describe('AuthEffects', () => {
           provide: UserApiService,
           useValue: userApiServiceSpy
         },
-        provideMockActions(() => actions),
-        LocalStorageService
+        provideMockActions(() => actions)
       ]
     });
 
-    const localStorageService = TestBed.get(LocalStorageService);
-    localStorageServiceSaveItemSpy = spyOn(localStorageService, 'saveItem');
     testSubject = TestBed.get(AuthEffects);
   });
 
@@ -69,11 +65,15 @@ describe('AuthEffects', () => {
 
   it('should return LoadUserFailAction if an error occures on saving user', () => {
     // given
-    localStorageServiceSaveItemSpy.withArgs(STORAGE_KEY.USER, user).and.throwError('error');
     const loggedInAction = loggedIn({token: '123'});
-    const loadedUserFailInAction = loadedUserFail({error: new Error('error')});
-    actions = hot('--a-', {a: loggedInAction});
-    const expected = cold('--b', {b: loadedUserFailInAction});
+    const loadUserError = new Error('error') as any;
+    const outcome = loadedUserFail({error: loadUserError});
+
+    actions = hot('-a', {a: loggedInAction});
+    const response = cold('-#|', {}, loadUserError);
+    userApiServiceSpy.getUser.and.returnValue(response);
+
+    const expected = cold('--b', {b: outcome});
 
     // when
     const loadUser$ = testSubject.loadUser$;

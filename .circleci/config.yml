@@ -27,10 +27,10 @@ jobs:
           name: Flyway Migrate
           command: ./gradlew flywayMigrate
       - run:
-          name: Build Project and Generating Code Coverage
+          name: Build Project and Test Backend with Code Coverage
           command: ./gradlew build jacocoTestReport
       - run:
-          name: Build Frontend Code Coverage
+          name: Test Frontend with Code Coverage
           command: |-
             cd frontend/
             npm test --- --watch=false --code-coverage

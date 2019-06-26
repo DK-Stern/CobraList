@@ -38,7 +38,7 @@ describe('AppComponent', () => {
     }).compileComponents();
 
     const localStorageService = TestBed.get(LocalStorageService);
-    localStorageServiceLoadItemSpy = spyOn(localStorageService, 'loadItem').withArgs(STORAGE_KEY.USER).and.returnValue(null);
+    localStorageServiceLoadItemSpy = spyOn(localStorageService, 'loadItem').withArgs(STORAGE_KEY.TOKEN).and.returnValue(null);
     spyOn(localStorageService, 'saveItem');
 
     mockStore = TestBed.get(Store);
@@ -99,54 +99,4 @@ describe('AppComponent', () => {
     const userEl = fixture.nativeElement.querySelector('#user-nav');
     expect(userEl).toBeNull();
   });
-
-  it('should load user from store', () => {
-    // given
-    const expectedName = 'peter';
-    const fixture = TestBed.createComponent(AppComponent);
-
-    let state: AppState = {
-        authState: {
-          isAuthenticated: false,
-          token: null,
-          error: null,
-          user: {
-            id: 1,
-            name: expectedName,
-            email: 'email@email.de',
-            authorities: ['USER']
-          }
-        }
-      };
-    mockStore.setState(state);
-    let dispatchSpy = spyOn(mockStore, 'dispatch');
-
-    // when
-    fixture.detectChanges();
-
-    // then
-    const userEl = fixture.nativeElement.querySelector('#user-nav');
-    expect(userEl.textContent).toEqual(`Willkommen ${expectedName}!`);
-    expect(dispatchSpy).toHaveBeenCalledTimes(0);
-  });
-
-  // it('should load user from LocalStorageService', () => {
-  //   // given
-  //   const fixture = TestBed.createComponent(AppComponent);
-  //   const expectedName = 'peter';
-  //   let user = {
-  //     id: 1,
-  //     name: expectedName,
-  //     email: 'email@email.de',
-  //     authorities: ['USER']
-  //   };
-  //   localStorageServiceLoadItemSpy.withArgs(STORAGE_KEY.USER).and.returnValue(user);
-  //   let dispatchSpy = spyOn(mockStore, 'dispatch');
-  //
-  //   // when
-  //   fixture.detectChanges();
-  //
-  //   // then
-  //   expect(dispatchSpy).toHaveBeenCalledWith(loadedUser({user: user}));
-  // });
 });

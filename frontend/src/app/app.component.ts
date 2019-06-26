@@ -20,6 +20,8 @@ export class AppComponent implements OnInit {
   username: string = '';
 
   ngOnInit() {
+
+    // load authToken from localStorage and dispatch it to redux store, if no authToken is present in redux store
     this.store.pipe(select(state => state.authState.token))
       .subscribe(tokenState => {
         if (tokenState === null) {
