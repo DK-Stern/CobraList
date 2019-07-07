@@ -50,6 +50,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .withName(user.getName())
                 .withEmail(user.getEmail())
                 .withAttributes(oAuth2User.getAttributes())
+                .withProvider(user.getProvider())
                 .build();
     }
 

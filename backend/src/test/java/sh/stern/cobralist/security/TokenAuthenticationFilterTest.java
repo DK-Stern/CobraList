@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import sh.stern.cobralist.security.oauth2.user.UserPrincipal;
 
 import javax.servlet.FilterChain;
@@ -27,9 +28,14 @@ public class TokenAuthenticationFilterTest {
     @Mock
     private CustomUserDetailsService customUserDetailsServiceMock;
 
+    @Mock
+    private OAuth2AuthorizedClientService oAuth2AuthorizedClientServiceMock;
+
     @Before
     public void setUp() {
-        testSubject = new TokenAuthenticationFilter(tokenProviderMock, customUserDetailsServiceMock);
+        testSubject = new TokenAuthenticationFilter(tokenProviderMock,
+                customUserDetailsServiceMock,
+                oAuth2AuthorizedClientServiceMock);
     }
 
     @Test

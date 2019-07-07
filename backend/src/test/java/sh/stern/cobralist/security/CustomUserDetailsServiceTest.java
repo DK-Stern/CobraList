@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import sh.stern.cobralist.security.oauth2.user.UserPrincipal;
 import sh.stern.cobralist.security.oauth2.user.UserPrincipalBuilder;
+import sh.stern.cobralist.security.oauth2.user.model.AuthProvider;
 import sh.stern.cobralist.security.oauth2.user.model.User;
 import sh.stern.cobralist.security.oauth2.user.repository.UserRepository;
 
@@ -45,12 +46,14 @@ public class CustomUserDetailsServiceTest {
         final String username = "max";
         user.setName(username);
         user.setEmail(email);
+        user.setProvider(AuthProvider.spotify);
 
         when(userRepositoryMock.findByEmail(email)).thenReturn(Optional.of(user));
 
         when(userPrincipleBuilderMock.withId(userId)).thenReturn(userPrincipleBuilderMock);
         when(userPrincipleBuilderMock.withName(username)).thenReturn(userPrincipleBuilderMock);
         when(userPrincipleBuilderMock.withEmail(email)).thenReturn(userPrincipleBuilderMock);
+        when(userPrincipleBuilderMock.withProvider(AuthProvider.spotify)).thenReturn(userPrincipleBuilderMock);
         final UserPrincipal expectedUserPrincipalMock = mock(UserPrincipal.class);
         when(userPrincipleBuilderMock.build()).thenReturn(expectedUserPrincipalMock);
 
@@ -82,11 +85,13 @@ public class CustomUserDetailsServiceTest {
         user.setName(username);
         final String email = "max@mail.de";
         user.setEmail(email);
+        user.setProvider(AuthProvider.spotify);
         when(userRepositoryMock.findById(userId)).thenReturn(Optional.of(user));
 
         when(userPrincipleBuilderMock.withId(userId)).thenReturn(userPrincipleBuilderMock);
         when(userPrincipleBuilderMock.withName(username)).thenReturn(userPrincipleBuilderMock);
         when(userPrincipleBuilderMock.withEmail(email)).thenReturn(userPrincipleBuilderMock);
+        when(userPrincipleBuilderMock.withProvider(AuthProvider.spotify)).thenReturn(userPrincipleBuilderMock);
         final UserPrincipal expectedUserPrincipalMock = mock(UserPrincipal.class);
         when(userPrincipleBuilderMock.build()).thenReturn(expectedUserPrincipalMock);
 

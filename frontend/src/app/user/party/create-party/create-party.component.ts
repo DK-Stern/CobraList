@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup} from '@angular/forms';
+import {BasePlaylistObject} from './base-playlist/base-playlists.object';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-create-party',
@@ -9,8 +11,10 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 export class CreatePartyComponent implements OnInit {
 
   partyForm: FormGroup;
+  basePlaylists: BasePlaylistObject[];
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private route: ActivatedRoute,
+              private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {
@@ -19,7 +23,11 @@ export class CreatePartyComponent implements OnInit {
       password: '',
       downVoting: true,
       description: ''
-    })
+    });
+
+    this.route.data.subscribe((data: { basePlaylists: BasePlaylistObject[] }) => {
+      this.basePlaylists = data.basePlaylists;
+    });
   }
 
   validatePartyname(control: AbstractControl) {

@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import sh.stern.cobralist.security.oauth2.user.model.AuthProvider;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,10 +26,11 @@ public class UserPrincipalBuilderTest {
     public void setIdOnBuildingUserPrinciple() {
         // given
         final Long id = 1L;
-        testSubject.withId(id);
-        testSubject.withName("max");
-        testSubject.withEmail("max@mail.de");
-        testSubject.withAttributes(new HashMap<>());
+        testSubject.withId(id)
+                .withName("max")
+                .withEmail("max@mail.de")
+                .withProvider(AuthProvider.spotify)
+                .withAttributes(new HashMap<>());
 
         // when
         final UserPrincipal resultedUserPrincipal = testSubject.build();
@@ -40,8 +42,9 @@ public class UserPrincipalBuilderTest {
     @Test
     public void throwsExceptionIfIdIsNotSet() {
         // given
-        testSubject.withName("max");
-        testSubject.withEmail("max@mail.de");
+        testSubject.withName("max")
+                .withEmail("max@mail.de")
+                .withProvider(AuthProvider.spotify);
 
         // then
         assertThatCode(() -> testSubject.build())
@@ -52,11 +55,12 @@ public class UserPrincipalBuilderTest {
     @Test
     public void setNameOnBuildingUserPrinciple() {
         // given
-        testSubject.withId(1L);
         final String name = "max";
-        testSubject.withName(name);
-        testSubject.withEmail("max@mail.de");
-        testSubject.withAttributes(new HashMap<>());
+        testSubject.withId(1L)
+                .withName(name)
+                .withEmail("max@mail.de")
+                .withProvider(AuthProvider.spotify)
+                .withAttributes(new HashMap<>());
 
         // when
         final UserPrincipal resultedUserPrincipal = testSubject.build();
@@ -68,8 +72,9 @@ public class UserPrincipalBuilderTest {
     @Test
     public void throwsExceptionIfNameIsNotSet() {
         // given
-        testSubject.withId(1L);
-        testSubject.withEmail("max@mail.de");
+        testSubject.withId(1L)
+                .withEmail("max@mail.de")
+                .withProvider(AuthProvider.spotify);
 
         // then
         assertThatCode(() -> testSubject.build())
@@ -80,11 +85,12 @@ public class UserPrincipalBuilderTest {
     @Test
     public void setEmailOnBuildingUserPrinciple() {
         // given
-        testSubject.withId(1L);
-        testSubject.withName("max");
         final String email = "max@mail.de";
-        testSubject.withEmail(email);
-        testSubject.withAttributes(new HashMap<>());
+        testSubject.withId(1L)
+                .withName("max")
+                .withEmail(email)
+                .withProvider(AuthProvider.spotify)
+                .withAttributes(new HashMap<>());
 
         // when
         final UserPrincipal resultedUserPrincipal = testSubject.build();
@@ -96,8 +102,9 @@ public class UserPrincipalBuilderTest {
     @Test
     public void throwsExceptionIfEmailIsNotSet() {
         // given
-        testSubject.withId(1L);
-        testSubject.withName("max");
+        testSubject.withId(1L)
+                .withName("max")
+                .withProvider(AuthProvider.spotify);
 
         // then
         assertThatCode(() -> testSubject.build())
@@ -108,11 +115,12 @@ public class UserPrincipalBuilderTest {
     @Test
     public void setAttributesOnBuildingUserPrinciple() {
         // given
-        testSubject.withId(1L);
-        testSubject.withName("max");
-        testSubject.withEmail("max@mail.de");
         final HashMap<String, Object> attributes = new HashMap<>();
-        testSubject.withAttributes(attributes);
+        testSubject.withId(1L)
+                .withName("max")
+                .withEmail("max@mail.de")
+                .withProvider(AuthProvider.spotify)
+                .withAttributes(attributes);
 
         // when
         final UserPrincipal resultedUserPrincipal = testSubject.build();
@@ -124,10 +132,11 @@ public class UserPrincipalBuilderTest {
     @Test
     public void setDefaultAuthoritiesIfAuthoritiesAreNotSet() {
         // given
-        testSubject.withId(1L);
-        testSubject.withName("max");
-        testSubject.withEmail("max@mail.de");
-        testSubject.withAttributes(new HashMap<>());
+        testSubject.withId(1L)
+                .withName("max")
+                .withEmail("max@mail.de")
+                .withProvider(AuthProvider.spotify)
+                .withAttributes(new HashMap<>());
 
         // when
         UserPrincipal resultedUserPrincipal = testSubject.build();
@@ -143,16 +152,49 @@ public class UserPrincipalBuilderTest {
         // given
         final List<SimpleGrantedAuthority> expectedAuthorities = asList(new SimpleGrantedAuthority("ROLE_USER"),
                 new SimpleGrantedAuthority("ROLE_ADMIN"));
-        testSubject.withAuthorities(expectedAuthorities);
-        testSubject.withId(1L);
-        testSubject.withName("max");
-        testSubject.withEmail("max@mail.de");
-        testSubject.withAttributes(new HashMap<>());
+        testSubject.withAuthorities(expectedAuthorities)
+                .withId(1L)
+                .withName("max")
+                .withEmail("max@mail.de")
+                .withProvider(AuthProvider.spotify)
+                .withAttributes(new HashMap<>());
 
         // when
         UserPrincipal resultedUserPrincipal = testSubject.build();
 
         // then
         assertThat(resultedUserPrincipal.getAuthorities()).isEqualTo(expectedAuthorities);
+    }
+
+    @Test
+    public void setAuthProviderOnBuildingUserPrinciple() {
+        // given
+        final AuthProvider authProvider = AuthProvider.spotify;
+        testSubject.withId(1L)
+                .withName("max")
+                .withEmail("max@mail.de")
+                .withProvider(authProvider)
+                .withAttributes(new HashMap<>());
+
+        // when
+        UserPrincipal resultedUserPrincipal = testSubject.build();
+
+        // then
+        assertThat(resultedUserPrincipal.getAuthProvider()).isEqualTo(authProvider);
+    }
+
+    @Test
+    public void throwsExceptionIfAuthProviderIsNotSet() {
+        // given
+        final AuthProvider authProvider = AuthProvider.spotify;
+        testSubject.withId(1L)
+                .withName("max")
+                .withEmail("max@mail.de")
+                .withAttributes(new HashMap<>());
+
+        // then
+        assertThatCode(() -> testSubject.build())
+                .isInstanceOf(IllegalStateException.class)
+                .withFailMessage("'authProvider' is null!");
     }
 }

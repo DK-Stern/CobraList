@@ -26,6 +26,8 @@ spring:
             scope:
               - user-read-private
               - user-read-email
+              - playlist-read-private
+              - playlist-read-collaborative
         provider:
           spotify:
             authorizationUri: https://accounts.spotify.com/authorize

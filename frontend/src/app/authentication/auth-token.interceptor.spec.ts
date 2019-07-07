@@ -7,6 +7,7 @@ import {environment} from '../../environments/environment';
 import {UserValueObject} from '../user/user.value.object';
 import {MockStore, provideMockStore} from '@ngrx/store/testing';
 import {AppState} from '../storage/appStateReducer';
+import {MatSnackBarModule} from '@angular/material';
 
 describe('AuthTokenInterceptor', () => {
 
@@ -21,7 +22,10 @@ describe('AuthTokenInterceptor', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [
+        HttpClientTestingModule,
+        MatSnackBarModule
+      ],
       providers: [
         UserApiService,
         provideMockStore({initialState}),

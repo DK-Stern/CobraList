@@ -9,6 +9,7 @@ import {
   MatIconModule,
   MatMenuModule,
   MatProgressSpinnerModule,
+  MatSnackBarModule,
   MatToolbarModule
 } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -41,6 +42,7 @@ import {environment} from '../environments/environment';
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
+    MatSnackBarModule,
     MatProgressSpinnerModule,
     MatIconModule,
     StoreModule.forRoot(AppStateReducer),

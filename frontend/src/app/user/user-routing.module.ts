@@ -4,6 +4,7 @@ import {UserComponent} from './user/user.component';
 import {CreatePartyComponent} from './party/create-party/create-party.component';
 import {UserDashboardComponent} from './user-dashboard/user-dashboard.component';
 import {AuthGuard} from '../authentication/auth.guard';
+import {BasePlaylistResolverService} from './party/create-party/base-playlist/base-playlist-resolver.service';
 
 const userRoutes: Routes = [
   {
@@ -14,7 +15,13 @@ const userRoutes: Routes = [
       {
         path: '',
         children: [
-          {path: 'party/create', component: CreatePartyComponent},
+          {
+            path: 'party/create',
+            component: CreatePartyComponent,
+            resolve: {
+              basePlaylists: BasePlaylistResolverService
+            }
+          },
           {path: '', component: UserDashboardComponent}
         ]
       }

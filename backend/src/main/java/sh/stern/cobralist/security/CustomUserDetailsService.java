@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sh.stern.cobralist.security.oauth2.user.UserPrincipal;
 import sh.stern.cobralist.security.oauth2.user.UserPrincipalBuilder;
 import sh.stern.cobralist.security.oauth2.user.model.User;
 import sh.stern.cobralist.security.oauth2.user.repository.UserRepository;
@@ -33,11 +34,12 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .withId(user.getId())
                 .withName(user.getName())
                 .withEmail(user.getEmail())
+                .withProvider(user.getProvider())
                 .build();
     }
 
     @Transactional
-    public UserDetails loadUserById(Long id) {
+    public UserPrincipal loadUserById(Long id) {
         final User user = userRepository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("User", "id", id));
@@ -46,6 +48,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .withId(user.getId())
                 .withName(user.getName())
                 .withEmail(user.getEmail())
+                .withProvider(user.getProvider())
                 .build();
     }
 }
