@@ -1,8 +1,11 @@
 package sh.stern.cobralist.security.oauth2.user.model;
 
+import sh.stern.cobralist.party.persistence.Party;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Entity
 @Table(name = "user", uniqueConstraints = {
@@ -25,6 +28,9 @@ public class User {
     private AuthProvider provider;
 
     private String providerId;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Party> parties;
 
     public Long getId() {
         return id;
@@ -64,5 +70,9 @@ public class User {
 
     public void setProviderId(String providerId) {
         this.providerId = providerId;
+    }
+
+    public Set<Party> getParties() {
+        return parties;
     }
 }

@@ -1,4 +1,4 @@
-package sh.stern.cobralist.user;
+package sh.stern.cobralist.user.response;
 
 import sh.stern.cobralist.api.domains.SimplePlaylistDomain;
 

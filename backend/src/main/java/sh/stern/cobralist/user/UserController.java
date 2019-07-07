@@ -13,6 +13,8 @@ import sh.stern.cobralist.security.ResourceNotFoundException;
 import sh.stern.cobralist.security.oauth2.user.UserPrincipal;
 import sh.stern.cobralist.security.oauth2.user.model.User;
 import sh.stern.cobralist.security.oauth2.user.repository.UserRepository;
+import sh.stern.cobralist.user.response.BasePlaylistsResponse;
+import sh.stern.cobralist.user.response.UserResponse;
 
 import java.util.List;
 

@@ -6,6 +6,7 @@ import {MatCardModule, MatCheckboxModule, MatFormFieldModule, MatInputModule, Ma
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {of} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('CreatePartyComponent', () => {
   let component: CreatePartyComponent;
@@ -36,7 +37,8 @@ describe('CreatePartyComponent', () => {
         MatInputModule,
         MatCheckboxModule,
         MatSelectModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        HttpClientTestingModule
       ]
     })
       .compileComponents();

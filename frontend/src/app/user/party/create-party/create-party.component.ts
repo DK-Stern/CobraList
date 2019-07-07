@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup} from '@angular/forms';
 import {BasePlaylistObject} from './base-playlist/base-playlists.object';
 import {ActivatedRoute} from '@angular/router';
+import {HttpClient} from '@angular/common/http';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-create-party',
@@ -14,7 +16,8 @@ export class CreatePartyComponent implements OnInit {
   basePlaylists: BasePlaylistObject[];
 
   constructor(private route: ActivatedRoute,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private httpClient: HttpClient) {
   }
 
   ngOnInit() {
@@ -38,7 +41,10 @@ export class CreatePartyComponent implements OnInit {
   }
 
   createParty() {
-    console.log(this.partyForm.value);
+    this.httpClient.post(environment.apiUrl + "/api/party/create", this.partyForm.value)
+      .subscribe(response => {
+        console.log(response);
+      });
   }
 
 }
