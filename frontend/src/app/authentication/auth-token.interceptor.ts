@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {Store} from '@ngrx/store';
-import {AppState} from '../storage/appStateReducer';
+import {AppState} from '../storage/app-state.reducer';
 import {MatSnackBar} from '@angular/material';
 import {catchError} from 'rxjs/operators';
 import {SessionTimedOutRedirectService} from './oauth2-redirect/session-timed-out-redirect.service';
@@ -12,7 +12,7 @@ const TOKEN_HEADER_KEY = "Authorization";
 @Injectable()
 export class AuthTokenInterceptor implements HttpInterceptor {
 
-  token$ = this.store.select(state => state.authState.token);
+  token$ = this.store.select(state => state.authentication.token);
   token: string;
 
   constructor(private store: Store<AppState>,

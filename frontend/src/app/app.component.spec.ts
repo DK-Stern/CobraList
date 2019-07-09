@@ -3,7 +3,7 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {AppComponent} from './app.component';
 import {MatCardModule, MatToolbarModule} from '@angular/material';
 import {MockStore, provideMockStore} from '@ngrx/store/testing';
-import {AppState} from './storage/appStateReducer';
+import {AppState} from './storage/app-state.reducer';
 import {Store} from '@ngrx/store';
 import {LocalStorageService, STORAGE_KEY} from './storage/local-storage.service';
 
@@ -11,12 +11,13 @@ describe('AppComponent', () => {
 
   let mockStore: MockStore<AppState>;
   let initialState = {
-    authState: {
+    authentication: {
       isAuthenticated: false,
       token: null,
       user: null,
       error: null
-    }
+    },
+    party: null
   };
   let localStorageServiceLoadItemSpy;
 
@@ -62,7 +63,7 @@ describe('AppComponent', () => {
     const expectedName = 'Max';
 
     mockStore.setState({
-      authState: {
+      authentication: {
         isAuthenticated: true,
         token: '123',
         error: null,
@@ -72,7 +73,8 @@ describe('AppComponent', () => {
           id: 1,
           name: expectedName
         }
-      }
+      },
+      party: null
     });
 
     // when

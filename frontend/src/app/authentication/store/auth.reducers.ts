@@ -1,5 +1,5 @@
 import {Action, createReducer, on} from '@ngrx/store';
-import {UserValueObject} from '../user/user.value.object';
+import {UserValueObject} from '../../user/user.value.object';
 import {loadedUser, loadedUserFail, loggedIn} from './auth.actions';
 
 export interface AuthState {
@@ -9,7 +9,7 @@ export interface AuthState {
   error: Error | null
 }
 
-const initialAuthState: AuthState = {
+const initialauthentication: AuthState = {
   isAuthenticated: false,
   token: null,
   user: null,
@@ -17,7 +17,7 @@ const initialAuthState: AuthState = {
 };
 
 const authReducer = createReducer(
-  initialAuthState,
+  initialauthentication,
   on(loadedUser, (state, {user}) => ({...state, user: user, error: null})),
   on(loadedUserFail, (state, {error}) => ({...state, error: error})),
   on(loggedIn, (state, {token}) => ({...state, isAuthenticated: true, token: token})));

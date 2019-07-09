@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {environment} from '../environments/environment';
 import {select, Store} from '@ngrx/store';
-import {AppState} from './storage/appStateReducer';
+import {AppState} from './storage/app-state.reducer';
 import {LocalStorageService, STORAGE_KEY} from './storage/local-storage.service';
-import {loggedIn} from './authentication/auth.actions';
+import {loggedIn} from './authentication/store/auth.actions';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
 
     // load authToken from localStorage and dispatch it to redux store, if no authToken is present in redux store
-    this.store.pipe(select(state => state.authState.token))
+    this.store.pipe(select(state => state.authentication.token))
       .subscribe(tokenState => {
         if (tokenState === null) {
           let token = <string>this.localStorageService.loadItem(STORAGE_KEY.TOKEN);
@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
         }
       });
 
-    this.store.select(state => state.authState.user).subscribe(user =>
+    this.store.select(state => state.authentication.user).subscribe(user =>
       user !== null
         ? this.username = user.name
         : this.username = '');

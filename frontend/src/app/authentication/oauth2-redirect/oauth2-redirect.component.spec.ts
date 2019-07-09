@@ -6,8 +6,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MockStore, provideMockStore} from '@ngrx/store/testing';
 import {ActivedRouteStub} from '../../testing/actived-route-stub';
 import {Store} from '@ngrx/store';
-import {AppState} from '../../storage/appStateReducer';
-import {loggedIn} from '../auth.actions';
+import {AppState} from '../../storage/app-state.reducer';
+import {loggedIn} from '../store/auth.actions';
 import createSpyObj = jasmine.createSpyObj;
 
 describe('Oauth2RedirectComponent', () => {
@@ -15,12 +15,13 @@ describe('Oauth2RedirectComponent', () => {
   let fixture: ComponentFixture<Oauth2RedirectComponent>;
 
   const initialState = {
-    authState: {
+    authentication: {
       isAuthenticated: false,
       token: null,
       user: null,
       error: null
-    }
+    },
+    party: null
   };
 
   let store: MockStore<AppState>;
@@ -87,7 +88,7 @@ describe('Oauth2RedirectComponent', () => {
   it('should redirect of user is logged in', () => {
     // given
     store.setState({
-      authState: {
+      authentication: {
         isAuthenticated: false,
         token: null,
         error: null,
@@ -97,7 +98,8 @@ describe('Oauth2RedirectComponent', () => {
           email: '',
           id: 1
         }
-      }
+      },
+      party: null
     });
 
     // when

@@ -1,44 +1,46 @@
 import {inject, TestBed} from '@angular/core/testing';
 
-import {AuthGuard} from './auth.guard';
+import {UserAuthGuard} from './user-auth.guard';
 import {MockStore, provideMockStore} from '@ngrx/store/testing';
-import {AppState} from '../storage/appStateReducer';
+import {AppState} from '../storage/app-state.reducer';
 import {Store} from '@ngrx/store';
 
-describe('AuthGuard', () => {
+describe('UserAuthGuard', () => {
 
-  let testSubject: AuthGuard;
+  let testSubject: UserAuthGuard;
   let storageSpy: MockStore<AppState>;
   let initialState: AppState = {
-    authState: {
+    authentication: {
       isAuthenticated: false,
       token: null,
       user: null,
       error: null
-    }
+    },
+    party: null
   };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        AuthGuard,
+        UserAuthGuard,
         provideMockStore({initialState})
       ]
     });
 
-    testSubject = TestBed.get(AuthGuard);
+    testSubject = TestBed.get(UserAuthGuard);
     storageSpy = TestBed.get(Store);
   });
 
-  it('can activate route after authState is set to isAuthenticated "true"', inject([AuthGuard], (guard: AuthGuard) => {
+  it('can activate route after AuthState is set to isAuthenticated "true"', inject([UserAuthGuard], (guard: UserAuthGuard) => {
     // given
     storageSpy.setState({
-      authState: {
+      authentication: {
         isAuthenticated: true,
         user: null,
         token: null,
         error: null
-      }
+      },
+      party: null
     });
 
     // when
@@ -48,7 +50,7 @@ describe('AuthGuard', () => {
     expect(resultedCanActivate).toBeTruthy();
   }));
 
-  it('can not activate route after authState is set to isAuthenticated "false"', inject([AuthGuard], (guard: AuthGuard) => {
+  it('can not activate route after AuthState is set to isAuthenticated "false"', inject([UserAuthGuard], (guard: UserAuthGuard) => {
     // when
     const resultedCanActivate = testSubject.canActivate(null, null);
 
@@ -56,15 +58,16 @@ describe('AuthGuard', () => {
     expect(resultedCanActivate).toBeFalsy();
   }));
 
-  it('can activate child route after authState is set to isAuthenticated "true"', inject([AuthGuard], (guard: AuthGuard) => {
+  it('can activate child route after AuthState is set to isAuthenticated "true"', inject([UserAuthGuard], (guard: UserAuthGuard) => {
     // given
     storageSpy.setState({
-      authState: {
+      authentication: {
         isAuthenticated: true,
         user: null,
         token: null,
         error: null
-      }
+      },
+      party: null
     });
 
     // when
@@ -74,7 +77,7 @@ describe('AuthGuard', () => {
     expect(resultedCanActivate).toBeTruthy();
   }));
 
-  it('can not activate child route after authState is set to isAuthenticated "false"', inject([AuthGuard], (guard: AuthGuard) => {
+  it('can not activate child route after AuthState is set to isAuthenticated "false"', inject([UserAuthGuard], (guard: UserAuthGuard) => {
     // when
     const resultedCanActivate = testSubject.canActivateChild(null, null);
 
@@ -82,15 +85,16 @@ describe('AuthGuard', () => {
     expect(resultedCanActivate).toBeFalsy();
   }));
 
-  it('can loadItem route after authState is set to isAuthenticated "true"', inject([AuthGuard], (guard: AuthGuard) => {
+  it('can loadItem route after AuthState is set to isAuthenticated "true"', inject([UserAuthGuard], (guard: UserAuthGuard) => {
     // given
     storageSpy.setState({
-      authState: {
+      authentication: {
         isAuthenticated: true,
         user: null,
         token: null,
         error: null
-      }
+      },
+      party: null
     });
 
     // when
@@ -100,7 +104,7 @@ describe('AuthGuard', () => {
     expect(resultedCanActivate).toBeTruthy();
   }));
 
-  it('can not loadItem route after authState is set to isAuthenticated "false"', inject([AuthGuard], (guard: AuthGuard) => {
+  it('can not loadItem route after AuthState is set to isAuthenticated "false"', inject([UserAuthGuard], (guard: UserAuthGuard) => {
     // when
     const resultedCanActivate = testSubject.canLoad(null, null);
 

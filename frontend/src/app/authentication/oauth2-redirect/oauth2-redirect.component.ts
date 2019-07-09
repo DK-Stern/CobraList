@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Store} from '@ngrx/store';
-import {loggedIn} from '../auth.actions';
-import {AppState} from '../../storage/appStateReducer';
+import {loggedIn} from '../store/auth.actions';
+import {AppState} from '../../storage/app-state.reducer';
 import {MatIconRegistry} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
 import {LocalStorageService, STORAGE_KEY} from '../../storage/local-storage.service';
@@ -18,7 +18,7 @@ export class Oauth2RedirectComponent implements OnInit {
   token: string;
   error: string;
 
-  user$ = this.store.select(state => state.authState.user);
+  user$ = this.store.select(state => state.authentication.user);
   user: UserValueObject = null;
 
   constructor(private route: ActivatedRoute,

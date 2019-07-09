@@ -8,14 +8,7 @@ public class PartyCreationResponse {
 
     private String password = "";
 
-    public PartyCreationResponse() {
-    }
-
-    public PartyCreationResponse(long id, String name, String password) {
-        this.id = id;
-        this.name = name;
-        this.password = password;
-    }
+    private boolean downVoting;
 
     public long getId() {
         return id;
@@ -39,5 +32,13 @@ public class PartyCreationResponse {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isDownVoting() {
+        return downVoting;
+    }
+
+    public void setDownVoting(boolean downVoting) {
+        this.downVoting = downVoting;
     }
 }

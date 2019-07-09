@@ -18,12 +18,13 @@ import {Oauth2RedirectComponent} from './authentication/oauth2-redirect/oauth2-r
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AuthTokenInterceptor} from './authentication/auth-token.interceptor';
 import {StoreModule} from '@ngrx/store';
-import {AppStateReducer} from './storage/appStateReducer';
+import * as authReducer from './authentication/store/auth.reducers';
 import {EffectsModule} from '@ngrx/effects';
-import {AuthEffects} from './authentication/auth.effect';
+import {AuthEffects} from './authentication/store/auth.effect';
 import {UserRoutingModule} from './user/user-routing.module';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
+import {PartyRoutingModule} from './party/party-routing.module';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import {environment} from '../environments/environment';
     HttpClientModule,
     AppRoutingModule,
     UserRoutingModule,
+    PartyRoutingModule,
     BrowserAnimationsModule,
     MatToolbarModule,
     MatCardModule,
@@ -45,7 +47,7 @@ import {environment} from '../environments/environment';
     MatSnackBarModule,
     MatProgressSpinnerModule,
     MatIconModule,
-    StoreModule.forRoot(AppStateReducer),
+    StoreModule.forRoot({authentication: authReducer.reducer}),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production

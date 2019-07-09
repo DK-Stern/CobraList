@@ -10,13 +10,13 @@ import {
   UrlTree
 } from '@angular/router';
 import {Observable} from 'rxjs';
-import {AppState} from '../storage/appStateReducer';
+import {AppState} from '../storage/app-state.reducer';
 import {Store} from '@ngrx/store';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
+export class UserAuthGuard implements CanActivate, CanActivateChild, CanLoad {
 
   isLoggedIn: boolean = false;
 
@@ -50,7 +50,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
 
   private checkUserIsLoggedIn() {
     if (!this.isLoggedIn) {
-      this.storage.select(state => state.authState.isAuthenticated).subscribe(isAuthenticated => {
+      this.storage.select(state => state.authentication.isAuthenticated).subscribe(isAuthenticated => {
         if (isAuthenticated) {
           this.isLoggedIn = isAuthenticated;
         }

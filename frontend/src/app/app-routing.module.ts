@@ -3,6 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from './home/home.component';
 import {Oauth2RedirectComponent} from './authentication/oauth2-redirect/oauth2-redirect.component';
 import {UserModule} from './user/user.module';
+import {PartyModule} from './party/party.module';
 
 const routes: Routes = [
   {
@@ -12,6 +13,10 @@ const routes: Routes = [
   {
     path: 'user',
     loadChildren: () => import('./user/user.module').then(mod => mod.UserModule)
+  },
+  {
+    path: 'party',
+    loadChildren: () => import('./party/party.module').then(mod => mod.PartyModule)
   },
   {
     path: 'oauth2/redirect',
@@ -25,7 +30,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [UserModule, RouterModule.forRoot(routes)],
+  imports: [UserModule, PartyModule, RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

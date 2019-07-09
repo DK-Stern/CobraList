@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup} from '@angular/forms';
 import {BasePlaylistObject} from './base-playlist/base-playlists.object';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
+import {PartyCreationValueObject} from './party-creation-value.object';
 
 @Component({
   selector: 'app-create-party',
@@ -16,6 +17,7 @@ export class CreatePartyComponent implements OnInit {
   basePlaylists: BasePlaylistObject[];
 
   constructor(private route: ActivatedRoute,
+              private router: Router,
               private formBuilder: FormBuilder,
               private httpClient: HttpClient) {
   }
@@ -41,9 +43,11 @@ export class CreatePartyComponent implements OnInit {
   }
 
   createParty() {
-    this.httpClient.post(environment.apiUrl + "/api/party/create", this.partyForm.value)
-      .subscribe(response => {
-        console.log(response);
+    this.httpClient.post<PartyCreationValueObject>(environment.apiUrl + '/api/party/create', this.partyForm.value)
+      .subscribe(party => {
+        let partyRoute = this.router.config.find(r => r.path == 'party/:id');
+        partyRoute.data = {party: party};
+        this.router.navigate(['/party', party.id]);
       });
   }
 

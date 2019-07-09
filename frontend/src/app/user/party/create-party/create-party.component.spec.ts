@@ -7,6 +7,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {of} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('CreatePartyComponent', () => {
   let component: CreatePartyComponent;
@@ -38,7 +39,8 @@ describe('CreatePartyComponent', () => {
         MatCheckboxModule,
         MatSelectModule,
         BrowserAnimationsModule,
-        HttpClientTestingModule
+        HttpClientTestingModule,
+        RouterTestingModule
       ]
     })
       .compileComponents();

@@ -6,7 +6,7 @@ import {AuthTokenInterceptor} from './auth-token.interceptor';
 import {environment} from '../../environments/environment';
 import {UserValueObject} from '../user/user.value.object';
 import {MockStore, provideMockStore} from '@ngrx/store/testing';
-import {AppState} from '../storage/appStateReducer';
+import {AppState} from '../storage/app-state.reducer';
 import {MatSnackBarModule} from '@angular/material';
 
 describe('AuthTokenInterceptor', () => {
@@ -15,7 +15,7 @@ describe('AuthTokenInterceptor', () => {
   let httpMock: HttpTestingController;
   let store: MockStore<AppState>;
   const initialState = {
-    authState: {
+    authentication: {
       token: '123'
     }
   };
