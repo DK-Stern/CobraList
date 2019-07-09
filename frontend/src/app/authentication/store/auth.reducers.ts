@@ -19,7 +19,7 @@ const initialauthentication: AuthState = {
 const authReducer = createReducer(
   initialauthentication,
   on(loadedUser, (state, {user}) => ({...state, user: user, error: null})),
-  on(loadedUserFail, (state, {error}) => ({...state, error: error})),
+  on(loadedUserFail, (state, {error}) => ({...state, isAuthenticated: false, token: null, user: null, error: error})),
   on(loggedIn, (state, {token}) => ({...state, isAuthenticated: true, token: token})));
 
 export function reducer(state: AuthState | undefined, action: Action) {

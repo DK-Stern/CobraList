@@ -4,9 +4,11 @@ import {UserAuthGuard} from './user-auth.guard';
 import {MockStore, provideMockStore} from '@ngrx/store/testing';
 import {AppState} from '../storage/app-state.reducer';
 import {Store} from '@ngrx/store';
+import {SessionTimedOutRedirectService} from './oauth2-redirect/session-timed-out-redirect.service';
 
 describe('UserAuthGuard', () => {
 
+  let redirectLoginSpy;
   let testSubject: UserAuthGuard;
   let storageSpy: MockStore<AppState>;
   let initialState: AppState = {
@@ -26,6 +28,9 @@ describe('UserAuthGuard', () => {
         provideMockStore({initialState})
       ]
     });
+
+    let sessionTimedOutRedirectService = TestBed.get(SessionTimedOutRedirectService);
+    redirectLoginSpy = spyOn(sessionTimedOutRedirectService, 'redirectLogin');
 
     testSubject = TestBed.get(UserAuthGuard);
     storageSpy = TestBed.get(Store);

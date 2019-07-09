@@ -3,3 +3,28 @@
 body {
   margin: 0px;
 }
+
+a {
+  color: #fff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: flex-start;
+
+  & > .row {
+    display: flex;
+    flex-direction: row;
+
+    &.wrap {
+      flex-wrap: wrap;
+    }
+  }
+}

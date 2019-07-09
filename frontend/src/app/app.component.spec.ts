@@ -1,11 +1,13 @@
 import {async, TestBed} from '@angular/core/testing';
 import {RouterTestingModule} from '@angular/router/testing';
 import {AppComponent} from './app.component';
-import {MatCardModule, MatToolbarModule} from '@angular/material';
+import {MatCardModule, MatIconModule, MatListModule, MatSidenavModule, MatToolbarModule} from '@angular/material';
 import {MockStore, provideMockStore} from '@ngrx/store/testing';
 import {AppState} from './storage/app-state.reducer';
 import {Store} from '@ngrx/store';
 import {LocalStorageService, STORAGE_KEY} from './storage/local-storage.service';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('AppComponent', () => {
 
@@ -27,7 +29,12 @@ describe('AppComponent', () => {
       imports: [
         RouterTestingModule,
         MatToolbarModule,
-        MatCardModule
+        MatCardModule,
+        MatIconModule,
+        MatSidenavModule,
+        MatListModule,
+        BrowserAnimationsModule,
+        HttpClientTestingModule
       ],
       providers: [
         LocalStorageService,

@@ -7,8 +7,10 @@ import {
   MatButtonModule,
   MatCardModule,
   MatIconModule,
+  MatListModule,
   MatMenuModule,
   MatProgressSpinnerModule,
+  MatSidenavModule,
   MatSnackBarModule,
   MatToolbarModule
 } from '@angular/material';
@@ -45,6 +47,8 @@ import {PartyRoutingModule} from './party/party-routing.module';
     MatIconModule,
     MatMenuModule,
     MatSnackBarModule,
+    MatSidenavModule,
+    MatListModule,
     MatProgressSpinnerModule,
     MatIconModule,
     StoreModule.forRoot({authentication: authReducer.reducer}),
