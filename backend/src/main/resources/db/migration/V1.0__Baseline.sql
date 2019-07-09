@@ -9,17 +9,10 @@ CREATE TABLE user
     UNIQUE KEY (email)
 );
 
-CREATE TABLE guest
-(
-    id   BIGINT       NOT NULL AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    PRIMARY KEY (id)
-);
-
 CREATE TABLE party
 (
     id            BIGINT       NOT NULL AUTO_INCREMENT,
-    user_id       BIGINT       NOT NULL,
+    creator_id    BIGINT       NOT NULL,
     name          VARCHAR(255) NOT NULL,
     password      VARCHAR(255),
     vote_down     BOOLEAN DEFAULT TRUE,
@@ -28,7 +21,35 @@ CREATE TABLE party
     description   VARCHAR(500),
     PRIMARY KEY (id),
     CONSTRAINT `fk_party_user_id`
+        FOREIGN KEY (creator_id) REFERENCES user (id)
+            ON DELETE CASCADE
+            ON UPDATE RESTRICT
+);
+
+CREATE TABLE guest
+(
+    id       BIGINT       NOT NULL AUTO_INCREMENT,
+    name     VARCHAR(100) NOT NULL,
+    party_id BIGINT       NOT NULL,
+    PRIMARY KEY (id),
+    CONSTRAINT `fk_guest_party_id`
+        FOREIGN KEY (party_id) REFERENCES party (id)
+            ON DELETE CASCADE
+            ON UPDATE RESTRICT
+);
+
+CREATE TABLE user_joined_party
+(
+    id       BIGINT NOT NULL AUTO_INCREMENT,
+    user_id  BIGINT NOT NULL,
+    party_id BIGINT NOT NULL,
+    PRIMARY KEY (id),
+    CONSTRAINT `fk_joined_user_id`
         FOREIGN KEY (user_id) REFERENCES user (id)
+            ON DELETE CASCADE
+            ON UPDATE RESTRICT,
+    CONSTRAINT `fk_joined_party_id`
+        FOREIGN KEY (party_id) REFERENCES party (id)
             ON DELETE CASCADE
             ON UPDATE RESTRICT
 );

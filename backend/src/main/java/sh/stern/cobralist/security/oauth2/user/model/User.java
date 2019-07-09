@@ -32,6 +32,13 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Party> parties;
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_joined_party",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "party_id"))
+    private Set<Party> joinedParties;
+
     public Long getId() {
         return id;
     }
@@ -74,5 +81,9 @@ public class User {
 
     public Set<Party> getParties() {
         return parties;
+    }
+
+    public Set<Party> getJoinedParties() {
+        return joinedParties;
     }
 }

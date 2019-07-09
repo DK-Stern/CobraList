@@ -5,6 +5,7 @@ import sh.stern.cobralist.security.oauth2.user.model.User;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 public class Party {
@@ -14,7 +15,7 @@ public class Party {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "creator_id")
     private User user;
 
     private String name;
@@ -28,6 +29,9 @@ public class Party {
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
+
+    @ManyToMany(mappedBy = "joinedParties")
+    private Set<User> joinedUsers;
 
     private boolean archived;
 
