@@ -3,7 +3,7 @@ import {AbstractControl, FormBuilder, FormGroup} from '@angular/forms';
 import {BasePlaylistObject} from './base-playlist/base-playlists.object';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
-import {environment} from '../../../../environments/environment';
+import {environment} from '../../../environments/environment';
 import {PartyCreationValueObject} from './party-creation-value.object';
 
 @Component({

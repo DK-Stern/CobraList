@@ -3,7 +3,7 @@ import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/rou
 import {Store} from '@ngrx/store';
 import {AppState} from '../storage/app-state.reducer';
 import {Observable, of} from 'rxjs';
-import {PartyCreationValueObject} from '../user/party/create-party/party-creation-value.object';
+import {PartyCreationValueObject} from '../user/create-party/party-creation-value.object';
 import {PartyApiService} from './party-api.service';
 import {mergeMap} from 'rxjs/operators';
 import {saveParty} from './store/party.actions';

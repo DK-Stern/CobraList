@@ -1,5 +1,5 @@
 import {createAction, props} from '@ngrx/store';
-import {PartyCreationValueObject} from '../../user/party/create-party/party-creation-value.object';
+import {PartyCreationValueObject} from '../../user/create-party/party-creation-value.object';
 
 export const saveParty = createAction(
   '[Party Creation Component] Save Party',

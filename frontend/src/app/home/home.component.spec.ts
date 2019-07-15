@@ -2,6 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {HomeComponent} from './home.component';
 import {MatCardModule} from '@angular/material';
+import {LogoComponent} from './logo/logo.component';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -12,7 +13,10 @@ describe('HomeComponent', () => {
       imports: [
         MatCardModule
       ],
-      declarations: [HomeComponent]
+      declarations: [
+        HomeComponent,
+        LogoComponent
+      ]
     })
       .compileComponents();
   }));

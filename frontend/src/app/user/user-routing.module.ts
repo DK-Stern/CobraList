@@ -1,10 +1,10 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {UserComponent} from './user/user.component';
-import {CreatePartyComponent} from './party/create-party/create-party.component';
+import {CreatePartyComponent} from './create-party/create-party.component';
 import {UserDashboardComponent} from './user-dashboard/user-dashboard.component';
 import {UserAuthGuard} from '../authentication/user-auth.guard';
-import {BasePlaylistResolverService} from './party/create-party/base-playlist/base-playlist-resolver.service';
+import {BasePlaylistResolverService} from './create-party/base-playlist/base-playlist-resolver.service';
 
 const userRoutes: Routes = [
   {

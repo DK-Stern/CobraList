@@ -27,12 +27,14 @@ import {UserRoutingModule} from './user/user-routing.module';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
 import {PartyRoutingModule} from './party/party-routing.module';
+import {LogoComponent} from './home/logo/logo.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    Oauth2RedirectComponent
+    Oauth2RedirectComponent,
+    LogoComponent
   ],
   imports: [
     BrowserModule,
