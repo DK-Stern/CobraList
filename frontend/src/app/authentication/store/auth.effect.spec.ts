@@ -3,7 +3,7 @@ import {Observable, of} from 'rxjs';
 import {TestBed} from '@angular/core/testing';
 import {provideMockActions} from '@ngrx/effects/testing';
 import {UserApiService} from '../../user/user-api.service';
-import {loadedUser, loadedUserFail, loggedIn} from './auth.actions';
+import {loadedUser, loadedUserFail, loginSuccess} from './auth.actions';
 import {addMatchers, cold, getTestScheduler, hot, initTestScheduler, resetTestScheduler} from 'jasmine-marbles';
 import {UserValueObject} from '../../user/user.value.object';
 
@@ -54,7 +54,7 @@ describe('AuthEffects', () => {
 
   it('should use user api service to get user object', () => {
     // given
-    const loggedInAction = loggedIn({token: '123'});
+    const loggedInAction = loginSuccess({token: '123'});
     const loadedUserAction = loadedUser({user: user});
     actions = hot('--a-', {a: loggedInAction});
     const expected = cold('--b', {b: loadedUserAction});
@@ -65,7 +65,7 @@ describe('AuthEffects', () => {
 
   it('should return LoadUserFailAction if an error occures on saving user', () => {
     // given
-    const loggedInAction = loggedIn({token: '123'});
+    const loggedInAction = loginSuccess({token: '123'});
     const loadUserError = new Error('error') as any;
     const outcome = loadedUserFail({error: loadUserError});
 

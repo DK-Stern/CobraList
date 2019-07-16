@@ -5,6 +5,7 @@ import {MockStore, provideMockStore} from '@ngrx/store/testing';
 import {AppState} from '../storage/app-state.reducer';
 import {Store} from '@ngrx/store';
 import {SessionTimedOutRedirectService} from './oauth2-redirect/session-timed-out-redirect.service';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('UserAuthGuard', () => {
 
@@ -26,6 +27,9 @@ describe('UserAuthGuard', () => {
       providers: [
         UserAuthGuard,
         provideMockStore({initialState})
+      ],
+      imports: [
+        RouterTestingModule
       ]
     });
 

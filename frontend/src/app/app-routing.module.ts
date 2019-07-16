@@ -4,6 +4,8 @@ import {HomeComponent} from './home/home.component';
 import {Oauth2RedirectComponent} from './authentication/oauth2-redirect/oauth2-redirect.component';
 import {UserModule} from './user/user.module';
 import {PartyModule} from './party/party.module';
+import {LogoutComponent} from './authentication/logout/logout.component';
+import {LoginComponent} from './authentication/login/login.component';
 
 const routes: Routes = [
   {
@@ -21,6 +23,14 @@ const routes: Routes = [
   {
     path: 'oauth2/redirect',
     component: Oauth2RedirectComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'logout',
+    component: LogoutComponent
   },
   {
     path: '',

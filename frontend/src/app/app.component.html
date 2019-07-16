@@ -10,17 +10,18 @@
       <span class="fill-remaining-space"></span>
 
       <span *ngIf="!username"><a id="login" [href]="spotify_auth_url">Login mit Spotify</a></span>
-      <span id="user-nav" *ngIf="username">Willkommen {{ username }}!</span>
+      <span id="user-nav" *ngIf="username">Hallo {{ username }}!</span>
 
     </mat-toolbar-row>
   </mat-toolbar>
 
   <mat-sidenav-container class="app-sidenav-container"
                          [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
+    <mat-sidenav id="side-navigation" #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
                  [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
       <mat-nav-list>
-        <a mat-list-item [routerLink]="nav.navigate" *ngFor="let nav of navElements">{{nav.name}}</a>
+        <a mat-list-item (click)="mobileQuery.matches ? snav.close() : null" [routerLink]="nav.navigate" *ngFor="let nav
+         of navElements">{{nav.name}}</a>
       </mat-nav-list>
     </mat-sidenav>
 

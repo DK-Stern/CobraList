@@ -5,6 +5,7 @@ import {
   CanActivateChild,
   CanLoad,
   Route,
+  Router,
   RouterStateSnapshot,
   UrlSegment,
   UrlTree
@@ -12,7 +13,6 @@ import {
 import {Observable} from 'rxjs';
 import {AppState} from '../storage/app-state.reducer';
 import {Store} from '@ngrx/store';
-import {SessionTimedOutRedirectService} from './oauth2-redirect/session-timed-out-redirect.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,7 @@ export class UserAuthGuard implements CanActivate, CanActivateChild, CanLoad {
   isLoggedIn: boolean = false;
 
   constructor(private storage: Store<AppState>,
-              private loginRedirectService: SessionTimedOutRedirectService) {
+              private router: Router) {
   }
 
   canActivate(
@@ -53,10 +53,9 @@ export class UserAuthGuard implements CanActivate, CanActivateChild, CanLoad {
   private checkUserIsLoggedIn() {
     if (!this.isLoggedIn) {
       this.storage.select(state => state.authentication.isAuthenticated).subscribe(isAuthenticated => {
-        if (isAuthenticated) {
-          this.isLoggedIn = isAuthenticated;
-        } else {
-          this.loginRedirectService.redirectLogin();
+        this.isLoggedIn = isAuthenticated;
+        if (!isAuthenticated && this.router.url !== '/logout') {
+          this.router.navigateByUrl('login');
         }
       });
     }

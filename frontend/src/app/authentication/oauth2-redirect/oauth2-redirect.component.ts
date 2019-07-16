@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Store} from '@ngrx/store';
-import {loggedIn} from '../store/auth.actions';
+import {loginSuccess} from '../store/auth.actions';
 import {AppState} from '../../storage/app-state.reducer';
 import {MatIconRegistry} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
@@ -39,7 +39,7 @@ export class Oauth2RedirectComponent implements OnInit {
 
       if (this.token != null) {
         this.localStorageService.saveItem(STORAGE_KEY.TOKEN, this.token);
-        this.store.dispatch(loggedIn({token: this.token}));
+        this.store.dispatch(loginSuccess({token: this.token}));
       }
 
       this.user$.subscribe(user => {

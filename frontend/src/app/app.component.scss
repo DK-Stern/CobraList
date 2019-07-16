@@ -14,7 +14,7 @@
   right: 0;
 }
 
-.example-is-mobile .app-toolbar {
+.app-is-mobile .app-toolbar {
   position: fixed;
   /* Make sure the toolbar will stay on top of the content as it scrolls past. */
   z-index: 2;
@@ -29,6 +29,22 @@
 .app-is-mobile .app-sidenav-container {
   /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
      `<body>` to be our scrolling element for mobile layouts. */
-  margin-top: 0 !important;
+  margin-top: 56px !important;
   flex: 1 0 auto;
+}
+
+#side-navigation {
+  width: 180px;
+}
+
+@media only screen and (max-width: 450px) {
+  #side-navigation {
+    width: 300px;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .app-toolbar {
+    font-size: large;
+  }
 }

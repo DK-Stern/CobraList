@@ -15,6 +15,10 @@ export class LocalStorageService {
   loadItem(key: STORAGE_KEY): Object {
     return JSON.parse(localStorage.getItem(key));
   }
+
+  removeItem(key: STORAGE_KEY) {
+    localStorage.removeItem(key);
+  }
 }
 
 export enum STORAGE_KEY {

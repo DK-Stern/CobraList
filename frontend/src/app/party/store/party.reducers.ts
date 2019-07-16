@@ -8,7 +8,7 @@ export interface PartyState {
   downVoting: boolean | null,
 }
 
-const initialPartyState: PartyState = {
+export const initialPartyState: PartyState = {
   id: null,
   name: null,
   password: null,

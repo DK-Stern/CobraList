@@ -7,7 +7,7 @@ import {MockStore, provideMockStore} from '@ngrx/store/testing';
 import {ActivedRouteStub} from '../../testing/actived-route-stub';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../storage/app-state.reducer';
-import {loggedIn} from '../store/auth.actions';
+import {loginSuccess} from '../store/auth.actions';
 import createSpyObj = jasmine.createSpyObj;
 
 describe('Oauth2RedirectComponent', () => {
@@ -67,16 +67,16 @@ describe('Oauth2RedirectComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should dispatch loggedIn action with token if token is in queryParam', () => {
+  it('should dispatch loginSuccess action with token if token is in queryParam', () => {
     // given
     const params = {token: '123'};
     activatedRouteStub.setQueryParams(params);
 
     // then
-    expect(store.dispatch).toHaveBeenCalledWith(loggedIn(params));
+    expect(store.dispatch).toHaveBeenCalledWith(loginSuccess(params));
   });
 
-  it('should not dispatch loggedIn action if error is in queryParam', () => {
+  it('should not dispatch loginSuccess action if error is in queryParam', () => {
     // given
     const error = {error: 'error msg'};
     activatedRouteStub.setQueryParams(error);

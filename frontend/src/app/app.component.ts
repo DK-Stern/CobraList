@@ -3,7 +3,7 @@ import {environment} from '../environments/environment';
 import {select, Store} from '@ngrx/store';
 import {AppState} from './storage/app-state.reducer';
 import {LocalStorageService, STORAGE_KEY} from './storage/local-storage.service';
-import {loggedIn} from './authentication/store/auth.actions';
+import {loginSuccess} from './authentication/store/auth.actions';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {MatIconRegistry} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
@@ -23,6 +23,8 @@ export class AppComponent implements OnInit {
   title = 'CobraList';
   spotify_auth_url = environment.apiUrl + '/oauth2/authorize/spotify?redirect_uri=' + environment.oauthRedirect;
   username: string = '';
+  hasLogoutElement = (el) => el.name === 'Logout';
+
   private readonly _mobileQueryListener: () => void;
 
   constructor(private store: Store<AppState>,
@@ -47,14 +49,23 @@ export class AppComponent implements OnInit {
         if (tokenState === null) {
           let token = <string>this.localStorageService.loadItem(STORAGE_KEY.TOKEN);
           if (token) {
-            this.store.dispatch(loggedIn({token: token}));
+            this.store.dispatch(loginSuccess({token: token}));
           }
         }
       });
 
-    this.store.select(state => state.authentication.user).subscribe(user =>
-      user !== null
-        ? this.username = user.name
-        : this.username = '');
+    this.store.select(state => state.authentication.user).subscribe(user => {
+      if (user !== null) {
+        if (!this.navElements.some(this.hasLogoutElement)) {
+          this.navElements.push({name: 'Logout', navigate: 'logout'});
+        }
+        this.username = user.name
+      } else {
+        if (this.navElements.some(this.hasLogoutElement)) {
+          this.navElements.pop();
+        }
+        this.username = '';
+      }
+    });
   }
 }

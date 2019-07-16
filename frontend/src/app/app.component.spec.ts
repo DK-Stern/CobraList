@@ -89,7 +89,7 @@ describe('AppComponent', () => {
 
     // then
     const userEl = fixture.nativeElement.querySelector('#user-nav');
-    expect(userEl.textContent).toEqual(`Willkommen ${expectedName}!`);
+    expect(userEl.textContent).toEqual(`Hallo ${expectedName}!`);
     const loginEl = fixture.nativeElement.querySelector('#login');
     expect(loginEl).toBeNull();
   });

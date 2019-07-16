@@ -28,13 +28,17 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
 import {PartyRoutingModule} from './party/party-routing.module';
 import {LogoComponent} from './home/logo/logo.component';
+import {LogoutComponent} from './authentication/logout/logout.component';
+import {LoginComponent} from './authentication/login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     Oauth2RedirectComponent,
-    LogoComponent
+    LogoComponent,
+    LogoutComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

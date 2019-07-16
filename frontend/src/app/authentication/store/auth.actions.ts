@@ -1,8 +1,8 @@
 import {createAction, props} from '@ngrx/store';
 import {UserValueObject} from '../../user/user.value.object';
 
-export const loggedIn = createAction(
-  '[OAuth2 Redirect Component or App Component] Login Success',
+export const loginSuccess = createAction(
+  '[OAuth2 Redirect Component | App Component] Login Success',
   props<{ token: string }>()
 );
 
@@ -14,4 +14,8 @@ export const loadedUser = createAction(
 export const loadedUserFail = createAction(
   '[User API] User Loaded Error',
   props<{ error: Error }>()
+);
+
+export const logout = createAction(
+  '[App Component] Logout User'
 );
