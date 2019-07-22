@@ -1,25 +1,24 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
 import {Store} from '@ngrx/store';
-import {AppState} from '../storage/app-state.reducer';
+import {AppState} from '../../storage/app-state.reducer';
 import {Observable, of} from 'rxjs';
-import {PartyCreationValueObject} from '../user/create-party/party-creation-value.object';
+import {PartyDto} from './party.dto';
 import {PartyApiService} from './party-api.service';
 import {mergeMap} from 'rxjs/operators';
 import {saveParty} from './store/party.actions';
-import {PartyValueObject} from './party.value-object';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PartyResolverService implements Resolve<PartyValueObject> {
+export class PartyResolverService implements Resolve<PartyDto> {
 
   constructor(private store: Store<AppState>,
               private partyApiService: PartyApiService) {
   }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<PartyValueObject> {
-    let party: PartyCreationValueObject = route.data.party;
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<PartyDto> {
+    let party: PartyDto = route.data.party;
     const partyUrlParamId = route.paramMap.get('id');
     if ('undefined' !== typeof party && 'undefined' !== typeof party.id && partyUrlParamId == party.id) {
       return of(party);

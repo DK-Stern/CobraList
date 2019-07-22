@@ -14,7 +14,7 @@ describe('LoginComponent', () => {
     TestBed.configureTestingModule({
       providers: [{
         provide: SessionTimedOutRedirectService,
-        useValuer: redirectLoginSpy
+        useValue: redirectLoginSpy
       }
       ],
       declarations: [LoginComponent],

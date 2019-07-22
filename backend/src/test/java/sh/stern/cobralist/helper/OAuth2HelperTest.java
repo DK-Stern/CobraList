@@ -50,12 +50,12 @@ public class OAuth2HelperTest {
         testSubject.createToken(expectedUserPrincipal);
 
         // then
-        final ArgumentCaptor<OAuth2AuthenticationToken> oAuth2AuthenticationTokenArgumentCaptor =
-                ArgumentCaptor.forClass(OAuth2AuthenticationToken.class);
-        verify(tokenProviderMock).createToken(oAuth2AuthenticationTokenArgumentCaptor.capture());
+        final ArgumentCaptor<UserPrincipal> userPrincipalArgumentCaptor =
+                ArgumentCaptor.forClass(UserPrincipal.class);
+        verify(tokenProviderMock).createToken(userPrincipalArgumentCaptor.capture());
 
-        final OAuth2AuthenticationToken capturedAuthentication = oAuth2AuthenticationTokenArgumentCaptor.getValue();
-        assertThat(capturedAuthentication.getPrincipal()).isEqualTo(expectedUserPrincipal);
+        final UserPrincipal capturedUserPrincipal = userPrincipalArgumentCaptor.getValue();
+        assertThat(capturedUserPrincipal).isEqualTo(expectedUserPrincipal);
     }
 
     @Test

@@ -1,4 +1,4 @@
-export interface PartyValueObject {
+export interface PartyDto {
   id: string,
   name: string,
   password: string,

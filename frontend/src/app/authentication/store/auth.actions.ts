@@ -1,14 +1,19 @@
 import {createAction, props} from '@ngrx/store';
-import {UserValueObject} from '../../user/user.value.object';
+import {UserDto} from '../../user/user.dto';
 
 export const loginSuccess = createAction(
   '[OAuth2 Redirect Component | App Component] Login Success',
   props<{ token: string }>()
 );
 
+export const loginGuestSuccess = createAction(
+  '[Join Party] Login Guest Success',
+  props<{ token: string }>()
+);
+
 export const loadedUser = createAction(
   '[User API] User Loaded Success',
-  props<{ user: UserValueObject }>()
+  props<{ user: UserDto }>()
 );
 
 export const loadedUserFail = createAction(

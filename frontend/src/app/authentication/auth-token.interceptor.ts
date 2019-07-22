@@ -29,9 +29,11 @@ export class AuthTokenInterceptor implements HttpInterceptor {
 
     return next.handle(authReq).pipe(
       catchError((error: HttpErrorResponse) => {
-        this._snackBar.open('Ups, da ist wohl was schief gelaufen. :(', 'Neu einloggen', {
-          duration: 0,
-        }).onAction().subscribe(() => this.sessionTimedOutService.redirectLogin());
+        if (error.status === 401) {
+          this._snackBar.open('Ups, da ist wohl was schief gelaufen. :(', 'Neu einloggen', {
+            duration: 0,
+          }).onAction().subscribe(() => this.sessionTimedOutService.redirectLogin());
+        }
         return throwError(error);
       })
     );

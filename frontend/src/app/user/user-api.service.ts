@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {UserValueObject} from './user.value.object';
+import {UserDto} from './user.dto';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs';
@@ -12,7 +12,7 @@ export class UserApiService {
   constructor(private http: HttpClient) {
   }
 
-  getUser(): Observable<UserValueObject> {
-    return this.http.get<UserValueObject>(environment.apiUrl + '/api/user/me');
+  getUser(): Observable<UserDto> {
+    return this.http.get<UserDto>(environment.apiUrl + '/api/user/me');
   }
 }

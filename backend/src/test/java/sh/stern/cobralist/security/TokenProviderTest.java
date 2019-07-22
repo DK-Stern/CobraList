@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.security.core.Authentication;
 import sh.stern.cobralist.AppProperties;
 import sh.stern.cobralist.security.oauth2.user.UserPrincipal;
 
@@ -41,13 +40,10 @@ public class TokenProviderTest {
     @Test
     public void createToken() {
         // given
-        final Authentication authenticationMock = mock(Authentication.class);
-
         final UserPrincipal userPrincipalMock = mock(UserPrincipal.class);
-        when(authenticationMock.getPrincipal()).thenReturn(userPrincipalMock);
 
         // when
-        testSubject.createToken(authenticationMock);
+        testSubject.createToken(userPrincipalMock);
 
         // then
         verify(userPrincipalMock).getId();

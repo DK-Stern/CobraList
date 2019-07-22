@@ -15,6 +15,7 @@ describe('UserAuthGuard', () => {
   let initialState: AppState = {
     authentication: {
       isAuthenticated: false,
+      isGuest: false,
       token: null,
       user: null,
       error: null
@@ -45,6 +46,7 @@ describe('UserAuthGuard', () => {
     storageSpy.setState({
       authentication: {
         isAuthenticated: true,
+        isGuest: false,
         user: null,
         token: null,
         error: null
@@ -72,6 +74,7 @@ describe('UserAuthGuard', () => {
     storageSpy.setState({
       authentication: {
         isAuthenticated: true,
+        isGuest: false,
         user: null,
         token: null,
         error: null
@@ -99,6 +102,7 @@ describe('UserAuthGuard', () => {
     storageSpy.setState({
       authentication: {
         isAuthenticated: true,
+        isGuest: false,
         user: null,
         token: null,
         error: null

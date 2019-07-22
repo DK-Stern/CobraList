@@ -1,25 +1,34 @@
 package sh.stern.cobralist.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sh.stern.cobralist.guest.Guest;
+import sh.stern.cobralist.guest.GuestRepository;
 import sh.stern.cobralist.security.oauth2.user.UserPrincipal;
 import sh.stern.cobralist.security.oauth2.user.UserPrincipalBuilder;
 import sh.stern.cobralist.security.oauth2.user.model.User;
 import sh.stern.cobralist.security.oauth2.user.repository.UserRepository;
 
+import java.util.Collections;
+
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final GuestRepository guestRepository;
     private final UserPrincipalBuilder userPrincipalBuilder;
 
     @Autowired
-    public CustomUserDetailsService(UserRepository userRepository, UserPrincipalBuilder userPrincipalBuilder) {
+    public CustomUserDetailsService(UserRepository userRepository,
+                                    GuestRepository guestRepository,
+                                    UserPrincipalBuilder userPrincipalBuilder) {
         this.userRepository = userRepository;
+        this.guestRepository = guestRepository;
         this.userPrincipalBuilder = userPrincipalBuilder;
     }
 
@@ -34,6 +43,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .withId(user.getId())
                 .withName(user.getName())
                 .withEmail(user.getEmail())
+                .withAuthorities(Collections.singletonList(new SimpleGrantedAuthority(UserRole.ROLE_USER.name())))
                 .withProvider(user.getProvider())
                 .build();
     }
@@ -49,6 +59,20 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .withName(user.getName())
                 .withEmail(user.getEmail())
                 .withProvider(user.getProvider())
+                .withAuthorities(Collections.singletonList(new SimpleGrantedAuthority(UserRole.ROLE_USER.name())))
+                .build();
+    }
+
+    @Transactional
+    public UserPrincipal loadGuestById(Long id) {
+        final Guest guest = guestRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Guest", "id", id));
+
+        return userPrincipalBuilder
+                .withId(guest.getId())
+                .withName(guest.getName())
+                .withAuthorities(Collections.singletonList(new SimpleGrantedAuthority(UserRole.ROLE_GUEST.name())))
                 .build();
     }
 }

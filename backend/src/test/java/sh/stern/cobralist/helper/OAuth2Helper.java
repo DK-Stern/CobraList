@@ -39,7 +39,7 @@ public class OAuth2Helper {
         authentication = new OAuth2AuthenticationToken(userPrincipal,
                 userPrincipal.getAuthorities(),
                 userPrincipal.getAuthProvider().name());
-        return tokenProvider.createToken(authentication);
+        return tokenProvider.createToken(userPrincipal);
     }
 
     public void loginUser(UserPrincipal userPrincipal) {

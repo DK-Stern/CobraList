@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import sh.stern.cobralist.guest.GuestRepository;
 import sh.stern.cobralist.security.oauth2.user.UserPrincipal;
 import sh.stern.cobralist.security.oauth2.user.UserPrincipalBuilder;
 import sh.stern.cobralist.security.oauth2.user.model.AuthProvider;
@@ -17,6 +18,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -31,9 +33,14 @@ public class CustomUserDetailsServiceTest {
     @Mock
     private UserPrincipalBuilder userPrincipleBuilderMock;
 
+    @Mock
+    private GuestRepository guestRepositoryMock;
+
     @Before
     public void setUp() {
-        testSubject = new CustomUserDetailsService(userRepositoryMock, userPrincipleBuilderMock);
+        testSubject = new CustomUserDetailsService(userRepositoryMock,
+                guestRepositoryMock,
+                userPrincipleBuilderMock);
     }
 
     @Test
@@ -53,6 +60,7 @@ public class CustomUserDetailsServiceTest {
         when(userPrincipleBuilderMock.withId(userId)).thenReturn(userPrincipleBuilderMock);
         when(userPrincipleBuilderMock.withName(username)).thenReturn(userPrincipleBuilderMock);
         when(userPrincipleBuilderMock.withEmail(email)).thenReturn(userPrincipleBuilderMock);
+        when(userPrincipleBuilderMock.withAuthorities(anyList())).thenReturn(userPrincipleBuilderMock);
         when(userPrincipleBuilderMock.withProvider(AuthProvider.spotify)).thenReturn(userPrincipleBuilderMock);
         final UserPrincipal expectedUserPrincipalMock = mock(UserPrincipal.class);
         when(userPrincipleBuilderMock.build()).thenReturn(expectedUserPrincipalMock);
@@ -91,6 +99,7 @@ public class CustomUserDetailsServiceTest {
         when(userPrincipleBuilderMock.withId(userId)).thenReturn(userPrincipleBuilderMock);
         when(userPrincipleBuilderMock.withName(username)).thenReturn(userPrincipleBuilderMock);
         when(userPrincipleBuilderMock.withEmail(email)).thenReturn(userPrincipleBuilderMock);
+        when(userPrincipleBuilderMock.withAuthorities(anyList())).thenReturn(userPrincipleBuilderMock);
         when(userPrincipleBuilderMock.withProvider(AuthProvider.spotify)).thenReturn(userPrincipleBuilderMock);
         final UserPrincipal expectedUserPrincipalMock = mock(UserPrincipal.class);
         when(userPrincipleBuilderMock.build()).thenReturn(expectedUserPrincipalMock);

@@ -6,7 +6,7 @@ import {AppState} from '../../storage/app-state.reducer';
 import {MatIconRegistry} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
 import {LocalStorageService, STORAGE_KEY} from '../../storage/local-storage.service';
-import {UserValueObject} from '../../user/user.value.object';
+import {UserDto} from '../../user/user.dto';
 
 @Component({
   selector: 'app-oauth2-redirect',
@@ -19,7 +19,7 @@ export class Oauth2RedirectComponent implements OnInit {
   error: string;
 
   user$ = this.store.select(state => state.authentication.user);
-  user: UserValueObject = null;
+  user: UserDto = null;
 
   constructor(private route: ActivatedRoute,
               private router: Router,

@@ -1,5 +1,5 @@
 import * as auth from '../authentication/store/auth.reducers';
-import * as party from '../party/store/party.reducers';
+import * as party from '../party/authorized/store/party.reducers';
 
 export const AppStateReducer = {
   authentication: auth.reducer

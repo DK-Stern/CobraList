@@ -2,7 +2,7 @@ import {TestBed} from '@angular/core/testing';
 
 import {PartyAuthGuard} from './party-auth.guard';
 import {provideMockStore} from '@ngrx/store/testing';
-import {AppState} from '../storage/app-state.reducer';
+import {AppState} from '../../storage/app-state.reducer';
 
 describe('PartyAuthGuard', () => {
   beforeEach(() => {

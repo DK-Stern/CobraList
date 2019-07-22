@@ -5,7 +5,6 @@ import io.jsonwebtoken.security.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import sh.stern.cobralist.AppProperties;
 import sh.stern.cobralist.security.oauth2.user.UserPrincipal;
@@ -24,18 +23,29 @@ public class TokenProvider {
         this.appProperties = appProperties;
     }
 
+    public String createToken(UserPrincipal userPrincipal) {
+        return createToken(userPrincipal, UserRole.ROLE_USER);
+    }
 
-    public String createToken(Authentication authentication) {
-        final UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-
+    public String createToken(UserPrincipal userPrincipal, UserRole userRole) {
         final Date expirationDate = new Date(new Date().getTime() + appProperties.getAuth().getTokenExpirationMsec());
 
         return Jwts.builder()
                 .setSubject(Long.toString(userPrincipal.getId()))
                 .setIssuedAt(new Date())
                 .setExpiration(expirationDate)
+                .claim("role", userRole.name())
                 .signWith(SignatureAlgorithm.HS512, appProperties.getAuth().getTokenSecret())
                 .compact();
+    }
+
+    public String getRoleFromToken(String token) {
+        final Claims claims = Jwts.parser()
+                .setSigningKey(appProperties.getAuth().getTokenSecret())
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.get("role").toString();
     }
 
     public Long getUserIdFromToken(String token) {

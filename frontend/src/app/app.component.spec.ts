@@ -15,6 +15,7 @@ describe('AppComponent', () => {
   let initialState = {
     authentication: {
       isAuthenticated: false,
+      isGuest: false,
       token: null,
       user: null,
       error: null
@@ -72,6 +73,7 @@ describe('AppComponent', () => {
     mockStore.setState({
       authentication: {
         isAuthenticated: true,
+        isGuest: false,
         token: '123',
         error: null,
         user: {

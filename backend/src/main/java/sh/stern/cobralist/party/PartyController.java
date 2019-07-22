@@ -39,7 +39,7 @@ public class PartyController {
         return ResponseEntity.ok(partyCreationResponse);
     }
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('USER','GUEST')")
     @GetMapping("/{partyId}")
     public ResponseEntity<PartyCreationResponse> getParty(@PathVariable Long partyId) {
         final Party party = partyRepository.findById(partyId)
@@ -52,5 +52,18 @@ public class PartyController {
         partyCreationResponse.setPassword(party.getPassword());
 
         return ResponseEntity.ok(partyCreationResponse);
+    }
+
+    @GetMapping("/find/{partyId}")
+    public ResponseEntity<FindPartyDTO> findParty(@PathVariable Long partyId) {
+        final Party party = partyRepository.findById(partyId)
+                .orElseThrow(() -> new ResourceNotFoundException("Party", "id", partyId));
+
+        final FindPartyDTO findPartyDTO = new FindPartyDTO();
+        findPartyDTO.setId(party.getId());
+        findPartyDTO.setName(party.getName());
+        findPartyDTO.setHasPassword(!party.getPassword().isBlank());
+
+        return ResponseEntity.ok(findPartyDTO);
     }
 }

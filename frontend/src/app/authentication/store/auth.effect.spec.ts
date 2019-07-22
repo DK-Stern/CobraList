@@ -5,13 +5,13 @@ import {provideMockActions} from '@ngrx/effects/testing';
 import {UserApiService} from '../../user/user-api.service';
 import {loadedUser, loadedUserFail, loginSuccess} from './auth.actions';
 import {addMatchers, cold, getTestScheduler, hot, initTestScheduler, resetTestScheduler} from 'jasmine-marbles';
-import {UserValueObject} from '../../user/user.value.object';
+import {UserDto} from '../../user/user.dto';
 
 describe('AuthEffects', () => {
 
   let testSubject: AuthEffects;
   let actions: Observable<any>;
-  let user: UserValueObject;
+  let user: UserDto;
   let userApiServiceSpy;
 
   // configure matchers for jasmine-marbles

@@ -17,6 +17,7 @@ describe('Oauth2RedirectComponent', () => {
   const initialState = {
     authentication: {
       isAuthenticated: false,
+      isGuest: false,
       token: null,
       user: null,
       error: null
@@ -90,6 +91,7 @@ describe('Oauth2RedirectComponent', () => {
     store.setState({
       authentication: {
         isAuthenticated: false,
+        isGuest: false,
         token: null,
         error: null,
         user: {

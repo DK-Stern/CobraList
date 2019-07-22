@@ -6,12 +6,15 @@ import {AppComponent} from './app.component';
 import {
   MatButtonModule,
   MatCardModule,
+  MatFormFieldModule,
   MatIconModule,
+  MatInputModule,
   MatListModule,
   MatMenuModule,
   MatProgressSpinnerModule,
   MatSidenavModule,
   MatSnackBarModule,
+  MatStepperModule,
   MatToolbarModule
 } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -26,10 +29,13 @@ import {AuthEffects} from './authentication/store/auth.effect';
 import {UserRoutingModule} from './user/user-routing.module';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
-import {PartyRoutingModule} from './party/party-routing.module';
+import {PartyRoutingModule} from './party/authorized/party-routing.module';
 import {LogoComponent} from './home/logo/logo.component';
 import {LogoutComponent} from './authentication/logout/logout.component';
 import {LoginComponent} from './authentication/login/login.component';
+import {JoinPartyComponent} from './party/join-party/join-party.component';
+import {ReactiveFormsModule} from '@angular/forms';
+import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 
 @NgModule({
   declarations: [
@@ -38,7 +44,8 @@ import {LoginComponent} from './authentication/login/login.component';
     Oauth2RedirectComponent,
     LogoComponent,
     LogoutComponent,
-    LoginComponent
+    LoginComponent,
+    JoinPartyComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +63,10 @@ import {LoginComponent} from './authentication/login/login.component';
     MatSidenavModule,
     MatListModule,
     MatProgressSpinnerModule,
-    MatIconModule,
+    MatStepperModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
     StoreModule.forRoot({authentication: authReducer.reducer}),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
@@ -65,7 +75,8 @@ import {LoginComponent} from './authentication/login/login.component';
     EffectsModule.forRoot([AuthEffects])
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor, multi: true},
+    {provide: STEPPER_GLOBAL_OPTIONS, useValue: {showError: true}}
   ],
   bootstrap: [AppComponent]
 })

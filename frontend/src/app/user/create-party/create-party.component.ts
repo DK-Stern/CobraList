@@ -4,7 +4,7 @@ import {BasePlaylistObject} from './base-playlist/base-playlists.object';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
-import {PartyCreationValueObject} from './party-creation-value.object';
+import {PartyDto} from '../../party/authorized/party.dto';
 
 @Component({
   selector: 'app-create-party',
@@ -43,7 +43,7 @@ export class CreatePartyComponent implements OnInit {
   }
 
   createParty() {
-    this.httpClient.post<PartyCreationValueObject>(environment.apiUrl + '/api/party/create', this.partyForm.value)
+    this.httpClient.post<PartyDto>(environment.apiUrl + '/api/party/create', this.partyForm.value)
       .subscribe(party => {
         let partyRoute = this.router.config.find(r => r.path == 'party/:id');
         partyRoute.data = {party: party};

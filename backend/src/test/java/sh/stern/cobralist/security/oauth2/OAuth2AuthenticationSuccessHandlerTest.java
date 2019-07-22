@@ -8,6 +8,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.Authentication;
 import sh.stern.cobralist.AppProperties;
 import sh.stern.cobralist.security.TokenProvider;
+import sh.stern.cobralist.security.oauth2.user.UserPrincipal;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -50,6 +51,9 @@ public class OAuth2AuthenticationSuccessHandlerTest {
         final HttpServletRequest requestMock = mock(HttpServletRequest.class);
         final HttpServletResponse responseMock = mock(HttpServletResponse.class);
         final Authentication authenticationMock = mock(Authentication.class);
+        final UserPrincipal userPrincipalMock = mock(UserPrincipal.class);
+
+        when(authenticationMock.getPrincipal()).thenReturn(userPrincipalMock);
 
         final AppProperties.OAuth2 oAuth2Mock = mock(AppProperties.OAuth2.class);
         when(oAuth2Mock.getAuthorizedRedirectUris()).thenReturn(singletonList(redirectUrl));
@@ -63,7 +67,7 @@ public class OAuth2AuthenticationSuccessHandlerTest {
         testSubject.onAuthenticationSuccess(requestMock, responseMock, authenticationMock);
 
         // then
-        verify(tokenProviderMock).createToken(authenticationMock);
+        verify(tokenProviderMock).createToken(userPrincipalMock);
         verify(httpCookieOAuth2AuthorizationRequestRepositoryMock).removeAuthorizationRequestCookies(requestMock,
                 responseMock);
     }

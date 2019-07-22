@@ -4,8 +4,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import sh.stern.cobralist.security.UserRole;
 import sh.stern.cobralist.security.oauth2.user.model.AuthProvider;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,6 +32,7 @@ public class UserPrincipalBuilderTest {
                 .withName("max")
                 .withEmail("max@mail.de")
                 .withProvider(AuthProvider.spotify)
+                .withAuthorities(Collections.singletonList(new SimpleGrantedAuthority(UserRole.ROLE_USER.name())))
                 .withAttributes(new HashMap<>());
 
         // when
@@ -60,6 +63,7 @@ public class UserPrincipalBuilderTest {
                 .withName(name)
                 .withEmail("max@mail.de")
                 .withProvider(AuthProvider.spotify)
+                .withAuthorities(Collections.singletonList(new SimpleGrantedAuthority(UserRole.ROLE_USER.name())))
                 .withAttributes(new HashMap<>());
 
         // when
@@ -90,6 +94,7 @@ public class UserPrincipalBuilderTest {
                 .withName("max")
                 .withEmail(email)
                 .withProvider(AuthProvider.spotify)
+                .withAuthorities(Collections.singletonList(new SimpleGrantedAuthority(UserRole.ROLE_USER.name())))
                 .withAttributes(new HashMap<>());
 
         // when
@@ -120,6 +125,7 @@ public class UserPrincipalBuilderTest {
                 .withName("max")
                 .withEmail("max@mail.de")
                 .withProvider(AuthProvider.spotify)
+                .withAuthorities(Collections.singletonList(new SimpleGrantedAuthority(UserRole.ROLE_USER.name())))
                 .withAttributes(attributes);
 
         // when
@@ -136,6 +142,7 @@ public class UserPrincipalBuilderTest {
                 .withName("max")
                 .withEmail("max@mail.de")
                 .withProvider(AuthProvider.spotify)
+                .withAuthorities(Collections.singletonList(new SimpleGrantedAuthority(UserRole.ROLE_USER.name())))
                 .withAttributes(new HashMap<>());
 
         // when
@@ -174,6 +181,7 @@ public class UserPrincipalBuilderTest {
                 .withName("max")
                 .withEmail("max@mail.de")
                 .withProvider(authProvider)
+                .withAuthorities(Collections.singletonList(new SimpleGrantedAuthority(UserRole.ROLE_USER.name())))
                 .withAttributes(new HashMap<>());
 
         // when
@@ -196,5 +204,19 @@ public class UserPrincipalBuilderTest {
         assertThatCode(() -> testSubject.build())
                 .isInstanceOf(IllegalStateException.class)
                 .withFailMessage("'authProvider' is null!");
+    }
+
+    @Test
+    public void throwsExceptionIfAuthoritiesIsNotSet() {
+        // given
+        final AuthProvider authProvider = AuthProvider.spotify;
+        testSubject.withId(1L)
+                .withName("max")
+                .withEmail("max@mail.de");
+
+        // then
+        assertThatCode(() -> testSubject.build())
+                .isInstanceOf(IllegalStateException.class)
+                .withFailMessage("'authorities' is null!");
     }
 }

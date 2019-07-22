@@ -4,7 +4,7 @@ import {TestBed} from '@angular/core/testing';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AuthTokenInterceptor} from './auth-token.interceptor';
 import {environment} from '../../environments/environment';
-import {UserValueObject} from '../user/user.value.object';
+import {UserDto} from '../user/user.dto';
 import {MockStore, provideMockStore} from '@ngrx/store/testing';
 import {AppState} from '../storage/app-state.reducer';
 import {MatSnackBarModule} from '@angular/material';
@@ -43,7 +43,7 @@ describe('AuthTokenInterceptor', () => {
 
   it('should add an authorization header on http request', () => {
     // given
-    const mockUser: UserValueObject = {
+    const mockUser: UserDto = {
       id: 1,
       name: 'Max',
       email: 'max@email.de',

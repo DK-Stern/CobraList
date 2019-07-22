@@ -1,6 +1,7 @@
 package sh.stern.cobralist.party.persistence;
 
 import org.springframework.data.annotation.CreatedDate;
+import sh.stern.cobralist.guest.Guest;
 import sh.stern.cobralist.security.oauth2.user.model.User;
 
 import javax.persistence.*;
@@ -17,6 +18,9 @@ public class Party {
     @ManyToOne
     @JoinColumn(name = "creator_id")
     private User user;
+
+    @OneToMany(mappedBy = "party", cascade = CascadeType.ALL)
+    private Set<Guest> guests;
 
     private String name;
 
@@ -95,5 +99,13 @@ public class Party {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<Guest> getGuests() {
+        return guests;
+    }
+
+    public Set<User> getJoinedUsers() {
+        return joinedUsers;
     }
 }

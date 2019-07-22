@@ -1,18 +1,18 @@
 package sh.stern.cobralist.security.oauth2.user;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import sh.stern.cobralist.security.oauth2.user.model.AuthProvider;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 
 import static java.util.Objects.isNull;
 
 @Component
+@Scope("prototype")
 public class UserPrincipalBuilder {
-
 
     private Long id;
 
@@ -60,7 +60,6 @@ public class UserPrincipalBuilder {
         UserPrincipal userPrincipal = new UserPrincipal();
 
         checkAttributesNonNull();
-        setAuthoritiesIfNull();
 
         userPrincipal.setId(id);
         userPrincipal.setName(name);
@@ -72,12 +71,6 @@ public class UserPrincipalBuilder {
         return userPrincipal;
     }
 
-    private void setAuthoritiesIfNull() {
-        if (isNull(authorities)) {
-            authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-        }
-    }
-
     private void checkAttributesNonNull() {
         if (isNull(id)) {
             throw new IllegalStateException("'id' is null!");
@@ -85,11 +78,11 @@ public class UserPrincipalBuilder {
         if (isNull(name)) {
             throw new IllegalStateException("'name' is null!");
         }
-        if (isNull(email)) {
+        if (isNull(email) && !isNull(authorities) && authorities.contains(new SimpleGrantedAuthority("ROLE_USER"))) {
             throw new IllegalStateException("'email' is null!");
         }
-        if (isNull(authProvider)) {
-            throw new IllegalStateException("'authProvider' is null!");
+        if (isNull(authorities)) {
+            throw new IllegalStateException("'authorities' are null!");
         }
     }
 

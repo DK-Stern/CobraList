@@ -10,6 +10,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import sh.stern.cobralist.AppProperties;
 import sh.stern.cobralist.security.BadRequestException;
 import sh.stern.cobralist.security.TokenProvider;
+import sh.stern.cobralist.security.oauth2.user.UserPrincipal;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -72,7 +73,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
 
         final String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
-        String token = tokenProvider.createToken(authentication);
+        String token = tokenProvider.createToken((UserPrincipal) authentication.getPrincipal());
 
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", token)

@@ -3,9 +3,10 @@ import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from './home/home.component';
 import {Oauth2RedirectComponent} from './authentication/oauth2-redirect/oauth2-redirect.component';
 import {UserModule} from './user/user.module';
-import {PartyModule} from './party/party.module';
+import {PartyModule} from './party/authorized/party.module';
 import {LogoutComponent} from './authentication/logout/logout.component';
 import {LoginComponent} from './authentication/login/login.component';
+import {JoinPartyComponent} from './party/join-party/join-party.component';
 
 const routes: Routes = [
   {
@@ -18,7 +19,11 @@ const routes: Routes = [
   },
   {
     path: 'party',
-    loadChildren: () => import('./party/party.module').then(mod => mod.PartyModule)
+    loadChildren: () => import('./party/authorized/party.module').then(mod => mod.PartyModule)
+  },
+  {
+    path: 'join',
+    component: JoinPartyComponent
   },
   {
     path: 'oauth2/redirect',
