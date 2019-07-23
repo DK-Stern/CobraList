@@ -85,6 +85,7 @@ public class CustomOAuth2UserServiceTest {
         when(userPrincipalBuilderMock.withEmail(email)).thenReturn(userPrincipalBuilderMock);
         when(userPrincipalBuilderMock.withProvider(spotify)).thenReturn(userPrincipalBuilderMock);
         when(userPrincipalBuilderMock.withAttributes(attributes)).thenReturn(userPrincipalBuilderMock);
+        when(userPrincipalBuilderMock.withAuthorities(anyList())).thenReturn(userPrincipalBuilderMock);
         final UserPrincipal expectedUserPrincipalMock = mock(UserPrincipal.class);
         when(userPrincipalBuilderMock.build()).thenReturn(expectedUserPrincipalMock);
 
@@ -162,6 +163,7 @@ public class CustomOAuth2UserServiceTest {
         when(userPrincipalBuilderMock.withEmail(email)).thenReturn(userPrincipalBuilderMock);
         when(userPrincipalBuilderMock.withProvider(spotify)).thenReturn(userPrincipalBuilderMock);
         when(userPrincipalBuilderMock.withAttributes(attributes)).thenReturn(userPrincipalBuilderMock);
+        when(userPrincipalBuilderMock.withAuthorities(anyList())).thenReturn(userPrincipalBuilderMock);
         final UserPrincipal expectedUserPrincipalMock = mock(UserPrincipal.class);
         when(userPrincipalBuilderMock.build()).thenReturn(expectedUserPrincipalMock);
 
