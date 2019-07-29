@@ -18,20 +18,28 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation project(':backend:api')
+    implementation project(':backend:app-properties')
+    implementation project(':backend:party:party-crud:party-crud-api')
+    implementation project(':backend:party:party-crud:party-crud-adapter')
+    implementation project(':backend:party:party-crud:party-crud-controller')
+    implementation project(':backend:party:party-join:party-join-api')
+    implementation project(':backend:party:party-join:party-join-adapter')
+    implementation project(':backend:party:party-join:party-join-controller')
+    implementation project(':backend:party:party-join:party-join-dataaccess-port')
+    implementation project(':backend:party:party-join:party-join-dataaccess-adapter')
+    implementation project(':backend:security')
+    implementation project(':backend:user:user-controller')
+    implementation project(':backend:user:userinfo')
+    implementation project(':backend:user:userprincipal')
+    implementation project(':backend:persistence:data-access')
+    implementation project(':backend:persistence:domain')
+    implementation project(':backend:token-provider')
+
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-devtools'
-    implementation 'io.jsonwebtoken:jjwt-api:0.10.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.10.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.10.5'
+
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:2.3.0'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
-    testImplementation 'org.assertj:assertj-core:3.12.2'
-    testImplementation 'org.mockito:mockito-core:2.28.2'
-    testImplementation 'org.mockito:mockito-inline:2.28.2'
 }
 
 group = 'sh.stern'

@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    implementation project(':backend:api')
+    implementation project(':backend:persistence:data-access')
+    implementation project(':backend:persistence:domain')
+    implementation project(':backend:security')
+    implementation project(':backend:user:userprincipal')
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:' + springBootVersion
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:' + springBootVersion
+    implementation 'org.springframework.security:spring-security-core:' + springVersion
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:' + springBootVersion
+    testImplementation 'org.springframework.security:spring-security-test:' + springVersion
+    testImplementation 'org.assertj:assertj-core:' + assertJVersion
+}

@@ -1,0 +1,13 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    compile project(':backend:user:user-domain')
+
+    compile 'org.springframework.security:spring-security-oauth2-core:' + springVersion
+    compile 'org.springframework.security:spring-security-core:' + springVersion
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:' + springBootVersion
+    testImplementation 'org.assertj:assertj-core:' + assertJVersion
+}

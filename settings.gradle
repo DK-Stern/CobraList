@@ -1,3 +1,22 @@
 rootProject.name = 'cobralist'
 
-include 'backend', 'frontend'
+include 'backend',
+        ':backend:api',
+        ':backend:app-properties',
+        ':backend:party:party-crud:party-crud-api',
+        ':backend:party:party-crud:party-crud-adapter',
+        ':backend:party:party-crud:party-crud-controller',
+        ':backend:party:party-join:party-join-api',
+        ':backend:party:party-join:party-join-adapter',
+        ':backend:party:party-join:party-join-controller',
+        ':backend:party:party-join:party-join-dataaccess-port',
+        ':backend:party:party-join:party-join-dataaccess-adapter',
+        ':backend:security',
+        ':backend:user:user-domain',
+        ':backend:user:user-controller',
+        ':backend:user:userinfo',
+        ':backend:user:userprincipal',
+        ':backend:persistence:data-access',
+        ':backend:persistence:domain',
+        ':backend:token-provider',
+        'frontend'

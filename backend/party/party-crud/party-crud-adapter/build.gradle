@@ -1,0 +1,11 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    implementation project(':backend:party:party-crud:party-crud-api')
+    implementation project(':backend:persistence:data-access')
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:' + springBootVersion
+    testImplementation 'org.assertj:assertj-core:' + assertJVersion
+}

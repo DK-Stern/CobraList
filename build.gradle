@@ -1,1 +1,15 @@
+allprojects{
+        repositories {
+            jcenter()
+        }
+}
+
+ext {
+    springBootVersion = "2.1.5.RELEASE"
+    springVersion = "5.1.5.RELEASE"
+    jjwtVersion = "0.10.5"
+    assertJVersion = "3.12.2"
+    mockitoVersion = "2.23.4"
+}
+
 task('build').dependsOn(":backend:build")
