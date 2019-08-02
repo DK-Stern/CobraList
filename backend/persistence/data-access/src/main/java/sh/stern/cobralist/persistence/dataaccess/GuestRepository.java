@@ -6,4 +6,5 @@ import sh.stern.cobralist.persistence.domain.Guest;
 
 @Repository
 public interface GuestRepository extends JpaRepository<Guest, Long> {
+    Long countGuestByName(String name);
 }

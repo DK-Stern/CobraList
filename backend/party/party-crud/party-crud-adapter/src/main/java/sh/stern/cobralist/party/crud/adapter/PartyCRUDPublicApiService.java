@@ -31,6 +31,9 @@ public class PartyCRUDPublicApiService implements PartyCRUDService {
         // todo erstelle playlist
 
         // todo party dto vorher pruefen
+
+        // todo basisplaylist
+
         final Party party = new Party();
         party.setUser(user);
         party.setCreationDate(new Date());

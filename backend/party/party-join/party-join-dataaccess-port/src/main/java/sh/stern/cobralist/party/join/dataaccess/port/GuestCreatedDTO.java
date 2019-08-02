@@ -1,15 +1,15 @@
 package sh.stern.cobralist.party.join.dataaccess.port;
 
 public class GuestCreatedDTO {
-    private Long id;
+    private Long partyId;
     private String name;
 
-    public Long getId() {
-        return id;
+    public Long getPartyId() {
+        return partyId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPartyId(Long partyId) {
+        this.partyId = partyId;
     }
 
     public String getName() {

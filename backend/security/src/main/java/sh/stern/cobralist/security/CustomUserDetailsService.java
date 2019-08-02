@@ -41,7 +41,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                         new UsernameNotFoundException(String.format("User not found with mail: %s", email)));
 
         return userPrincipalBuilder
-                .withId(user.getId())
+                .withPartyId(user.getId())
                 .withName(user.getName())
                 .withEmail(user.getEmail())
                 .withAuthorities(Collections.singletonList(new SimpleGrantedAuthority(UserRole.ROLE_USER.name())))
@@ -56,7 +56,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                         new ResourceNotFoundException("User", "id", id));
 
         return userPrincipalBuilder
-                .withId(user.getId())
+                .withPartyId(user.getId())
                 .withName(user.getName())
                 .withEmail(user.getEmail())
                 .withProvider(user.getProvider())
@@ -71,7 +71,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                         new ResourceNotFoundException("Guest", "id", id));
 
         return userPrincipalBuilder
-                .withId(guest.getId())
+                .withPartyId(guest.getId())
                 .withName(guest.getName())
                 .withAuthorities(Collections.singletonList(new SimpleGrantedAuthority(UserRole.ROLE_GUEST.name())))
                 .build();

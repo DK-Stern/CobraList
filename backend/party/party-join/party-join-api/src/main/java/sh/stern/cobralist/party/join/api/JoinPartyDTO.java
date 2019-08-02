@@ -2,8 +2,9 @@ package sh.stern.cobralist.party.join.api;
 
 public class JoinPartyDTO {
 
-    private String guestName;
     private Long partyId;
+    private String partyPassword;
+    private String guestName;
 
     public String getGuestName() {
         return guestName;
@@ -19,5 +20,13 @@ public class JoinPartyDTO {
 
     public void setPartyId(Long partyId) {
         this.partyId = partyId;
+    }
+
+    public String getPartyPassword() {
+        return partyPassword;
+    }
+
+    public void setPartyPassword(String password) {
+        this.partyPassword = password;
     }
 }

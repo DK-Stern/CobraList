@@ -15,7 +15,7 @@ import static java.util.Objects.isNull;
 @Scope("prototype")
 public class UserPrincipalBuilder {
 
-    private Long id;
+    private Long partyId;
 
     private String name;
 
@@ -27,8 +27,8 @@ public class UserPrincipalBuilder {
 
     private AuthProvider authProvider;
 
-    public UserPrincipalBuilder withId(Long id) {
-        this.id = id;
+    public UserPrincipalBuilder withPartyId(Long id) {
+        this.partyId = id;
         return this;
     }
 
@@ -62,7 +62,7 @@ public class UserPrincipalBuilder {
 
         checkAttributesNonNull();
 
-        userPrincipal.setId(id);
+        userPrincipal.setId(partyId);
         userPrincipal.setName(name);
         userPrincipal.setEmail(email);
         userPrincipal.setAttributes(attributes);
@@ -73,8 +73,8 @@ public class UserPrincipalBuilder {
     }
 
     private void checkAttributesNonNull() {
-        if (isNull(id)) {
-            throw new IllegalStateException("'id' is null!");
+        if (isNull(partyId)) {
+            throw new IllegalStateException("'partyId' is null!");
         }
         if (isNull(name)) {
             throw new IllegalStateException("'name' is null!");

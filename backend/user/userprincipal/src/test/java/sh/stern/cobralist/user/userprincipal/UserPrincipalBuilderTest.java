@@ -28,7 +28,7 @@ public class UserPrincipalBuilderTest {
     public void setIdOnBuildingUserPrinciple() {
         // given
         final Long id = 1L;
-        testSubject.withId(id)
+        testSubject.withPartyId(id)
                 .withName("max")
                 .withEmail("max@mail.de")
                 .withProvider(AuthProvider.spotify)
@@ -59,7 +59,7 @@ public class UserPrincipalBuilderTest {
     public void setNameOnBuildingUserPrinciple() {
         // given
         final String name = "max";
-        testSubject.withId(1L)
+        testSubject.withPartyId(1L)
                 .withName(name)
                 .withEmail("max@mail.de")
                 .withProvider(AuthProvider.spotify)
@@ -76,7 +76,7 @@ public class UserPrincipalBuilderTest {
     @Test
     public void throwsExceptionIfNameIsNotSet() {
         // given
-        testSubject.withId(1L)
+        testSubject.withPartyId(1L)
                 .withEmail("max@mail.de")
                 .withProvider(AuthProvider.spotify);
 
@@ -90,7 +90,7 @@ public class UserPrincipalBuilderTest {
     public void setEmailOnBuildingUserPrinciple() {
         // given
         final String email = "max@mail.de";
-        testSubject.withId(1L)
+        testSubject.withPartyId(1L)
                 .withName("max")
                 .withEmail(email)
                 .withProvider(AuthProvider.spotify)
@@ -107,7 +107,7 @@ public class UserPrincipalBuilderTest {
     @Test
     public void throwsExceptionIfEmailIsNotSet() {
         // given
-        testSubject.withId(1L)
+        testSubject.withPartyId(1L)
                 .withName("max")
                 .withProvider(AuthProvider.spotify);
 
@@ -121,7 +121,7 @@ public class UserPrincipalBuilderTest {
     public void setAttributesOnBuildingUserPrinciple() {
         // given
         final HashMap<String, Object> attributes = new HashMap<>();
-        testSubject.withId(1L)
+        testSubject.withPartyId(1L)
                 .withName("max")
                 .withEmail("max@mail.de")
                 .withProvider(AuthProvider.spotify)
@@ -138,7 +138,7 @@ public class UserPrincipalBuilderTest {
     @Test
     public void setDefaultAuthoritiesIfAuthoritiesAreNotSet() {
         // given
-        testSubject.withId(1L)
+        testSubject.withPartyId(1L)
                 .withName("max")
                 .withEmail("max@mail.de")
                 .withProvider(AuthProvider.spotify)
@@ -160,7 +160,7 @@ public class UserPrincipalBuilderTest {
         final List<SimpleGrantedAuthority> expectedAuthorities = asList(new SimpleGrantedAuthority("ROLE_USER"),
                 new SimpleGrantedAuthority("ROLE_ADMIN"));
         testSubject.withAuthorities(expectedAuthorities)
-                .withId(1L)
+                .withPartyId(1L)
                 .withName("max")
                 .withEmail("max@mail.de")
                 .withProvider(AuthProvider.spotify)
@@ -177,7 +177,7 @@ public class UserPrincipalBuilderTest {
     public void setAuthProviderOnBuildingUserPrinciple() {
         // given
         final AuthProvider authProvider = AuthProvider.spotify;
-        testSubject.withId(1L)
+        testSubject.withPartyId(1L)
                 .withName("max")
                 .withEmail("max@mail.de")
                 .withProvider(authProvider)
@@ -195,7 +195,7 @@ public class UserPrincipalBuilderTest {
     public void throwsExceptionIfAuthProviderIsNotSet() {
         // given
         final AuthProvider authProvider = AuthProvider.spotify;
-        testSubject.withId(1L)
+        testSubject.withPartyId(1L)
                 .withName("max")
                 .withEmail("max@mail.de")
                 .withAttributes(new HashMap<>());
@@ -210,7 +210,7 @@ public class UserPrincipalBuilderTest {
     public void throwsExceptionIfAuthoritiesIsNotSet() {
         // given
         final AuthProvider authProvider = AuthProvider.spotify;
-        testSubject.withId(1L)
+        testSubject.withPartyId(1L)
                 .withName("max")
                 .withEmail("max@mail.de");
 
