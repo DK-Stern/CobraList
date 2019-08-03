@@ -6,23 +6,26 @@ export interface PartyState {
   name: string | null,
   password: string | null,
   downVoting: boolean | null,
+  description: string | null
 }
 
 export const initialPartyState: PartyState = {
   id: null,
   name: null,
   password: null,
-  downVoting: null
+  downVoting: null,
+  description: null
 };
 
 const partyReducers = createReducer(
   initialPartyState,
   on(saveParty, (state, {party}) => ({
     ...state,
-    id: party.id,
-    name: party.name,
+    id: party.partyId,
+    name: party.partyName,
     password: party.password,
-    downVoting: party.downVoting
+    downVoting: party.downVoting,
+    description: party.description
   }))
 );
 

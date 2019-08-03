@@ -1,6 +1,7 @@
 export interface PartyDto {
-  id: string,
-  name: string,
+  partyId: string,
+  partyName: string,
   password: string,
   downVoting: boolean
+  description: string
 }

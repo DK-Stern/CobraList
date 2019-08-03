@@ -1,10 +1,8 @@
 package sh.stern.cobralist.party.crud.adapter;
 
-import org.assertj.core.api.SoftAssertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import sh.stern.cobralist.party.crud.api.PartyCreationDTO;
@@ -15,7 +13,9 @@ import sh.stern.cobralist.party.persistence.domain.User;
 
 import java.util.Optional;
 
-import static org.mockito.Mockito.verify;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -37,37 +37,35 @@ public class PartyCRUDPublicApiServiceTest {
     @Test
     public void createParty() {
         // given
+        final Long partyId = 1123L;
         final long userId = 1L;
         final String partyName = "name";
         final String password = "password";
         final boolean downVoting = true;
         final String description = "description";
-        final PartyCreationDTO partyDTO = new PartyCreationDTO();
-        partyDTO.setPartyName(partyName);
-        partyDTO.setPassword(password);
-        partyDTO.setDownVoting(downVoting);
-        partyDTO.setDescription(description);
+
+        final PartyCreationDTO exptectedPartyDTO = new PartyCreationDTO();
+        exptectedPartyDTO.setPartyId(partyId.toString());
+        exptectedPartyDTO.setPartyName(partyName);
+        exptectedPartyDTO.setPassword(password);
+        exptectedPartyDTO.setDownVoting(downVoting);
+        exptectedPartyDTO.setDescription(description);
 
         final User user = new User();
         when(userRepositoryMock.findById(userId)).thenReturn(Optional.of(user));
 
+        final Party partyMock = mock(Party.class);
+        when(partyMock.getId()).thenReturn(partyId);
+        when(partyMock.isDownVotable()).thenReturn(downVoting);
+        when(partyMock.getName()).thenReturn(partyName);
+        when(partyMock.getPassword()).thenReturn(password);
+        when(partyMock.getDescription()).thenReturn(description);
+        when(partyRepositoryMock.save(any(Party.class))).thenReturn(partyMock);
 
         // when
-        testSubject.createParty(partyDTO, userId);
+        final PartyCreationDTO resultedDto = testSubject.createParty(exptectedPartyDTO, userId);
 
         // then
-        verify(userRepositoryMock).findById(userId);
-
-        final ArgumentCaptor<Party> partyArgumentCaptor = ArgumentCaptor.forClass(Party.class);
-        verify(partyRepositoryMock).save(partyArgumentCaptor.capture());
-        final Party resultedParty = partyArgumentCaptor.getValue();
-
-        final SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(resultedParty.getName()).isEqualTo(partyName);
-        softly.assertThat(resultedParty.getPassword()).isEqualTo(password);
-        softly.assertThat(resultedParty.isDownVotable()).isEqualTo(downVoting);
-        softly.assertThat(resultedParty.getDescription()).isEqualTo(description);
-        softly.assertThat(resultedParty.getUser()).isEqualTo(user);
-        softly.assertAll();
+        assertThat(resultedDto).isEqualToComparingFieldByField(exptectedPartyDTO);
     }
 }

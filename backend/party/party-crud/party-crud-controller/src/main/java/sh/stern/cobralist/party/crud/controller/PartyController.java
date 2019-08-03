@@ -6,9 +6,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sh.stern.cobralist.party.crud.api.PartyCRUDService;
 import sh.stern.cobralist.party.crud.api.PartyCreationDTO;
-import sh.stern.cobralist.party.persistence.dataaccess.PartyRepository;
-import sh.stern.cobralist.party.persistence.domain.Party;
-import sh.stern.cobralist.party.persistence.exceptions.PartyNotFoundException;
 import sh.stern.cobralist.security.CurrentUser;
 import sh.stern.cobralist.user.userprincipal.UserPrincipal;
 
@@ -17,42 +14,22 @@ import sh.stern.cobralist.user.userprincipal.UserPrincipal;
 public class PartyController {
 
     private final PartyCRUDService partyService;
-    private final PartyRepository partyRepository;
 
     @Autowired
-    public PartyController(PartyCRUDService partyService,
-                           PartyRepository partyRepository) {
+    public PartyController(PartyCRUDService partyService) {
         this.partyService = partyService;
-        this.partyRepository = partyRepository;
     }
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/create")
-    public ResponseEntity<PartyCreationResponse> createParty(@CurrentUser UserPrincipal userPrincipal,
-                                                             @RequestBody PartyCreationDTO partyRequest) {
-        Party party = partyService.createParty(partyRequest, userPrincipal.getId());
-
-        PartyCreationResponse partyCreationResponse = new PartyCreationResponse();
-        partyCreationResponse.setId(party.getId());
-        partyCreationResponse.setDownVoting(party.isDownVotable());
-        partyCreationResponse.setName(party.getName());
-        partyCreationResponse.setPassword(party.getPassword());
-
-        return ResponseEntity.ok(partyCreationResponse);
+    public ResponseEntity<PartyCreationDTO> createParty(@CurrentUser UserPrincipal userPrincipal,
+                                                        @RequestBody sh.stern.cobralist.party.crud.api.PartyCreationDTO partyRequest) {
+        return ResponseEntity.ok(partyService.createParty(partyRequest, userPrincipal.getId()));
     }
 
     @PreAuthorize("hasAnyRole('USER','GUEST')")
     @GetMapping("/{partyId}")
-    public ResponseEntity<PartyCreationResponse> getParty(@PathVariable Long partyId) {
-        final Party party = partyRepository.findById(partyId)
-                .orElseThrow(() -> new PartyNotFoundException(partyId.toString()));
-
-        PartyCreationResponse partyCreationResponse = new PartyCreationResponse();
-        partyCreationResponse.setId(party.getId());
-        partyCreationResponse.setDownVoting(party.isDownVotable());
-        partyCreationResponse.setName(party.getName());
-        partyCreationResponse.setPassword(party.getPassword());
-
-        return ResponseEntity.ok(partyCreationResponse);
+    public ResponseEntity<PartyCreationDTO> getParty(@PathVariable Long partyId) {
+        return ResponseEntity.ok(partyService.getParty(partyId));
     }
 }

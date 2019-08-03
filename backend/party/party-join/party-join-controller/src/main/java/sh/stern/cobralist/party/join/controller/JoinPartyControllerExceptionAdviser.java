@@ -10,16 +10,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import sh.stern.cobralist.exception.domain.ErrorInfo;
 import sh.stern.cobralist.party.join.api.GuestAlreadyExistException;
 import sh.stern.cobralist.party.join.api.PartyPasswordWrongException;
-import sh.stern.cobralist.party.persistence.exceptions.PartyNotFoundException;
 
 @ControllerAdvice
-public class JoinPartyExceptionAdviser extends ResponseEntityExceptionHandler {
-
-    @ExceptionHandler(PartyNotFoundException.class)
-    public ResponseEntity<ErrorInfo> handlePartyNotFoundException(Exception ex, WebRequest request) {
-        final String url = ((ServletWebRequest) request).getRequest().getRequestURL().toString();
-        return new ResponseEntity<>(new ErrorInfo(url, ex), HttpStatus.NOT_FOUND);
-    }
+public class JoinPartyControllerExceptionAdviser extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(GuestAlreadyExistException.class)
     public ResponseEntity<ErrorInfo> handleGuestAlreadyExistException(Exception ex, WebRequest request) {

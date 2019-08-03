@@ -8,6 +8,8 @@ import sh.stern.cobralist.party.persistence.dataaccess.PartyRepository;
 import sh.stern.cobralist.party.persistence.dataaccess.UserRepository;
 import sh.stern.cobralist.party.persistence.domain.Party;
 import sh.stern.cobralist.party.persistence.domain.User;
+import sh.stern.cobralist.party.persistence.exceptions.PartyNotFoundException;
+import sh.stern.cobralist.party.persistence.exceptions.UserNotFoundException;
 
 import java.util.Date;
 
@@ -24,9 +26,9 @@ public class PartyCRUDPublicApiService implements PartyCRUDService {
         this.partyRepository = partyRepository;
     }
 
-    public Party createParty(PartyCreationDTO partyDTO, Long userId) {
+    public PartyCreationDTO createParty(PartyCreationDTO partyDTO, Long userId) {
         final User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalStateException("Benutzer mit der Id '" + userId + "' konnte nicht gefunden werden."));
+                .orElseThrow(() -> new UserNotFoundException(userId));
 
         // todo erstelle playlist
 
@@ -34,7 +36,7 @@ public class PartyCRUDPublicApiService implements PartyCRUDService {
 
         // todo basisplaylist
 
-        final Party party = new Party();
+        Party party = new Party();
         party.setUser(user);
         party.setCreationDate(new Date());
         party.setName(partyDTO.getPartyName());
@@ -42,6 +44,29 @@ public class PartyCRUDPublicApiService implements PartyCRUDService {
         party.setDownVotable(partyDTO.isDownVoting());
         party.setDescription(partyDTO.getDescription());
 
-        return partyRepository.save(party);
+        party = partyRepository.save(party);
+
+        PartyCreationDTO partyCreationDTO = new PartyCreationDTO();
+        partyCreationDTO.setPartyId(party.getId().toString());
+        partyCreationDTO.setDownVoting(party.isDownVotable());
+        partyCreationDTO.setPartyName(party.getName());
+        partyCreationDTO.setPassword(party.getPassword());
+        partyCreationDTO.setDescription(party.getDescription());
+
+        return partyCreationDTO;
+    }
+
+    @Override
+    public PartyCreationDTO getParty(Long partyId) {
+        final Party party = partyRepository.findById(partyId)
+                .orElseThrow(() -> new PartyNotFoundException(partyId.toString()));
+
+        PartyCreationDTO partyCreationDTO = new PartyCreationDTO();
+        partyCreationDTO.setPartyId(party.getId().toString());
+        partyCreationDTO.setDownVoting(party.isDownVotable());
+        partyCreationDTO.setPartyName(party.getName());
+        partyCreationDTO.setPassword(party.getPassword());
+
+        return partyCreationDTO;
     }
 }

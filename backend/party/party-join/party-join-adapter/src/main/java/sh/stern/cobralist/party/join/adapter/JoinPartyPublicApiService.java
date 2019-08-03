@@ -35,8 +35,8 @@ public class JoinPartyPublicApiService implements JoinPartyService {
 
     @Override
     public PartyJoinedDTO joinParty(JoinPartyDTO joinPartyDto) {
-        checkGuestNameAlreadyExist(joinPartyDto);
         checkPartyPassword(joinPartyDto);
+        checkGuestNameAlreadyExist(joinPartyDto);
 
         joinPartyDataService.getPartyPassword(joinPartyDto.getPartyId());
 

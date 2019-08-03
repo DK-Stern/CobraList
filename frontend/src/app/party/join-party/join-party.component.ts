@@ -64,8 +64,9 @@ export class JoinPartyComponent implements OnInit {
     const guestName: string = this.joinForm.get('guestName').value;
 
     let joinPartyDto: JoinPartyDto = {
+      partyId: this.partyForm.get('partyIdField').value,
+      partyPassword: this.passwordForm.get('passwordField').value,
       guestName: guestName,
-      partyId: this.partyForm.get('partyIdField').value
     };
 
     this.joinPartyService.joinParty(joinPartyDto);

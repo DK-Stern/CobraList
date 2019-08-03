@@ -5,6 +5,7 @@ plugins {
 dependencies {
     implementation project(':backend:party:party-crud:party-crud-api')
     implementation project(':backend:party-persistence:party-data-access')
+    implementation project(':backend:party-persistence:party-exceptions')
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test:' + springBootVersion
     testImplementation 'org.assertj:assertj-core:' + assertJVersion

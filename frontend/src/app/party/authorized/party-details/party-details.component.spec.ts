@@ -12,10 +12,11 @@ describe('PartyDetailsComponent', () => {
 
   beforeEach(async(() => {
     let partyObject: PartyDto = {
-      id: "1",
-      name: "",
+      partyId: "1",
+      partyName: "",
       downVoting: true,
-      password: ""
+      password: "",
+      description: ""
     };
 
     activatedRouteStub = class {

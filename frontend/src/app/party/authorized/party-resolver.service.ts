@@ -20,7 +20,7 @@ export class PartyResolverService implements Resolve<PartyDto> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<PartyDto> {
     let party: PartyDto = route.data.party;
     const partyUrlParamId = route.paramMap.get('id');
-    if ('undefined' !== typeof party && 'undefined' !== typeof party.id && partyUrlParamId == party.id) {
+    if ('undefined' !== typeof party && 'undefined' !== typeof party.partyId && partyUrlParamId == party.partyId) {
       return of(party);
     } else {
       return this.partyApiService.getParty(partyUrlParamId).pipe(mergeMap(party => {
