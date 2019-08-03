@@ -7,9 +7,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import sh.stern.cobralist.exception.domain.ErrorInfo;
 import sh.stern.cobralist.party.join.api.GuestAlreadyExistException;
-import sh.stern.cobralist.party.join.api.PartyNotFoundException;
 import sh.stern.cobralist.party.join.api.PartyPasswordWrongException;
+import sh.stern.cobralist.party.persistence.exceptions.PartyNotFoundException;
 
 @ControllerAdvice
 public class JoinPartyExceptionAdviser extends ResponseEntityExceptionHandler {

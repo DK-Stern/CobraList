@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    implementation project(':backend:persistence:domain')
+    implementation project(':backend:party-persistence:party-domain')
 }

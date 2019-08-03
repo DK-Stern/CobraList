@@ -6,9 +6,9 @@ dependencies {
     implementation project(':backend:app-properties')
     implementation project(':backend:user:userprincipal')
     implementation project(':backend:user:userinfo')
-    implementation project(':backend:persistence:data-access')
+    implementation project(':backend:party-persistence:party-data-access')
     implementation project(':backend:token-provider')
-    implementation project(':backend:persistence:domain')
+    implementation project(':backend:party-persistence:party-domain')
 
     compile 'org.springframework.boot:spring-boot-starter-oauth2-client:' + springBootVersion
     compile 'org.springframework.boot:spring-boot-starter-security:' + springBootVersion

@@ -6,15 +6,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sh.stern.cobralist.party.join.api.FindPartyDTO;
 import sh.stern.cobralist.party.join.api.JoinPartyDTO;
-import sh.stern.cobralist.party.join.api.PartyNotFoundException;
 import sh.stern.cobralist.party.join.dataaccess.port.GuestCreatedDTO;
 import sh.stern.cobralist.party.join.dataaccess.port.JoinPartyDataService;
-import sh.stern.cobralist.persistence.dataaccess.GuestRepository;
-import sh.stern.cobralist.persistence.dataaccess.PartyRepository;
-import sh.stern.cobralist.persistence.domain.Guest;
-import sh.stern.cobralist.persistence.domain.Party;
-
-import java.text.MessageFormat;
+import sh.stern.cobralist.party.persistence.dataaccess.GuestRepository;
+import sh.stern.cobralist.party.persistence.dataaccess.PartyRepository;
+import sh.stern.cobralist.party.persistence.domain.Guest;
+import sh.stern.cobralist.party.persistence.domain.Party;
+import sh.stern.cobralist.party.persistence.exceptions.PartyNotFoundException;
 
 @Service
 public class JoinPartyPublicApiDataService implements JoinPartyDataService {
@@ -34,7 +32,7 @@ public class JoinPartyPublicApiDataService implements JoinPartyDataService {
     @Transactional
     public GuestCreatedDTO createGuest(JoinPartyDTO joinPartyDto) {
         final Party party = partyRepository.findById(joinPartyDto.getPartyId())
-                .orElseThrow(() -> new PartyNotFoundException(MessageFormat.format(PARTY_NOT_FOUND_ERROR_MESSAGE, joinPartyDto.getPartyId())));
+                .orElseThrow(() -> new PartyNotFoundException(joinPartyDto.getPartyId().toString()));
 
         final Guest guest = new Guest();
         guest.setName(joinPartyDto.getGuestName());
@@ -52,7 +50,7 @@ public class JoinPartyPublicApiDataService implements JoinPartyDataService {
     @Override
     public FindPartyDTO findParty(Long partyId) {
         final Party party = partyRepository.findById(partyId)
-                .orElseThrow(() -> new PartyNotFoundException(MessageFormat.format(PARTY_NOT_FOUND_ERROR_MESSAGE, partyId)));
+                .orElseThrow(() -> new PartyNotFoundException(partyId.toString()));
 
         final FindPartyDTO findPartyDTO = new FindPartyDTO();
         findPartyDTO.setId(party.getId());
@@ -70,7 +68,7 @@ public class JoinPartyPublicApiDataService implements JoinPartyDataService {
     @Override
     public String getPartyPassword(Long partyId) {
         final Party party = partyRepository.findById(partyId)
-                .orElseThrow(() -> new PartyNotFoundException(MessageFormat.format(PARTY_NOT_FOUND_ERROR_MESSAGE, partyId)));
+                .orElseThrow(() -> new PartyNotFoundException(partyId.toString()));
 
         return party.getPassword();
     }

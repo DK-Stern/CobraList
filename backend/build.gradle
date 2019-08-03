@@ -32,8 +32,8 @@ dependencies {
     implementation project(':backend:user:user-controller')
     implementation project(':backend:user:userinfo')
     implementation project(':backend:user:userprincipal')
-    implementation project(':backend:persistence:data-access')
-    implementation project(':backend:persistence:domain')
+    implementation project(':backend:party-persistence:party-data-access')
+    implementation project(':backend:party-persistence:party-domain')
     implementation project(':backend:token-provider')
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'

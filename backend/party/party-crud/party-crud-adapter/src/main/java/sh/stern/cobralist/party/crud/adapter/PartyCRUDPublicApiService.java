@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sh.stern.cobralist.party.crud.api.PartyCRUDService;
 import sh.stern.cobralist.party.crud.api.PartyCreationDTO;
-import sh.stern.cobralist.persistence.dataaccess.PartyRepository;
-import sh.stern.cobralist.persistence.dataaccess.UserRepository;
-import sh.stern.cobralist.persistence.domain.Party;
-import sh.stern.cobralist.persistence.domain.User;
+import sh.stern.cobralist.party.persistence.dataaccess.PartyRepository;
+import sh.stern.cobralist.party.persistence.dataaccess.UserRepository;
+import sh.stern.cobralist.party.persistence.domain.Party;
+import sh.stern.cobralist.party.persistence.domain.User;
 
 import java.util.Date;
 

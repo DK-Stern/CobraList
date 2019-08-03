@@ -7,8 +7,9 @@ dependencies {
     implementation project(':backend:party:party-join:party-join-dataaccess-port')
     implementation project(':backend:token-provider')
     implementation project(':backend:security')
-    implementation project(':backend:persistence:domain')
-    implementation project(':backend:persistence:data-access')
+    implementation project(':backend:party-persistence:party-domain')
+    implementation project(':backend:party-persistence:party-exceptions')
+    implementation project(':backend:party-persistence:party-data-access')
     implementation project(':backend:user:userprincipal')
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test:' + springBootVersion

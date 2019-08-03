@@ -4,8 +4,8 @@ plugins {
 
 dependencies {
     implementation project(':backend:api')
-    implementation project(':backend:persistence:data-access')
-    implementation project(':backend:persistence:domain')
+    implementation project(':backend:party-persistence:party-data-access')
+    implementation project(':backend:party-persistence:party-domain')
     implementation project(':backend:security')
     implementation project(':backend:user:userprincipal')
 

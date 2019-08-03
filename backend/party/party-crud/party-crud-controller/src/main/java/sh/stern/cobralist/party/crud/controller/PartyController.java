@@ -6,10 +6,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sh.stern.cobralist.party.crud.api.PartyCRUDService;
 import sh.stern.cobralist.party.crud.api.PartyCreationDTO;
-import sh.stern.cobralist.persistence.dataaccess.PartyRepository;
-import sh.stern.cobralist.persistence.domain.Party;
+import sh.stern.cobralist.party.persistence.dataaccess.PartyRepository;
+import sh.stern.cobralist.party.persistence.domain.Party;
+import sh.stern.cobralist.party.persistence.exceptions.PartyNotFoundException;
 import sh.stern.cobralist.security.CurrentUser;
-import sh.stern.cobralist.security.ResourceNotFoundException;
 import sh.stern.cobralist.user.userprincipal.UserPrincipal;
 
 @RestController
@@ -45,7 +45,7 @@ public class PartyController {
     @GetMapping("/{partyId}")
     public ResponseEntity<PartyCreationResponse> getParty(@PathVariable Long partyId) {
         final Party party = partyRepository.findById(partyId)
-                .orElseThrow(() -> new ResourceNotFoundException("Party", "id", partyId));
+                .orElseThrow(() -> new PartyNotFoundException(partyId.toString()));
 
         PartyCreationResponse partyCreationResponse = new PartyCreationResponse();
         partyCreationResponse.setId(party.getId());

@@ -8,10 +8,10 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import sh.stern.cobralist.party.crud.api.PartyCreationDTO;
-import sh.stern.cobralist.persistence.dataaccess.PartyRepository;
-import sh.stern.cobralist.persistence.dataaccess.UserRepository;
-import sh.stern.cobralist.persistence.domain.Party;
-import sh.stern.cobralist.persistence.domain.User;
+import sh.stern.cobralist.party.persistence.dataaccess.PartyRepository;
+import sh.stern.cobralist.party.persistence.dataaccess.UserRepository;
+import sh.stern.cobralist.party.persistence.domain.Party;
+import sh.stern.cobralist.party.persistence.domain.User;
 
 import java.util.Optional;
 

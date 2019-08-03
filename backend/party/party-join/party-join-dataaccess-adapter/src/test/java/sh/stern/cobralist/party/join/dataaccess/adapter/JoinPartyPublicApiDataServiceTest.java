@@ -8,12 +8,12 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import sh.stern.cobralist.party.join.api.FindPartyDTO;
 import sh.stern.cobralist.party.join.api.JoinPartyDTO;
-import sh.stern.cobralist.party.join.api.PartyNotFoundException;
 import sh.stern.cobralist.party.join.dataaccess.port.GuestCreatedDTO;
-import sh.stern.cobralist.persistence.dataaccess.GuestRepository;
-import sh.stern.cobralist.persistence.dataaccess.PartyRepository;
-import sh.stern.cobralist.persistence.domain.Guest;
-import sh.stern.cobralist.persistence.domain.Party;
+import sh.stern.cobralist.party.persistence.dataaccess.GuestRepository;
+import sh.stern.cobralist.party.persistence.dataaccess.PartyRepository;
+import sh.stern.cobralist.party.persistence.domain.Guest;
+import sh.stern.cobralist.party.persistence.domain.Party;
+import sh.stern.cobralist.party.persistence.exceptions.PartyNotFoundException;
 
 import java.util.Optional;
 

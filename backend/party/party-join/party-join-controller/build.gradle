@@ -4,6 +4,8 @@ plugins {
 
 dependencies {
     implementation project(':backend:party:party-join:party-join-api')
+    implementation project(':backend:exception-domain')
+    implementation project(':backend:party-persistence:party-exceptions')
 
     implementation 'org.springframework.boot:spring-boot-starter-web:' + springBootVersion
 
