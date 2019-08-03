@@ -158,10 +158,15 @@ public class JoinPartyPublicApiServiceTest {
         // given
         final long partyId = 1L;
         final String guestName = "Bob";
+        final String partyPassword = "123";
 
         final JoinPartyDTO joinPartyDto = new JoinPartyDTO();
         joinPartyDto.setPartyId(partyId);
         joinPartyDto.setGuestName(guestName);
+        joinPartyDto.setPartyPassword(partyPassword);
+
+
+        when(joinPartyDataServiceMock.getPartyPassword(partyId)).thenReturn(partyPassword);
 
         when(joinPartyDataServiceMock.countGuestName(guestName)).thenReturn(1L);
 
