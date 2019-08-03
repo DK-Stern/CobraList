@@ -27,8 +27,11 @@ jobs:
           name: Flyway Migrate
           command: ./gradlew flywayMigrate
       - run:
-          name: Build Project and Test Backend with Code Coverage
-          command: ./gradlew build jacocoTestReport
+          name: Build Project
+          command: ./gradlew build
+      - run:
+          name: Backend Code Coverage
+          command: ./gradlew :backend:jacocoRootReport
       - run:
           name: Test Frontend with Code Coverage
           command: |-
@@ -37,7 +40,7 @@ jobs:
       - store_artifacts:
           path:  backend/build
       - codecov/upload:
-          file: backend/build/reports/jacoco/test/jacocoTestReport.xml
+          file: backend/build/reports/jacoco/jacocoRootReport/jacocoRootReport.xml
           flags: backend
       - store_artifacts:
           path:  frontend/coverage

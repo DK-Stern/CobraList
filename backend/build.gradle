@@ -85,3 +85,30 @@ jacocoTestReport {
         csv.enabled = false
     }
 }
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'jacoco'
+}
+
+def publishedProjects = subprojects.findAll()
+
+task jacocoRootReport(type: JacocoReport, group: 'Coverage reports') {
+    description = 'Generates an aggregate report from all subprojects'
+
+    dependsOn(publishedProjects.test)
+
+    additionalSourceDirs = files(publishedProjects.sourceSets.main.allSource.srcDirs)
+    sourceDirectories = files(publishedProjects.sourceSets.main.allSource.srcDirs)
+    classDirectories = files(publishedProjects.sourceSets.main.output)
+    executionData = files(publishedProjects.jacocoTestReport.executionData)
+
+    doFirst {
+        executionData = files(executionData.findAll { it.exists() })
+    }
+
+    reports {
+        html.enabled = true // human readable
+        xml.enabled = true // required by coveralls
+    }
+}
