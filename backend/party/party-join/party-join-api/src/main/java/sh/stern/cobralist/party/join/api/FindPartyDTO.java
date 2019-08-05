@@ -2,16 +2,16 @@ package sh.stern.cobralist.party.join.api;
 
 public class FindPartyDTO {
 
-    private Long id;
+    private String partyCode;
     private String name;
     private boolean hasPassword;
 
-    public Long getId() {
-        return id;
+    public String getPartyCode() {
+        return partyCode;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPartyCode(String partyCode) {
+        this.partyCode = partyCode;
     }
 
     public String getName() {

@@ -21,7 +21,7 @@ const partyReducers = createReducer(
   initialPartyState,
   on(saveParty, (state, {party}) => ({
     ...state,
-    id: party.partyId,
+    id: party.partyCode,
     name: party.partyName,
     password: party.password,
     downVoting: party.downVoting,

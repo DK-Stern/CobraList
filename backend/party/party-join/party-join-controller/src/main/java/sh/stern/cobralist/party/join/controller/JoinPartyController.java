@@ -24,8 +24,8 @@ public class JoinPartyController {
         return ResponseEntity.ok(joinPartyService.joinParty(joinPartyDto));
     }
 
-    @GetMapping("/find/{partyId}")
-    public ResponseEntity<FindPartyDTO> findParty(@PathVariable Long partyId) {
-        return ResponseEntity.ok(joinPartyService.findParty(partyId));
+    @GetMapping("/find/{partyCode}")
+    public ResponseEntity<FindPartyDTO> findParty(@PathVariable String partyCode) {
+        return ResponseEntity.ok(joinPartyService.findParty(partyCode));
     }
 }

@@ -13,6 +13,10 @@ public class Party {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "party_code",
+            unique = true)
+    private String partyCode;
+
     @ManyToOne
     @JoinColumn(name = "creator_id")
     private User user;
@@ -41,6 +45,14 @@ public class Party {
 
     public Long getId() {
         return id;
+    }
+
+    public String getPartyCode() {
+        return partyCode;
+    }
+
+    public void setPartyCode(String partyCode) {
+        this.partyCode = partyCode;
     }
 
     public User getUser() {

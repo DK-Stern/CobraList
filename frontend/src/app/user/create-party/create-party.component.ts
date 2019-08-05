@@ -47,7 +47,7 @@ export class CreatePartyComponent implements OnInit {
       .subscribe(party => {
         let partyRoute = this.router.config.find(r => r.path == 'party/:id');
         partyRoute.data = {party: party};
-        this.router.navigate(['/party', party.partyId]);
+        this.router.navigate(['/party', party.partyCode]);
       });
   }
 

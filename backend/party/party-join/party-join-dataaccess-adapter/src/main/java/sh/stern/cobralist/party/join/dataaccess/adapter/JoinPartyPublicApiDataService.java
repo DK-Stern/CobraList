@@ -31,8 +31,8 @@ public class JoinPartyPublicApiDataService implements JoinPartyDataService {
     @Override
     @Transactional
     public GuestCreatedDTO createGuest(JoinPartyDTO joinPartyDto) {
-        final Party party = partyRepository.findById(joinPartyDto.getPartyId())
-                .orElseThrow(() -> new PartyNotFoundException(joinPartyDto.getPartyId().toString()));
+        final Party party = partyRepository.findByPartyCode(joinPartyDto.getPartyCode())
+                .orElseThrow(() -> new PartyNotFoundException(joinPartyDto.getPartyCode()));
 
         final Guest guest = new Guest();
         guest.setName(joinPartyDto.getGuestName());
@@ -41,19 +41,20 @@ public class JoinPartyPublicApiDataService implements JoinPartyDataService {
         final Guest savedGuest = guestRepository.saveAndFlush(guest);
 
         final GuestCreatedDTO guestCreatedDTO = new GuestCreatedDTO();
-        guestCreatedDTO.setPartyId(party.getId());
+        guestCreatedDTO.setGuestId(party.getId());
+        guestCreatedDTO.setPartyCode(party.getPartyCode());
         guestCreatedDTO.setName(savedGuest.getName());
 
         return guestCreatedDTO;
     }
 
     @Override
-    public FindPartyDTO findParty(Long partyId) {
-        final Party party = partyRepository.findById(partyId)
-                .orElseThrow(() -> new PartyNotFoundException(partyId.toString()));
+    public FindPartyDTO findParty(String partyCode) {
+        final Party party = partyRepository.findByPartyCode(partyCode)
+                .orElseThrow(() -> new PartyNotFoundException(partyCode));
 
         final FindPartyDTO findPartyDTO = new FindPartyDTO();
-        findPartyDTO.setId(party.getId());
+        findPartyDTO.setPartyCode(party.getPartyCode());
         findPartyDTO.setName(party.getName());
         findPartyDTO.setHasPassword(!Strings.isBlank(party.getPassword()));
 
@@ -66,9 +67,9 @@ public class JoinPartyPublicApiDataService implements JoinPartyDataService {
     }
 
     @Override
-    public String getPartyPassword(Long partyId) {
-        final Party party = partyRepository.findById(partyId)
-                .orElseThrow(() -> new PartyNotFoundException(partyId.toString()));
+    public String getPartyPassword(String partyCode) {
+        final Party party = partyRepository.findByPartyCode(partyCode)
+                .orElseThrow(() -> new PartyNotFoundException(partyCode));
 
         return party.getPassword();
     }

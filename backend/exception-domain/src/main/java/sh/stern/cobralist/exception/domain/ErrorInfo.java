@@ -2,18 +2,18 @@ package sh.stern.cobralist.exception.domain;
 
 public class ErrorInfo {
     private final String url;
-    private final String error;
+    private final String message;
 
-    public ErrorInfo(String url, Exception error) {
+    public ErrorInfo(String url, Exception ex) {
         this.url = url;
-        this.error = error.getLocalizedMessage();
+        this.message = ex.getLocalizedMessage();
     }
 
     public String getUrl() {
         return url;
     }
 
-    public String getError() {
-        return error;
+    public String getMessage() {
+        return message;
     }
 }

@@ -38,11 +38,11 @@ public class JoinPartyPublicApiService implements JoinPartyService {
         checkPartyPassword(joinPartyDto);
         checkGuestNameAlreadyExist(joinPartyDto);
 
-        joinPartyDataService.getPartyPassword(joinPartyDto.getPartyId());
+        joinPartyDataService.getPartyPassword(joinPartyDto.getPartyCode());
 
         final GuestCreatedDTO newGuest = joinPartyDataService.createGuest(joinPartyDto);
 
-        final UserPrincipal userPrincipal = userPrincipalBuilder.withPartyId(newGuest.getPartyId())
+        final UserPrincipal userPrincipal = userPrincipalBuilder.withUserId(newGuest.getGuestId())
                 .withName(newGuest.getName())
                 .withAuthorities(Collections.singletonList(new SimpleGrantedAuthority(UserRole.ROLE_GUEST.name())))
                 .build();
@@ -50,13 +50,13 @@ public class JoinPartyPublicApiService implements JoinPartyService {
         final String token = tokenProvider.createToken(userPrincipal, UserRole.ROLE_GUEST);
         final PartyJoinedDTO partyJoinedDTO = new PartyJoinedDTO();
         partyJoinedDTO.setToken(token);
-        partyJoinedDTO.setPartyId(joinPartyDto.getPartyId());
+        partyJoinedDTO.setPartyCode(joinPartyDto.getPartyCode());
 
         return partyJoinedDTO;
     }
 
     private void checkPartyPassword(JoinPartyDTO joinPartyDto) {
-        final String partyPassword = joinPartyDataService.getPartyPassword(joinPartyDto.getPartyId());
+        final String partyPassword = joinPartyDataService.getPartyPassword(joinPartyDto.getPartyCode());
         if (!partyPassword.equals(joinPartyDto.getPartyPassword())) {
             throw new PartyPasswordWrongException(PARTY_PASSWORD_ERROR_MESSAGE);
         }
@@ -70,7 +70,7 @@ public class JoinPartyPublicApiService implements JoinPartyService {
     }
 
     @Override
-    public FindPartyDTO findParty(Long partyId) {
-        return joinPartyDataService.findParty(partyId);
+    public FindPartyDTO findParty(String partyCode) {
+        return joinPartyDataService.findParty(partyCode);
     }
 }

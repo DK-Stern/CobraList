@@ -49,7 +49,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         User user = synchronizeUser(userRequest, oAuth2UserInfo, userOptional);
 
-        return userPrincipalBuilder.withPartyId(user.getId())
+        return userPrincipalBuilder.withUserId(user.getId())
                 .withName(user.getName())
                 .withEmail(user.getEmail())
                 .withAttributes(oAuth2User.getAttributes())

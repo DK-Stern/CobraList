@@ -1,5 +1,5 @@
 export interface JoinPartyDto {
-  partyId: string
+  partyCode: string
   partyPassword: string,
   guestName: string
 }

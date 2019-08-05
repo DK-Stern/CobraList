@@ -6,9 +6,9 @@ import sh.stern.cobralist.party.join.api.JoinPartyDTO;
 public interface JoinPartyDataService {
     GuestCreatedDTO createGuest(JoinPartyDTO joinPartyDto);
 
-    FindPartyDTO findParty(Long partyId);
+    FindPartyDTO findParty(String partyCode);
 
     Long countGuestName(String guestName);
 
-    String getPartyPassword(Long partyId);
+    String getPartyPassword(String partyCode);
 }

@@ -2,7 +2,7 @@ package sh.stern.cobralist.party.crud.api;
 
 public class PartyCreationDTO {
 
-    private String partyId;
+    private String partyCode;
 
     private String partyName;
 
@@ -44,11 +44,11 @@ public class PartyCreationDTO {
         this.description = description;
     }
 
-    public String getPartyId() {
-        return partyId;
+    public String getPartyCode() {
+        return partyCode;
     }
 
-    public void setPartyId(String partyId) {
-        this.partyId = partyId;
+    public void setPartyCode(String partyCode) {
+        this.partyCode = partyCode;
     }
 }

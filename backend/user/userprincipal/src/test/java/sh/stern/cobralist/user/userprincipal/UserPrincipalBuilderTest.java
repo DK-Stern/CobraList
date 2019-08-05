@@ -28,7 +28,7 @@ public class UserPrincipalBuilderTest {
     public void setIdOnBuildingUserPrinciple() {
         // given
         final Long id = 1L;
-        testSubject.withPartyId(id)
+        testSubject.withUserId(id)
                 .withName("max")
                 .withEmail("max@mail.de")
                 .withProvider(AuthProvider.spotify)
@@ -52,14 +52,14 @@ public class UserPrincipalBuilderTest {
         // then
         assertThatCode(() -> testSubject.build())
                 .isInstanceOf(IllegalStateException.class)
-                .withFailMessage("'id' is null!");
+                .hasMessage("'userId' is null!");
     }
 
     @Test
     public void setNameOnBuildingUserPrinciple() {
         // given
         final String name = "max";
-        testSubject.withPartyId(1L)
+        testSubject.withUserId(1L)
                 .withName(name)
                 .withEmail("max@mail.de")
                 .withProvider(AuthProvider.spotify)
@@ -76,21 +76,21 @@ public class UserPrincipalBuilderTest {
     @Test
     public void throwsExceptionIfNameIsNotSet() {
         // given
-        testSubject.withPartyId(1L)
+        testSubject.withUserId(1L)
                 .withEmail("max@mail.de")
                 .withProvider(AuthProvider.spotify);
 
         // then
         assertThatCode(() -> testSubject.build())
                 .isInstanceOf(IllegalStateException.class)
-                .withFailMessage("'name' is null!");
+                .hasMessage("'name' is null!");
     }
 
     @Test
     public void setEmailOnBuildingUserPrinciple() {
         // given
         final String email = "max@mail.de";
-        testSubject.withPartyId(1L)
+        testSubject.withUserId(1L)
                 .withName("max")
                 .withEmail(email)
                 .withProvider(AuthProvider.spotify)
@@ -107,21 +107,22 @@ public class UserPrincipalBuilderTest {
     @Test
     public void throwsExceptionIfEmailIsNotSet() {
         // given
-        testSubject.withPartyId(1L)
+        testSubject.withUserId(1L)
                 .withName("max")
+                .withAuthorities(Collections.singletonList(new SimpleGrantedAuthority(UserRole.ROLE_USER.name())))
                 .withProvider(AuthProvider.spotify);
 
         // then
         assertThatCode(() -> testSubject.build())
                 .isInstanceOf(IllegalStateException.class)
-                .withFailMessage("'email' is null!");
+                .hasMessage("'email' is null!");
     }
 
     @Test
     public void setAttributesOnBuildingUserPrinciple() {
         // given
         final HashMap<String, Object> attributes = new HashMap<>();
-        testSubject.withPartyId(1L)
+        testSubject.withUserId(1L)
                 .withName("max")
                 .withEmail("max@mail.de")
                 .withProvider(AuthProvider.spotify)
@@ -138,7 +139,7 @@ public class UserPrincipalBuilderTest {
     @Test
     public void setDefaultAuthoritiesIfAuthoritiesAreNotSet() {
         // given
-        testSubject.withPartyId(1L)
+        testSubject.withUserId(1L)
                 .withName("max")
                 .withEmail("max@mail.de")
                 .withProvider(AuthProvider.spotify)
@@ -160,7 +161,7 @@ public class UserPrincipalBuilderTest {
         final List<SimpleGrantedAuthority> expectedAuthorities = asList(new SimpleGrantedAuthority("ROLE_USER"),
                 new SimpleGrantedAuthority("ROLE_ADMIN"));
         testSubject.withAuthorities(expectedAuthorities)
-                .withPartyId(1L)
+                .withUserId(1L)
                 .withName("max")
                 .withEmail("max@mail.de")
                 .withProvider(AuthProvider.spotify)
@@ -177,7 +178,7 @@ public class UserPrincipalBuilderTest {
     public void setAuthProviderOnBuildingUserPrinciple() {
         // given
         final AuthProvider authProvider = AuthProvider.spotify;
-        testSubject.withPartyId(1L)
+        testSubject.withUserId(1L)
                 .withName("max")
                 .withEmail("max@mail.de")
                 .withProvider(authProvider)
@@ -192,31 +193,16 @@ public class UserPrincipalBuilderTest {
     }
 
     @Test
-    public void throwsExceptionIfAuthProviderIsNotSet() {
-        // given
-        final AuthProvider authProvider = AuthProvider.spotify;
-        testSubject.withPartyId(1L)
-                .withName("max")
-                .withEmail("max@mail.de")
-                .withAttributes(new HashMap<>());
-
-        // then
-        assertThatCode(() -> testSubject.build())
-                .isInstanceOf(IllegalStateException.class)
-                .withFailMessage("'authProvider' is null!");
-    }
-
-    @Test
     public void throwsExceptionIfAuthoritiesIsNotSet() {
         // given
         final AuthProvider authProvider = AuthProvider.spotify;
-        testSubject.withPartyId(1L)
+        testSubject.withUserId(1L)
                 .withName("max")
                 .withEmail("max@mail.de");
 
         // then
         assertThatCode(() -> testSubject.build())
                 .isInstanceOf(IllegalStateException.class)
-                .withFailMessage("'authorities' is null!");
+                .hasMessage("'authorities' are null!");
     }
 }

@@ -38,7 +38,7 @@ export class JoinPartyComponent implements OnInit {
 
   ngOnInit() {
     this.partyForm = this.formBuilder.group({
-      partyIdField: ['', Validators.required]
+      partyCodeField: ['', Validators.required]
     });
     this.passwordForm = this.formBuilder.group({
       passwordField: ['', Validators.required]
@@ -49,7 +49,7 @@ export class JoinPartyComponent implements OnInit {
   }
 
   findPartyById(stepper: MatStepper) {
-    const partyIdField = this.partyForm.get('partyIdField');
+    const partyIdField = this.partyForm.get('partyCodeField');
 
     this.findPartyService.findParty(partyIdField.value)
       .subscribe(party => {
@@ -64,7 +64,7 @@ export class JoinPartyComponent implements OnInit {
     const guestName: string = this.joinForm.get('guestName').value;
 
     let joinPartyDto: JoinPartyDto = {
-      partyId: this.partyForm.get('partyIdField').value,
+      partyCode: this.partyForm.get('partyCodeField').value,
       partyPassword: this.passwordForm.get('passwordField').value,
       guestName: guestName,
     };

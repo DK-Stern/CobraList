@@ -9,7 +9,7 @@ import {loginGuestSuccess} from '../../authentication/store/auth.actions';
 
 interface PartyJoinedDto {
   token: string,
-  partyId: string
+  partyCode: string
 }
 
 @Injectable({
@@ -27,7 +27,7 @@ export class JoinPartyService {
     this.httpClient.post<PartyJoinedDto>(environment.apiUrl + '/api/party/join/', joinPartyDto)
       .subscribe(response => {
         this.store.dispatch(loginGuestSuccess({token: response.token}));
-        this.router.navigate(['/party', response.partyId]);
+        this.router.navigate(['/party', response.partyCode]);
       });
   }
 }

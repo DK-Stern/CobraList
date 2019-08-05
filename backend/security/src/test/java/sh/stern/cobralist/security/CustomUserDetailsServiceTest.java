@@ -57,7 +57,7 @@ public class CustomUserDetailsServiceTest {
 
         when(userRepositoryMock.findByEmail(email)).thenReturn(Optional.of(user));
 
-        when(userPrincipleBuilderMock.withPartyId(userId)).thenReturn(userPrincipleBuilderMock);
+        when(userPrincipleBuilderMock.withUserId(userId)).thenReturn(userPrincipleBuilderMock);
         when(userPrincipleBuilderMock.withName(username)).thenReturn(userPrincipleBuilderMock);
         when(userPrincipleBuilderMock.withEmail(email)).thenReturn(userPrincipleBuilderMock);
         when(userPrincipleBuilderMock.withAuthorities(anyList())).thenReturn(userPrincipleBuilderMock);
@@ -96,7 +96,7 @@ public class CustomUserDetailsServiceTest {
         user.setProvider(AuthProvider.spotify);
         when(userRepositoryMock.findById(userId)).thenReturn(Optional.of(user));
 
-        when(userPrincipleBuilderMock.withPartyId(userId)).thenReturn(userPrincipleBuilderMock);
+        when(userPrincipleBuilderMock.withUserId(userId)).thenReturn(userPrincipleBuilderMock);
         when(userPrincipleBuilderMock.withName(username)).thenReturn(userPrincipleBuilderMock);
         when(userPrincipleBuilderMock.withEmail(email)).thenReturn(userPrincipleBuilderMock);
         when(userPrincipleBuilderMock.withAuthorities(anyList())).thenReturn(userPrincipleBuilderMock);

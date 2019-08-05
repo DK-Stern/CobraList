@@ -42,15 +42,15 @@ public class JoinPartyPublicApiDataServiceTest {
     @Test
     public void createGuestDTOWithName() {
         // given
-        final long partyId = 1L;
+        final String partyCode = "A123D1";
         final String guestName = "Bob";
 
         final JoinPartyDTO joinPartyDto = new JoinPartyDTO();
-        joinPartyDto.setPartyId(partyId);
+        joinPartyDto.setPartyCode(partyCode);
         joinPartyDto.setGuestName(guestName);
 
         final Party party = new Party();
-        when(partyRepositoryMock.findById(partyId)).thenReturn(Optional.of(party));
+        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(party));
 
         final Guest savedGuest = new Guest();
         savedGuest.setName(guestName);
@@ -66,18 +66,18 @@ public class JoinPartyPublicApiDataServiceTest {
     }
 
     @Test
-    public void createGuestDTOWithPartyId() {
+    public void createGuestDTOWithpartyCode() {
         // given
-        final long partyId = 1L;
+        final String partyCode = "A123D1";
         final String guestName = "Bob";
 
         final JoinPartyDTO joinPartyDto = new JoinPartyDTO();
-        joinPartyDto.setPartyId(partyId);
+        joinPartyDto.setPartyCode(partyCode);
         joinPartyDto.setGuestName(guestName);
 
         final Party partyMock = mock(Party.class);
-        when(partyMock.getId()).thenReturn(partyId);
-        when(partyRepositoryMock.findById(partyId)).thenReturn(Optional.of(partyMock));
+        when(partyMock.getPartyCode()).thenReturn(partyCode);
+        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(partyMock));
 
         final Guest savedGuest = new Guest();
         savedGuest.setName(guestName);
@@ -89,21 +89,21 @@ public class JoinPartyPublicApiDataServiceTest {
         final GuestCreatedDTO resultedGuestDTO = testSubject.createGuest(joinPartyDto);
 
         // then
-        assertThat(resultedGuestDTO.getPartyId()).isEqualTo(partyId);
+        assertThat(resultedGuestDTO.getPartyCode()).isEqualTo(partyCode);
     }
 
     @Test
     public void saveGuestOnCreationWithName() {
         // given
-        final long partyId = 1L;
+        final String partyCode = "A123D1";
         final String guestName = "Bob";
 
         final JoinPartyDTO joinPartyDto = new JoinPartyDTO();
-        joinPartyDto.setPartyId(partyId);
+        joinPartyDto.setPartyCode(partyCode);
         joinPartyDto.setGuestName(guestName);
 
         final Party party = new Party();
-        when(partyRepositoryMock.findById(partyId)).thenReturn(Optional.of(party));
+        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(party));
 
         final Guest savedGuest = new Guest();
         savedGuest.setName(guestName);
@@ -123,15 +123,15 @@ public class JoinPartyPublicApiDataServiceTest {
     @Test
     public void saveGuestOnCreationWithParty() {
         // given
-        final long partyId = 1L;
+        final String partyCode = "A123D1";
         final String guestName = "Bob";
 
         final JoinPartyDTO joinPartyDto = new JoinPartyDTO();
-        joinPartyDto.setPartyId(partyId);
+        joinPartyDto.setPartyCode(partyCode);
         joinPartyDto.setGuestName(guestName);
 
         final Party party = new Party();
-        when(partyRepositoryMock.findById(partyId)).thenReturn(Optional.of(party));
+        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(party));
 
         final Guest savedGuest = new Guest();
         savedGuest.setName(guestName);
@@ -151,50 +151,50 @@ public class JoinPartyPublicApiDataServiceTest {
     @Test
     public void createGuestThrowsExceptionIfPartyNotFound() {
         // given
-        final long partyId = 1L;
+        final String partyCode = "A123D1";
         final String guestName = "Bob";
 
         final JoinPartyDTO joinPartyDto = new JoinPartyDTO();
-        joinPartyDto.setPartyId(partyId);
+        joinPartyDto.setPartyCode(partyCode);
         joinPartyDto.setGuestName(guestName);
 
         // when
         assertThatCode(() -> testSubject.createGuest(joinPartyDto))
                 .isExactlyInstanceOf(PartyNotFoundException.class)
-                .hasMessage("Party mit der ID '1' konnte nicht gefunden werden.");
+                .hasMessage("Party mit dem Code 'A123D1' konnte nicht gefunden werden.");
     }
 
     @Test
-    public void findPartyWithPartyId() {
+    public void findPartyWithpartyCode() {
         // given
-        final long partyId = 1L;
+        final String partyCode = "A123D1";
         final String partyName = "Partyname";
 
         final Party partyMock = mock(Party.class);
-        when(partyMock.getId()).thenReturn(partyId);
+        when(partyMock.getPartyCode()).thenReturn(partyCode);
         when(partyMock.getName()).thenReturn(partyName);
-        when(partyRepositoryMock.findById(partyId)).thenReturn(Optional.of(partyMock));
+        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(partyMock));
 
         // when
-        final FindPartyDTO resultedPartyDTO = testSubject.findParty(partyId);
+        final FindPartyDTO resultedPartyDTO = testSubject.findParty(partyCode);
 
         // then
-        assertThat(resultedPartyDTO.getId()).isEqualTo(partyId);
+        assertThat(resultedPartyDTO.getPartyCode()).isEqualTo(partyCode);
     }
 
     @Test
     public void findPartyWithPartyName() {
         // given
-        final long partyId = 1L;
+        final String partyCode = "A123D1";
         final String partyName = "Partyname";
 
         final Party partyMock = mock(Party.class);
-        when(partyMock.getId()).thenReturn(partyId);
+        when(partyMock.getPartyCode()).thenReturn(partyCode);
         when(partyMock.getName()).thenReturn(partyName);
-        when(partyRepositoryMock.findById(partyId)).thenReturn(Optional.of(partyMock));
+        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(partyMock));
 
         // when
-        final FindPartyDTO resultedPartyDTO = testSubject.findParty(partyId);
+        final FindPartyDTO resultedPartyDTO = testSubject.findParty(partyCode);
 
         // then
         assertThat(resultedPartyDTO.getName()).isEqualTo(partyName);
@@ -203,17 +203,17 @@ public class JoinPartyPublicApiDataServiceTest {
     @Test
     public void findPartyWhichHasPassword() {
         // given
-        final long partyId = 1L;
+        final String partyCode = "A123D1";
         final String partyName = "Partyname";
 
         final Party partyMock = mock(Party.class);
-        when(partyMock.getId()).thenReturn(partyId);
+        when(partyMock.getPartyCode()).thenReturn(partyCode);
         when(partyMock.getName()).thenReturn(partyName);
         when(partyMock.getPassword()).thenReturn("123");
-        when(partyRepositoryMock.findById(partyId)).thenReturn(Optional.of(partyMock));
+        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(partyMock));
 
         // when
-        final FindPartyDTO resultedPartyDTO = testSubject.findParty(partyId);
+        final FindPartyDTO resultedPartyDTO = testSubject.findParty(partyCode);
 
         // then
         assertThat(resultedPartyDTO.isHasPassword()).isTrue();
@@ -222,12 +222,12 @@ public class JoinPartyPublicApiDataServiceTest {
     @Test
     public void findPartyThroesPartyNotFoundExceptionIfPartyNotFound() {
         // given
-        final long partyId = 1L;
+        final String partyCode = "A123D1";
 
         // when
-        assertThatCode(() -> testSubject.findParty(partyId))
+        assertThatCode(() -> testSubject.findParty(partyCode))
                 .isExactlyInstanceOf(PartyNotFoundException.class)
-                .hasMessage("Party mit der ID '1' konnte nicht gefunden werden.");
+                .hasMessage("Party mit dem Code 'A123D1' konnte nicht gefunden werden.");
     }
 
     @Test
@@ -246,15 +246,15 @@ public class JoinPartyPublicApiDataServiceTest {
     @Test
     public void getPartyPassword() {
         // given
-        final long partyId = 1L;
+        final String partyCode = "A123D1";
         final String expectedPartyPassword = "123";
 
         final Party party = new Party();
         party.setPassword(expectedPartyPassword);
-        when(partyRepositoryMock.findById(partyId)).thenReturn(Optional.of(party));
+        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(party));
 
         // when
-        final String resultedPartyPassword = testSubject.getPartyPassword(partyId);
+        final String resultedPartyPassword = testSubject.getPartyPassword(partyCode);
 
         // then
         assertThat(resultedPartyPassword).isEqualTo(expectedPartyPassword);
@@ -263,11 +263,11 @@ public class JoinPartyPublicApiDataServiceTest {
     @Test
     public void getParyPasswordThrowsExceptionIfNoPartyIsFound() {
         // given
-        final long partyId = 154654L;
+        final String partyCode = "A123D1";
 
         // when u. then
-        assertThatCode(() -> testSubject.getPartyPassword(partyId))
+        assertThatCode(() -> testSubject.getPartyPassword(partyCode))
                 .isExactlyInstanceOf(PartyNotFoundException.class)
-                .hasMessage("Party mit der ID '154654' konnte nicht gefunden werden.");
+                .hasMessage("Party mit dem Code 'A123D1' konnte nicht gefunden werden.");
     }
 }

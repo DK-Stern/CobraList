@@ -91,17 +91,19 @@ subprojects {
     apply plugin: 'jacoco'
 }
 
-def publishedProjects = subprojects.findAll()
+def subProjects = subprojects.findAll()
+
+task('checkAll').dependsOn(subProjects.check)
 
 task jacocoRootReport(type: JacocoReport, group: 'Coverage reports') {
     description = 'Generates an aggregate report from all subprojects'
 
-    dependsOn(publishedProjects.test)
+    dependsOn(subProjects.test)
 
-    additionalSourceDirs = files(publishedProjects.sourceSets.main.allSource.srcDirs)
-    sourceDirectories = files(publishedProjects.sourceSets.main.allSource.srcDirs)
-    classDirectories = files(publishedProjects.sourceSets.main.output)
-    executionData = files(publishedProjects.jacocoTestReport.executionData)
+    additionalSourceDirs = files(subProjects.sourceSets.main.allSource.srcDirs)
+    sourceDirectories = files(subProjects.sourceSets.main.allSource.srcDirs)
+    classDirectories = files(subProjects.sourceSets.main.output)
+    executionData = files(subProjects.jacocoTestReport.executionData)
 
     doFirst {
         executionData = files(executionData.findAll { it.exists() })

@@ -80,7 +80,7 @@ public class CustomOAuth2UserServiceTest {
 
         when(userRepositoryMock.save(user)).thenReturn(user);
 
-        when(userPrincipalBuilderMock.withPartyId(userId)).thenReturn(userPrincipalBuilderMock);
+        when(userPrincipalBuilderMock.withUserId(userId)).thenReturn(userPrincipalBuilderMock);
         when(userPrincipalBuilderMock.withName(name)).thenReturn(userPrincipalBuilderMock);
         when(userPrincipalBuilderMock.withEmail(email)).thenReturn(userPrincipalBuilderMock);
         when(userPrincipalBuilderMock.withProvider(spotify)).thenReturn(userPrincipalBuilderMock);
@@ -158,7 +158,7 @@ public class CustomOAuth2UserServiceTest {
 
         when(userRepositoryMock.save(user)).thenReturn(user);
 
-        when(userPrincipalBuilderMock.withPartyId(userId)).thenReturn(userPrincipalBuilderMock);
+        when(userPrincipalBuilderMock.withUserId(userId)).thenReturn(userPrincipalBuilderMock);
         when(userPrincipalBuilderMock.withName(name)).thenReturn(userPrincipalBuilderMock);
         when(userPrincipalBuilderMock.withEmail(email)).thenReturn(userPrincipalBuilderMock);
         when(userPrincipalBuilderMock.withProvider(spotify)).thenReturn(userPrincipalBuilderMock);

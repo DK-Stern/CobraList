@@ -18,12 +18,15 @@ public class PartyCRUDPublicApiService implements PartyCRUDService {
 
     private final UserRepository userRepository;
     private final PartyRepository partyRepository;
+    private final PartyCodeGenerator partyCodeGenerator;
 
     @Autowired
     public PartyCRUDPublicApiService(UserRepository userRepository,
-                                     PartyRepository partyRepository) {
+                                     PartyRepository partyRepository,
+                                     PartyCodeGenerator partyCodeGenerator) {
         this.userRepository = userRepository;
         this.partyRepository = partyRepository;
+        this.partyCodeGenerator = partyCodeGenerator;
     }
 
     public PartyCreationDTO createParty(PartyCreationDTO partyDTO, Long userId) {
@@ -37,36 +40,35 @@ public class PartyCRUDPublicApiService implements PartyCRUDService {
         // todo basisplaylist
 
         Party party = new Party();
+        party.setPartyCode(partyCodeGenerator.generatePartyCode());
         party.setUser(user);
         party.setCreationDate(new Date());
         party.setName(partyDTO.getPartyName());
         party.setPassword(partyDTO.getPassword());
         party.setDownVotable(partyDTO.isDownVoting());
         party.setDescription(partyDTO.getDescription());
-
         party = partyRepository.save(party);
 
+        return mapPartyToPartyCreationDTO(party);
+    }
+
+    @Override
+    public PartyCreationDTO getParty(String partyCode) {
+        final Party party = partyRepository.findByPartyCode(partyCode)
+                .orElseThrow(() -> new PartyNotFoundException(partyCode));
+
+        return mapPartyToPartyCreationDTO(party);
+    }
+
+    private PartyCreationDTO mapPartyToPartyCreationDTO(Party party) {
         PartyCreationDTO partyCreationDTO = new PartyCreationDTO();
-        partyCreationDTO.setPartyId(party.getId().toString());
+        partyCreationDTO.setPartyCode(party.getPartyCode());
         partyCreationDTO.setDownVoting(party.isDownVotable());
         partyCreationDTO.setPartyName(party.getName());
         partyCreationDTO.setPassword(party.getPassword());
         partyCreationDTO.setDescription(party.getDescription());
-
         return partyCreationDTO;
     }
 
-    @Override
-    public PartyCreationDTO getParty(Long partyId) {
-        final Party party = partyRepository.findById(partyId)
-                .orElseThrow(() -> new PartyNotFoundException(partyId.toString()));
 
-        PartyCreationDTO partyCreationDTO = new PartyCreationDTO();
-        partyCreationDTO.setPartyId(party.getId().toString());
-        partyCreationDTO.setDownVoting(party.isDownVotable());
-        partyCreationDTO.setPartyName(party.getName());
-        partyCreationDTO.setPassword(party.getPassword());
-
-        return partyCreationDTO;
-    }
 }

@@ -28,8 +28,8 @@ public class PartyController {
     }
 
     @PreAuthorize("hasAnyRole('USER','GUEST')")
-    @GetMapping("/{partyId}")
-    public ResponseEntity<PartyCreationDTO> getParty(@PathVariable Long partyId) {
-        return ResponseEntity.ok(partyService.getParty(partyId));
+    @GetMapping("/{partyCode}")
+    public ResponseEntity<PartyCreationDTO> getParty(@PathVariable String partyCode) {
+        return ResponseEntity.ok(partyService.getParty(partyCode));
     }
 }

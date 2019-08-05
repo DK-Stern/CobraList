@@ -12,7 +12,7 @@ describe('PartyDetailsComponent', () => {
 
   beforeEach(async(() => {
     let partyObject: PartyDto = {
-      partyId: "1",
+      partyCode: "",
       partyName: "",
       downVoting: true,
       password: "",

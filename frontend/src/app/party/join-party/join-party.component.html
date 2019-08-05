@@ -4,10 +4,10 @@
       <form [formGroup]="partyForm">
         <ng-template matStepLabel>Party</ng-template>
         <mat-form-field>
-          <input matInput placeholder="Die ID der Party" formControlName="partyIdField" required>
+          <input matInput placeholder="Die ID der Party" formControlName="partyCodeField" required>
           <mat-error
-            *ngIf="partyForm.get('partyIdField').errors &&
-            partyForm.get('partyIdField').errors.partyNotFound">Party
+            *ngIf="partyForm.get('partyCodeField').errors &&
+            partyForm.get('partyCodeField').errors.partyNotFound">Party
             konnte nicht gefunden werden.
           </mat-error>
         </mat-form-field>

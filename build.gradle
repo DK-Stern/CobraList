@@ -13,3 +13,4 @@ ext {
 }
 
 task('build').dependsOn(":backend:build")
+task('checkBackend').dependsOn(":backend:checkAll")

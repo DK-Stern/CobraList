@@ -12,6 +12,7 @@ CREATE TABLE user
 CREATE TABLE party
 (
     id            BIGINT       NOT NULL AUTO_INCREMENT,
+    party_code    VARCHAR(6)   NOT NULL,
     creator_id    BIGINT       NOT NULL,
     name          VARCHAR(255) NOT NULL,
     password      VARCHAR(255),

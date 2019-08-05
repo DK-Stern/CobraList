@@ -1,6 +1,5 @@
 package sh.stern.cobralist.party.join.adapter;
 
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,10 +7,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import sh.stern.cobralist.party.join.api.GuestAlreadyExistException;
-import sh.stern.cobralist.party.join.api.JoinPartyDTO;
-import sh.stern.cobralist.party.join.api.PartyJoinedDTO;
-import sh.stern.cobralist.party.join.api.PartyPasswordWrongException;
+import sh.stern.cobralist.party.join.api.*;
 import sh.stern.cobralist.party.join.dataaccess.port.GuestCreatedDTO;
 import sh.stern.cobralist.party.join.dataaccess.port.JoinPartyDataService;
 import sh.stern.cobralist.tokenprovider.TokenProvider;
@@ -21,6 +17,8 @@ import sh.stern.cobralist.user.userprincipal.UserPrincipalBuilder;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.when;
 
@@ -46,25 +44,27 @@ public class JoinPartyPublicApiServiceTest {
     @Test
     public void createGuestWithAccessToken() {
         // given
-        final long partyId = 1L;
+        final String partyCode = "A123D5";
+        final long guestId = 1L;
         final String guestName = "Bob";
         final String partyPassword = "123";
 
         final JoinPartyDTO joinPartyDto = new JoinPartyDTO();
-        joinPartyDto.setPartyId(partyId);
+        joinPartyDto.setPartyCode(partyCode);
         joinPartyDto.setPartyPassword(partyPassword);
         joinPartyDto.setGuestName(guestName);
 
-        when(joinPartyDataServiceMock.getPartyPassword(partyId)).thenReturn(partyPassword);
+        when(joinPartyDataServiceMock.getPartyPassword(partyCode)).thenReturn(partyPassword);
 
         final GuestCreatedDTO guestCreatedDTO = new GuestCreatedDTO();
-        guestCreatedDTO.setPartyId(partyId);
+        guestCreatedDTO.setGuestId(guestId);
+        guestCreatedDTO.setPartyCode(partyCode);
         guestCreatedDTO.setName(guestName);
         when(joinPartyDataServiceMock.createGuest(joinPartyDto)).thenReturn(guestCreatedDTO);
 
         final UserPrincipal userPrincipal = new UserPrincipal();
 
-        when(userPrincipalBuilderMock.withPartyId(partyId)).thenReturn(userPrincipalBuilderMock);
+        when(userPrincipalBuilderMock.withUserId(guestId)).thenReturn(userPrincipalBuilderMock);
         when(userPrincipalBuilderMock.withName(guestName)).thenReturn(userPrincipalBuilderMock);
         when(userPrincipalBuilderMock.withAuthorities(anyList())).thenReturn(userPrincipalBuilderMock);
         when(userPrincipalBuilderMock.build()).thenReturn(userPrincipal);
@@ -76,31 +76,33 @@ public class JoinPartyPublicApiServiceTest {
         final PartyJoinedDTO resultedPartyJoinedDTO = testSubject.joinParty(joinPartyDto);
 
         // then
-        Assertions.assertThat(resultedPartyJoinedDTO.getToken()).isEqualTo(accessToken);
+        assertThat(resultedPartyJoinedDTO.getToken()).isEqualTo(accessToken);
     }
 
     @Test
-    public void createGuestWithPartyId() {
+    public void createGuestWithPartyCode() {
         // given
-        final long partyId = 1L;
+        final String partyCode = "A123D5";
+        final long guestId = 1L;
         final String guestName = "Bob";
         final String partyPassword = "123";
 
         final JoinPartyDTO joinPartyDto = new JoinPartyDTO();
-        joinPartyDto.setPartyId(partyId);
+        joinPartyDto.setPartyCode(partyCode);
         joinPartyDto.setPartyPassword(partyPassword);
         joinPartyDto.setGuestName(guestName);
 
-        when(joinPartyDataServiceMock.getPartyPassword(partyId)).thenReturn(partyPassword);
+        when(joinPartyDataServiceMock.getPartyPassword(partyCode)).thenReturn(partyPassword);
 
         final GuestCreatedDTO guestCreatedDTO = new GuestCreatedDTO();
-        guestCreatedDTO.setPartyId(partyId);
+        guestCreatedDTO.setPartyCode(partyCode);
+        guestCreatedDTO.setGuestId(guestId);
         guestCreatedDTO.setName(guestName);
         when(joinPartyDataServiceMock.createGuest(joinPartyDto)).thenReturn(guestCreatedDTO);
 
         final UserPrincipal userPrincipal = new UserPrincipal();
 
-        when(userPrincipalBuilderMock.withPartyId(partyId)).thenReturn(userPrincipalBuilderMock);
+        when(userPrincipalBuilderMock.withUserId(guestId)).thenReturn(userPrincipalBuilderMock);
         when(userPrincipalBuilderMock.withName(guestName)).thenReturn(userPrincipalBuilderMock);
         when(userPrincipalBuilderMock.withAuthorities(anyList())).thenReturn(userPrincipalBuilderMock);
         when(userPrincipalBuilderMock.build()).thenReturn(userPrincipal);
@@ -112,31 +114,33 @@ public class JoinPartyPublicApiServiceTest {
         final PartyJoinedDTO resultedPartyJoinedDTO = testSubject.joinParty(joinPartyDto);
 
         // then
-        Assertions.assertThat(resultedPartyJoinedDTO.getPartyId()).isEqualTo(partyId);
+        assertThat(resultedPartyJoinedDTO.getPartyCode()).isEqualTo(partyCode);
     }
 
     @Test
     public void createGuestWithAuthorityRoleGuest() {
         // given
-        final long partyId = 1L;
+        final String partyCode = "A123D5";
+        final long guestId = 1L;
         final String partyPassword = "123";
         final String guestName = "Bob";
 
         final JoinPartyDTO joinPartyDto = new JoinPartyDTO();
-        joinPartyDto.setPartyId(partyId);
+        joinPartyDto.setPartyCode(partyCode);
         joinPartyDto.setPartyPassword(partyPassword);
         joinPartyDto.setGuestName(guestName);
 
-        when(joinPartyDataServiceMock.getPartyPassword(partyId)).thenReturn(partyPassword);
+        when(joinPartyDataServiceMock.getPartyPassword(partyCode)).thenReturn(partyPassword);
 
         final GuestCreatedDTO guestCreatedDTO = new GuestCreatedDTO();
-        guestCreatedDTO.setPartyId(partyId);
+        guestCreatedDTO.setPartyCode(partyCode);
+        guestCreatedDTO.setGuestId(guestId);
         guestCreatedDTO.setName(guestName);
         when(joinPartyDataServiceMock.createGuest(joinPartyDto)).thenReturn(guestCreatedDTO);
 
         final UserPrincipal userPrincipal = new UserPrincipal();
 
-        when(userPrincipalBuilderMock.withPartyId(partyId)).thenReturn(userPrincipalBuilderMock);
+        when(userPrincipalBuilderMock.withUserId(guestId)).thenReturn(userPrincipalBuilderMock);
         when(userPrincipalBuilderMock.withName(guestName)).thenReturn(userPrincipalBuilderMock);
         // noinspection unchecked
         final ArgumentCaptor<List<SimpleGrantedAuthority>> authorityArgumentCaptor = ArgumentCaptor.forClass(List.class);
@@ -147,31 +151,32 @@ public class JoinPartyPublicApiServiceTest {
         when(tokenProviderMock.createToken(userPrincipal, UserRole.ROLE_GUEST)).thenReturn(accessToken);
 
         // when
-        final PartyJoinedDTO resultedPartyJoinedDTO = testSubject.joinParty(joinPartyDto);
+        testSubject.joinParty(joinPartyDto);
 
         // then
-        Assertions.assertThat(authorityArgumentCaptor.getValue().get(0).getAuthority()).isEqualTo(UserRole.ROLE_GUEST.name());
+        assertThat(authorityArgumentCaptor.getValue().get(0).getAuthority()).isEqualTo(UserRole.ROLE_GUEST.name());
     }
 
     @Test
     public void throwsExceptionIfGuestNameIsAlreadyTaken() {
         // given
-        final long partyId = 1L;
+        final String partyCode = "A123D5";
+        final long guestId = 1L;
         final String guestName = "Bob";
         final String partyPassword = "123";
 
         final JoinPartyDTO joinPartyDto = new JoinPartyDTO();
-        joinPartyDto.setPartyId(partyId);
+        joinPartyDto.setPartyCode(partyCode);
         joinPartyDto.setGuestName(guestName);
         joinPartyDto.setPartyPassword(partyPassword);
 
 
-        when(joinPartyDataServiceMock.getPartyPassword(partyId)).thenReturn(partyPassword);
+        when(joinPartyDataServiceMock.getPartyPassword(partyCode)).thenReturn(partyPassword);
 
         when(joinPartyDataServiceMock.countGuestName(guestName)).thenReturn(1L);
 
         // when u. then
-        Assertions.assertThatCode(() -> testSubject.joinParty(joinPartyDto))
+        assertThatCode(() -> testSubject.joinParty(joinPartyDto))
                 .isExactlyInstanceOf(GuestAlreadyExistException.class)
                 .hasMessage("Der Name ist bereits vergeben auf der Party.");
 
@@ -180,19 +185,35 @@ public class JoinPartyPublicApiServiceTest {
     @Test
     public void throwsExceptionIfPartyPasswordIsWrong() {
         // when
-        final long partyId = 1L;
+        final String partyCode = "A123D5";
+        final long guestId = 1L;
         final String guestName = "Bob";
 
         final JoinPartyDTO joinPartyDto = new JoinPartyDTO();
-        joinPartyDto.setPartyId(partyId);
+        joinPartyDto.setPartyCode(partyCode);
         joinPartyDto.setPartyPassword("12");
         joinPartyDto.setGuestName(guestName);
 
-        when(joinPartyDataServiceMock.getPartyPassword(partyId)).thenReturn("123");
+        when(joinPartyDataServiceMock.getPartyPassword(partyCode)).thenReturn("123");
 
         // then
-        Assertions.assertThatCode(() -> testSubject.joinParty(joinPartyDto))
+        assertThatCode(() -> testSubject.joinParty(joinPartyDto))
                 .isExactlyInstanceOf(PartyPasswordWrongException.class)
                 .hasMessage("Passwort der Party ist falsch.");
+    }
+
+    @Test
+    public void findParty() {
+        // given
+        final String partyCode = "A123D5";
+
+        final FindPartyDTO expectedDto = new FindPartyDTO();
+        when(joinPartyDataServiceMock.findParty(partyCode)).thenReturn(expectedDto);
+
+        // when
+        final FindPartyDTO resultedDto = testSubject.findParty(partyCode);
+
+        // then
+        assertThat(resultedDto).isEqualTo(expectedDto);
     }
 }
