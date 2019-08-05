@@ -17,7 +17,6 @@ import sh.stern.cobralist.party.persistence.exceptions.PartyNotFoundException;
 @Service
 public class JoinPartyPublicApiDataService implements JoinPartyDataService {
 
-    public static final String PARTY_NOT_FOUND_ERROR_MESSAGE = "Party mit der ID ''{0,number,#}'' konnte nicht gefunden werden.";
     private final GuestRepository guestRepository;
     private final PartyRepository partyRepository;
 
