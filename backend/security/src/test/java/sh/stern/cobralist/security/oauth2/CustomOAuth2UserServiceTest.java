@@ -21,7 +21,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.Mockito.*;
-import static sh.stern.cobralist.user.domain.AuthProvider.spotify;
+import static sh.stern.cobralist.user.domain.StreamingProvider.spotify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CustomOAuth2UserServiceTest {

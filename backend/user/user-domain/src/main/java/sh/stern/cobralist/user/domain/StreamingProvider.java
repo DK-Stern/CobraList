@@ -1,5 +1,5 @@
 package sh.stern.cobralist.user.domain;
 
-public enum AuthProvider {
+public enum StreamingProvider {
     spotify
 }

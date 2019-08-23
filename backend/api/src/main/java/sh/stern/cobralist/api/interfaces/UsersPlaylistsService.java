@@ -5,5 +5,5 @@ import sh.stern.cobralist.api.domains.SimplePlaylistDomain;
 import java.util.List;
 
 public interface UsersPlaylistsService {
-    List<SimplePlaylistDomain> getUsersPlaylists(String principalName);
+    List<SimplePlaylistDomain> getUsersPlaylists(String userName);
 }

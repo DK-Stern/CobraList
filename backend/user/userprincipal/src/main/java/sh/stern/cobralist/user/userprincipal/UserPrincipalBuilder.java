@@ -3,7 +3,7 @@ package sh.stern.cobralist.user.userprincipal;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-import sh.stern.cobralist.user.domain.AuthProvider;
+import sh.stern.cobralist.user.domain.StreamingProvider;
 
 import java.util.Collection;
 import java.util.List;
@@ -25,7 +25,7 @@ public class UserPrincipalBuilder {
 
     private Collection<SimpleGrantedAuthority> authorities;
 
-    private AuthProvider authProvider;
+    private StreamingProvider streamingProvider;
 
     public UserPrincipalBuilder withUserId(Long id) {
         this.userId = id;
@@ -52,8 +52,8 @@ public class UserPrincipalBuilder {
         return this;
     }
 
-    public UserPrincipalBuilder withProvider(AuthProvider authProvider) {
-        this.authProvider = authProvider;
+    public UserPrincipalBuilder withProvider(StreamingProvider streamingProvider) {
+        this.streamingProvider = streamingProvider;
         return this;
     }
 
@@ -67,7 +67,7 @@ public class UserPrincipalBuilder {
         userPrincipal.setEmail(email);
         userPrincipal.setAttributes(attributes);
         userPrincipal.setAuthorities(authorities);
-        userPrincipal.setAuthProvider(authProvider);
+        userPrincipal.setStreamingProvider(streamingProvider);
 
         return userPrincipal;
     }

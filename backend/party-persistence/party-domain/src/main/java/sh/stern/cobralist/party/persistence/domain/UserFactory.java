@@ -1,16 +1,16 @@
 package sh.stern.cobralist.party.persistence.domain;
 
 import org.springframework.stereotype.Component;
-import sh.stern.cobralist.user.domain.AuthProvider;
+import sh.stern.cobralist.user.domain.StreamingProvider;
 
 @Component
 public class UserFactory {
-    public User create(String name, String email, AuthProvider authProvider, String providerId) {
+    public User create(String name, String email, StreamingProvider streamingProvider, String providerId) {
         final User user = new User();
 
         user.setName(name);
         user.setEmail(email);
-        user.setProvider(authProvider);
+        user.setProvider(streamingProvider);
         user.setProviderId(providerId);
 
         return user;

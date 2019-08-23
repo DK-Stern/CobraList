@@ -1,7 +1,7 @@
 package sh.stern.cobralist.party.persistence.domain;
 
 import org.springframework.lang.NonNull;
-import sh.stern.cobralist.user.domain.AuthProvider;
+import sh.stern.cobralist.user.domain.StreamingProvider;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -25,7 +25,7 @@ public class User {
 
     @NonNull
     @Enumerated(EnumType.STRING)
-    private AuthProvider provider;
+    private StreamingProvider provider;
 
     private String providerId;
 
@@ -63,11 +63,11 @@ public class User {
         this.email = email;
     }
 
-    public AuthProvider getProvider() {
+    public StreamingProvider getProvider() {
         return provider;
     }
 
-    public void setProvider(AuthProvider provider) {
+    public void setProvider(StreamingProvider provider) {
         this.provider = provider;
     }
 

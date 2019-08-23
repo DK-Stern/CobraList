@@ -3,7 +3,7 @@ package sh.stern.cobralist.user.userprincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import sh.stern.cobralist.user.domain.AuthProvider;
+import sh.stern.cobralist.user.domain.StreamingProvider;
 
 import java.util.Collection;
 import java.util.Map;
@@ -15,7 +15,7 @@ public class UserPrincipal implements OAuth2User, UserDetails {
     private String email;
     private Collection<SimpleGrantedAuthority> authorities;
     private Map<String, Object> attributes;
-    private AuthProvider authProvider;
+    private StreamingProvider streamingProvider;
 
     public Long getId() {
         return id;
@@ -90,11 +90,11 @@ public class UserPrincipal implements OAuth2User, UserDetails {
         return true;
     }
 
-    public AuthProvider getAuthProvider() {
-        return authProvider;
+    public StreamingProvider getStreamingProvider() {
+        return streamingProvider;
     }
 
-    public void setAuthProvider(AuthProvider authProvider) {
-        this.authProvider = authProvider;
+    public void setStreamingProvider(StreamingProvider streamingProvider) {
+        this.streamingProvider = streamingProvider;
     }
 }

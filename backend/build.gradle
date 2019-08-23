@@ -89,6 +89,11 @@ jacocoTestReport {
 subprojects {
     apply plugin: 'java'
     apply plugin: 'jacoco'
+
+    dependencies {
+        testImplementation 'org.springframework.boot:spring-boot-starter-test:' + springBootVersion
+        testImplementation 'org.assertj:assertj-core:' + assertJVersion
+    }
 }
 
 def subProjects = subprojects.findAll()

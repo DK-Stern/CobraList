@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import sh.stern.cobralist.user.domain.AuthProvider;
+import sh.stern.cobralist.user.domain.StreamingProvider;
 import sh.stern.cobralist.user.domain.UserRole;
 
 import java.util.Collections;
@@ -31,7 +31,7 @@ public class UserPrincipalBuilderTest {
         testSubject.withUserId(id)
                 .withName("max")
                 .withEmail("max@mail.de")
-                .withProvider(AuthProvider.spotify)
+                .withProvider(StreamingProvider.spotify)
                 .withAuthorities(Collections.singletonList(new SimpleGrantedAuthority(UserRole.ROLE_USER.name())))
                 .withAttributes(new HashMap<>());
 
@@ -47,7 +47,7 @@ public class UserPrincipalBuilderTest {
         // given
         testSubject.withName("max")
                 .withEmail("max@mail.de")
-                .withProvider(AuthProvider.spotify);
+                .withProvider(StreamingProvider.spotify);
 
         // then
         assertThatCode(() -> testSubject.build())
@@ -62,7 +62,7 @@ public class UserPrincipalBuilderTest {
         testSubject.withUserId(1L)
                 .withName(name)
                 .withEmail("max@mail.de")
-                .withProvider(AuthProvider.spotify)
+                .withProvider(StreamingProvider.spotify)
                 .withAuthorities(Collections.singletonList(new SimpleGrantedAuthority(UserRole.ROLE_USER.name())))
                 .withAttributes(new HashMap<>());
 
@@ -78,7 +78,7 @@ public class UserPrincipalBuilderTest {
         // given
         testSubject.withUserId(1L)
                 .withEmail("max@mail.de")
-                .withProvider(AuthProvider.spotify);
+                .withProvider(StreamingProvider.spotify);
 
         // then
         assertThatCode(() -> testSubject.build())
@@ -93,7 +93,7 @@ public class UserPrincipalBuilderTest {
         testSubject.withUserId(1L)
                 .withName("max")
                 .withEmail(email)
-                .withProvider(AuthProvider.spotify)
+                .withProvider(StreamingProvider.spotify)
                 .withAuthorities(Collections.singletonList(new SimpleGrantedAuthority(UserRole.ROLE_USER.name())))
                 .withAttributes(new HashMap<>());
 
@@ -110,7 +110,7 @@ public class UserPrincipalBuilderTest {
         testSubject.withUserId(1L)
                 .withName("max")
                 .withAuthorities(Collections.singletonList(new SimpleGrantedAuthority(UserRole.ROLE_USER.name())))
-                .withProvider(AuthProvider.spotify);
+                .withProvider(StreamingProvider.spotify);
 
         // then
         assertThatCode(() -> testSubject.build())
@@ -125,7 +125,7 @@ public class UserPrincipalBuilderTest {
         testSubject.withUserId(1L)
                 .withName("max")
                 .withEmail("max@mail.de")
-                .withProvider(AuthProvider.spotify)
+                .withProvider(StreamingProvider.spotify)
                 .withAuthorities(Collections.singletonList(new SimpleGrantedAuthority(UserRole.ROLE_USER.name())))
                 .withAttributes(attributes);
 
@@ -142,7 +142,7 @@ public class UserPrincipalBuilderTest {
         testSubject.withUserId(1L)
                 .withName("max")
                 .withEmail("max@mail.de")
-                .withProvider(AuthProvider.spotify)
+                .withProvider(StreamingProvider.spotify)
                 .withAuthorities(Collections.singletonList(new SimpleGrantedAuthority(UserRole.ROLE_USER.name())))
                 .withAttributes(new HashMap<>());
 
@@ -164,7 +164,7 @@ public class UserPrincipalBuilderTest {
                 .withUserId(1L)
                 .withName("max")
                 .withEmail("max@mail.de")
-                .withProvider(AuthProvider.spotify)
+                .withProvider(StreamingProvider.spotify)
                 .withAttributes(new HashMap<>());
 
         // when
@@ -177,11 +177,11 @@ public class UserPrincipalBuilderTest {
     @Test
     public void setAuthProviderOnBuildingUserPrinciple() {
         // given
-        final AuthProvider authProvider = AuthProvider.spotify;
+        final StreamingProvider streamingProvider = StreamingProvider.spotify;
         testSubject.withUserId(1L)
                 .withName("max")
                 .withEmail("max@mail.de")
-                .withProvider(authProvider)
+                .withProvider(streamingProvider)
                 .withAuthorities(Collections.singletonList(new SimpleGrantedAuthority(UserRole.ROLE_USER.name())))
                 .withAttributes(new HashMap<>());
 
@@ -189,13 +189,13 @@ public class UserPrincipalBuilderTest {
         UserPrincipal resultedUserPrincipal = testSubject.build();
 
         // then
-        assertThat(resultedUserPrincipal.getAuthProvider()).isEqualTo(authProvider);
+        assertThat(resultedUserPrincipal.getStreamingProvider()).isEqualTo(streamingProvider);
     }
 
     @Test
     public void throwsExceptionIfAuthoritiesIsNotSet() {
         // given
-        final AuthProvider authProvider = AuthProvider.spotify;
+        final StreamingProvider streamingProvider = StreamingProvider.spotify;
         testSubject.withUserId(1L)
                 .withName("max")
                 .withEmail("max@mail.de");

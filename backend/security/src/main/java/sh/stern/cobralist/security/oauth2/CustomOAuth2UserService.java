@@ -10,7 +10,7 @@ import org.springframework.util.StringUtils;
 import sh.stern.cobralist.party.persistence.dataaccess.UserRepository;
 import sh.stern.cobralist.party.persistence.domain.User;
 import sh.stern.cobralist.party.persistence.domain.UserFactory;
-import sh.stern.cobralist.user.domain.AuthProvider;
+import sh.stern.cobralist.user.domain.StreamingProvider;
 import sh.stern.cobralist.user.domain.UserRole;
 import sh.stern.cobralist.user.userinfo.OAuth2UserInfo;
 import sh.stern.cobralist.user.userprincipal.UserPrincipalBuilder;
@@ -79,10 +79,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User registerNewUser(OAuth2UserRequest userRequest, OAuth2UserInfo oAuth2UserInfo) {
-        final AuthProvider authProvider = AuthProvider.valueOf(userRequest.getClientRegistration().getRegistrationId());
+        final StreamingProvider streamingProvider = StreamingProvider.valueOf(userRequest.getClientRegistration().getRegistrationId());
         final User user = userFactory.create(oAuth2UserInfo.getName(),
                 oAuth2UserInfo.getEmail(),
-                authProvider,
+                streamingProvider,
                 oAuth2UserInfo.getId());
 
         return userRepository.save(user);

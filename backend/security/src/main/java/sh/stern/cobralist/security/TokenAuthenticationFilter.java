@@ -56,8 +56,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                     throw new ResourceNotFoundException("UserRole", "role", userRole);
                 }
 
-                // TODO Refresh token
-                if (userRole.equals(UserRole.ROLE_USER.name()) && oAuth2AuthorizedClientService.loadAuthorizedClient(userDetails.getAuthProvider().name(),
+                if (userRole.equals(UserRole.ROLE_USER.name()) && oAuth2AuthorizedClientService.loadAuthorizedClient(userDetails.getStreamingProvider().name(),
                         userDetails.getUsername()) == null) {
                     throw new OAuth2SessionExpiredException("OAuth2 session abgelaufen.");
                 }

@@ -1,8 +1,12 @@
 package sh.stern.cobralist.api.spotify.valueobjects;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class SimplifiedPlaylistObject {
 
-    private boolean collaborative;
+    private Boolean collaborative;
     private ExternalUrlObject externalUrls;
     private String href;
     private String id;

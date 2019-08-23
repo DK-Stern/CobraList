@@ -12,7 +12,6 @@ import sh.stern.cobralist.security.BadRequestException;
 import sh.stern.cobralist.tokenprovider.TokenProvider;
 import sh.stern.cobralist.user.userprincipal.UserPrincipal;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,7 +44,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
+                                        Authentication authentication) throws IOException {
         String targetUrl = determineTargetUrl(request, authentication);
 
         if (LOG.isDebugEnabled() && response.isCommitted()) {

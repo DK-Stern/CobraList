@@ -1,8 +1,12 @@
 package sh.stern.cobralist.api.spotify.valueobjects;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class PagingObject<I> {
 
     private String href;

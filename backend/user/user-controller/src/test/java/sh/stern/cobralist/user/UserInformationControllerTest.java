@@ -14,7 +14,7 @@ import sh.stern.cobralist.party.persistence.domain.User;
 import sh.stern.cobralist.user.controller.BasePlaylistsResponse;
 import sh.stern.cobralist.user.controller.UserInformationController;
 import sh.stern.cobralist.user.controller.UserResponse;
-import sh.stern.cobralist.user.domain.AuthProvider;
+import sh.stern.cobralist.user.domain.StreamingProvider;
 import sh.stern.cobralist.user.userprincipal.UserPrincipal;
 
 import java.util.Collections;
@@ -52,14 +52,14 @@ public class UserInformationControllerTest {
         final UserPrincipal userPrincipal = new UserPrincipal();
         userPrincipal.setId(userId);
         userPrincipal.setEmail(email);
-        userPrincipal.setAuthProvider(AuthProvider.spotify);
+        userPrincipal.setStreamingProvider(StreamingProvider.spotify);
         userPrincipal.setAuthorities(authorities);
 
         final User user = new User();
         user.setId(userId);
         user.setName(name);
         user.setEmail(email);
-        user.setProvider(AuthProvider.spotify);
+        user.setProvider(StreamingProvider.spotify);
         when(userRepositoryMock.findById(userId)).thenReturn(Optional.of(user));
 
         // when
@@ -78,7 +78,7 @@ public class UserInformationControllerTest {
         final String email = "test@mail.de";
         userPrincipal.setId(userId);
         userPrincipal.setEmail(email);
-        userPrincipal.setAuthProvider(AuthProvider.spotify);
+        userPrincipal.setStreamingProvider(StreamingProvider.spotify);
         userPrincipal.setAuthorities(Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
 
         final List<SimplePlaylistDomain> expectedPlaylist = Collections.singletonList(new SimplePlaylistDomain("1", "testPlaylist"));
