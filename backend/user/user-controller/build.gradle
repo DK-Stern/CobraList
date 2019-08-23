@@ -3,11 +3,12 @@ plugins {
 }
 
 dependencies {
-    implementation project(':backend:api')
     implementation project(':backend:party-persistence:party-data-access')
     implementation project(':backend:party-persistence:party-domain')
     implementation project(':backend:security')
     implementation project(':backend:user:userprincipal')
+    implementation project(':backend:streaming:streaming-api')
+    implementation project(':backend:streaming:streaming-domain')
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:' + springBootVersion
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:' + springBootVersion

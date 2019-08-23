@@ -1,0 +1,10 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    compile project(':backend:streaming:streaming-api')
+    compile project(':backend:streaming:streaming-domain')
+    compile project(':backend:streaming:streaming-exceptions')
+    compile project(':backend:user:user-domain')
+}

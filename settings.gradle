@@ -1,7 +1,6 @@
 rootProject.name = 'cobralist'
 
 include 'backend',
-        ':backend:api',
         ':backend:app-properties',
         ':backend:party:party-crud:party-crud-api',
         ':backend:party:party-crud:party-crud-adapter',
@@ -21,4 +20,8 @@ include 'backend',
         ':backend:party-persistence:party-exceptions',
         ':backend:party-persistence:party-domain',
         ':backend:token-provider',
+        ':backend:streaming:streaming-api',
+        ':backend:streaming:streaming-domain',
+        ':backend:streaming:streaming-exceptions',
+        ':backend:streaming:streaming-spotify-adapter',
         'frontend'

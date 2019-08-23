@@ -1,6 +1,6 @@
 package sh.stern.cobralist.user.controller;
 
-import sh.stern.cobralist.api.domains.SimplePlaylistDomain;
+import sh.stern.cobralist.streaming.domain.SimplePlaylistDomain;
 
 import java.util.List;
 

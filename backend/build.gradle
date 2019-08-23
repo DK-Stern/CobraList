@@ -18,7 +18,6 @@ repositories {
 }
 
 dependencies {
-    implementation project(':backend:api')
     implementation project(':backend:app-properties')
     implementation project(':backend:party:party-crud:party-crud-api')
     implementation project(':backend:party:party-crud:party-crud-adapter')
@@ -35,6 +34,10 @@ dependencies {
     implementation project(':backend:party-persistence:party-data-access')
     implementation project(':backend:party-persistence:party-domain')
     implementation project(':backend:token-provider')
+    implementation project(':backend:streaming:streaming-api')
+    implementation project(':backend:streaming:streaming-domain')
+    implementation project(':backend:streaming:streaming-exceptions')
+    implementation project(':backend:streaming:streaming-spotify-adapter')
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-devtools'

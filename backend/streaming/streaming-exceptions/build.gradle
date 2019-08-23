@@ -1,0 +1,9 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    compile project(':backend:exception-domain')
+
+    compile 'org.springframework.boot:spring-boot-starter-web:' + springBootVersion
+}
