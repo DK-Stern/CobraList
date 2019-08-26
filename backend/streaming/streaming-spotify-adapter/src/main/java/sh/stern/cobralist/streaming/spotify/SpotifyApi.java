@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.stereotype.Component;
 import sh.stern.cobralist.streaming.exceptions.AccessTokenExpiredException;
-import sh.stern.cobralist.streaming.spotify.errorhandler.SpotifyAccessTokenExpiredErrorHandler;
+import sh.stern.cobralist.streaming.spotify.errorhandler.AccessTokenExpiredErrorHandler;
 import sh.stern.cobralist.streaming.spotify.valueobjects.PagingObject;
 import sh.stern.cobralist.streaming.spotify.valueobjects.SimplifiedPlaylistObject;
 
@@ -16,8 +16,10 @@ import sh.stern.cobralist.streaming.spotify.valueobjects.SimplifiedPlaylistObjec
 public class SpotifyApi extends ApiBinding {
 
     @Autowired
-    public SpotifyApi(SpotifyAccessTokenExpiredErrorHandler spotifyAccessTokenExpiredErrorHandler, OAuth2AuthorizedClientService oAuth2AuthorizedClientService) {
-        super(spotifyAccessTokenExpiredErrorHandler, oAuth2AuthorizedClientService);
+    public SpotifyApi(AccessTokenExpiredErrorHandler spotifyAccessTokenExpiredErrorHandler,
+                      OAuth2AuthorizedClientService oAuth2AuthorizedClientService,
+                      RestTemplateFactory restTemplateFactory) {
+        super(spotifyAccessTokenExpiredErrorHandler, oAuth2AuthorizedClientService, restTemplateFactory.create());
     }
 
     public PagingObject<SimplifiedPlaylistObject> getUserPlaylists(String url) {

@@ -4,7 +4,4 @@ plugins {
 
 dependencies {
     compile project(':backend:streaming:streaming-domain')
-
-    compile 'org.springframework.boot:spring-boot-starter-web:' + springBootVersion
-    compile 'org.springframework.boot:spring-boot-starter-oauth2-client:' + springBootVersion
 }

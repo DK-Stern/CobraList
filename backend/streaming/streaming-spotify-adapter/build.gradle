@@ -7,4 +7,7 @@ dependencies {
     compile project(':backend:streaming:streaming-domain')
     compile project(':backend:streaming:streaming-exceptions')
     compile project(':backend:user:user-domain')
+    compile project(':backend:security')
+
+    testImplementation 'org.mockito:mockito-inline:' + mockitoVersion
 }

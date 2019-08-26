@@ -40,7 +40,6 @@ dependencies {
     implementation project(':backend:streaming:streaming-spotify-adapter')
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-devtools'
 
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:2.3.0'
 }

@@ -4,24 +4,25 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.web.client.RestTemplate;
-import sh.stern.cobralist.streaming.api.AccessTokenExpiredErrorHandler;
+import sh.stern.cobralist.streaming.spotify.errorhandler.AccessTokenExpiredErrorHandler;
 import sh.stern.cobralist.user.domain.StreamingProvider;
 
 public abstract class ApiBinding {
     private final AccessTokenExpiredErrorHandler accessTokenExpiredErrorHandler;
     private final OAuth2AuthorizedClientService oAuth2AuthorizedClientService;
-    protected RestTemplate restTemplate;
+    final RestTemplate restTemplate;
 
-    public ApiBinding(AccessTokenExpiredErrorHandler accessTokenExpiredErrorHandler, OAuth2AuthorizedClientService oAuth2AuthorizedClientService) {
+    public ApiBinding(AccessTokenExpiredErrorHandler accessTokenExpiredErrorHandler, OAuth2AuthorizedClientService oAuth2AuthorizedClientService, RestTemplate restTemplate) {
         this.accessTokenExpiredErrorHandler = accessTokenExpiredErrorHandler;
         this.oAuth2AuthorizedClientService = oAuth2AuthorizedClientService;
+        this.restTemplate = restTemplate;
     }
 
     public void setAuthentication(StreamingProvider streamingProvider, String userName) {
         OAuth2AuthorizedClient oAuth2AuthorizedClient =
                 oAuth2AuthorizedClientService.loadAuthorizedClient(streamingProvider.name(), userName);
 
-        this.restTemplate = new RestTemplate();
+        this.restTemplate.getInterceptors().clear();
         if (oAuth2AuthorizedClient != null) {
             accessTokenExpiredErrorHandler.setAuthentication(oAuth2AuthorizedClient);
             this.restTemplate.getInterceptors()
