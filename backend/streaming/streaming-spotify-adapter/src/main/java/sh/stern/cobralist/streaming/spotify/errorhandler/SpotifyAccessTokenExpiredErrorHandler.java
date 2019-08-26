@@ -44,7 +44,7 @@ public class SpotifyAccessTokenExpiredErrorHandler implements AccessTokenExpired
 
     @Override
     public boolean hasError(ClientHttpResponse response) throws IOException {
-        return response.getStatusCode() == HttpStatus.FORBIDDEN;
+        return response.getStatusCode() == HttpStatus.UNAUTHORIZED;
     }
 
     @Override
