@@ -10,8 +10,8 @@ import sh.stern.cobralist.party.persistence.dataaccess.UserRepository;
 import sh.stern.cobralist.party.persistence.domain.User;
 import sh.stern.cobralist.security.CurrentUser;
 import sh.stern.cobralist.security.ResourceNotFoundException;
-import sh.stern.cobralist.streaming.api.UsersPlaylistsService;
-import sh.stern.cobralist.streaming.domain.SimplePlaylistDomain;
+import sh.stern.cobralist.streaming.api.PlaylistService;
+import sh.stern.cobralist.streaming.domain.SimplePlaylistDTO;
 import sh.stern.cobralist.user.userprincipal.UserPrincipal;
 
 import java.util.List;
@@ -22,13 +22,13 @@ public class UserInformationController {
 
 
     private final UserRepository userRepository;
-    private final UsersPlaylistsService userPlaylistsService;
+    private final PlaylistService playlistService;
 
     @Autowired
     public UserInformationController(UserRepository userRepository,
-                                     UsersPlaylistsService userPlaylistsService) {
+                                     PlaylistService playlistService) {
         this.userRepository = userRepository;
-        this.userPlaylistsService = userPlaylistsService;
+        this.playlistService = playlistService;
     }
 
     @PreAuthorize("hasRole('USER')")
@@ -43,8 +43,8 @@ public class UserInformationController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping(value = "/playlists")
     public ResponseEntity<BasePlaylistsResponse> getUsersPlaylists(@CurrentUser UserPrincipal userPrincipal) {
-        List<SimplePlaylistDomain> usersPlaylists =
-                userPlaylistsService.getUsersPlaylists(userPrincipal.getUsername());
+        List<SimplePlaylistDTO> usersPlaylists =
+                playlistService.getUsersPlaylists(userPrincipal.getUsername());
         return ResponseEntity.ok(new BasePlaylistsResponse(usersPlaylists));
     }
 }

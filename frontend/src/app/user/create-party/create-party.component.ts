@@ -27,6 +27,7 @@ export class CreatePartyComponent implements OnInit {
       partyName: ['', this.validatePartyname],
       password: '',
       downVoting: true,
+      basePlaylistId: 'none',
       description: ''
     });
 

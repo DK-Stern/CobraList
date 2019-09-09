@@ -9,8 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import sh.stern.cobralist.party.persistence.dataaccess.UserRepository;
 import sh.stern.cobralist.party.persistence.domain.User;
-import sh.stern.cobralist.streaming.api.UsersPlaylistsService;
-import sh.stern.cobralist.streaming.domain.SimplePlaylistDomain;
+import sh.stern.cobralist.streaming.api.PlaylistService;
+import sh.stern.cobralist.streaming.domain.SimplePlaylistDTO;
 import sh.stern.cobralist.user.controller.BasePlaylistsResponse;
 import sh.stern.cobralist.user.controller.UserInformationController;
 import sh.stern.cobralist.user.controller.UserResponse;
@@ -34,11 +34,11 @@ public class UserInformationControllerTest {
     private UserRepository userRepositoryMock;
 
     @Mock
-    private UsersPlaylistsService usersPlaylistsServiceMock;
+    private PlaylistService playlistServiceMock;
 
     @Before
     public void setUp() {
-        testSubject = new UserInformationController(userRepositoryMock, usersPlaylistsServiceMock);
+        testSubject = new UserInformationController(userRepositoryMock, playlistServiceMock);
     }
 
     @Test
@@ -71,7 +71,7 @@ public class UserInformationControllerTest {
     }
 
     @Test
-    public void getUsersPlaylists() throws Exception {
+    public void getUsersPlaylists() {
         // given
         final UserPrincipal userPrincipal = new UserPrincipal();
         final long userId = 1L;
@@ -81,8 +81,8 @@ public class UserInformationControllerTest {
         userPrincipal.setStreamingProvider(StreamingProvider.spotify);
         userPrincipal.setAuthorities(Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
 
-        final List<SimplePlaylistDomain> expectedPlaylist = Collections.singletonList(new SimplePlaylistDomain("1", "testPlaylist"));
-        when(usersPlaylistsServiceMock.getUsersPlaylists(userPrincipal.getUsername())).thenReturn(expectedPlaylist);
+        final List<SimplePlaylistDTO> expectedPlaylist = Collections.singletonList(new SimplePlaylistDTO("1", "testPlaylist"));
+        when(playlistServiceMock.getUsersPlaylists(userPrincipal.getUsername())).thenReturn(expectedPlaylist);
 
         // when
         final ResponseEntity<BasePlaylistsResponse> resultedUsersPlaylists = testSubject.getUsersPlaylists(userPrincipal);

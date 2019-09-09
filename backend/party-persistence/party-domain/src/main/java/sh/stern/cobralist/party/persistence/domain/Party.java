@@ -39,6 +39,10 @@ public class Party {
     @ManyToMany(mappedBy = "joinedParties")
     private Set<User> joinedUsers;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "playlist_id", referencedColumnName = "id")
+    private Playlist playlist;
+
     private boolean archived;
 
     private String description;
@@ -117,5 +121,13 @@ public class Party {
 
     public Set<User> getJoinedUsers() {
         return joinedUsers;
+    }
+
+    public Playlist getPlaylist() {
+        return playlist;
+    }
+
+    public void setPlaylist(Playlist playlist) {
+        this.playlist = playlist;
     }
 }

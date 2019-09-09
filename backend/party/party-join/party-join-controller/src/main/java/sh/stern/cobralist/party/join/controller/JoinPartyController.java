@@ -3,10 +3,10 @@ package sh.stern.cobralist.party.join.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sh.stern.cobralist.party.join.api.FindPartyDTO;
-import sh.stern.cobralist.party.join.api.JoinPartyDTO;
 import sh.stern.cobralist.party.join.api.JoinPartyService;
 import sh.stern.cobralist.party.join.api.PartyJoinedDTO;
+import sh.stern.cobralist.party.join.domain.FindPartyDTO;
+import sh.stern.cobralist.party.join.domain.JoinPartyDTO;
 
 @RestController
 @RequestMapping("/api/party")

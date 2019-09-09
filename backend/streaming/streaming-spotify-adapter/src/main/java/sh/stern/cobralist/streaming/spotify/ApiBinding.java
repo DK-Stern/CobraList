@@ -1,6 +1,7 @@
 package sh.stern.cobralist.streaming.spotify;
 
 import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.web.client.RestTemplate;
@@ -25,6 +26,10 @@ public abstract class ApiBinding {
         this.restTemplate.getInterceptors().clear();
         if (oAuth2AuthorizedClient != null) {
             accessTokenExpiredErrorHandler.setAuthentication(oAuth2AuthorizedClient);
+            final SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+            requestFactory.setConnectTimeout(3000);
+            requestFactory.setReadTimeout(3000);
+            restTemplate.setRequestFactory(requestFactory);
             this.restTemplate.getInterceptors()
                     .add(getBearerTokenInterceptor(oAuth2AuthorizedClient.getAccessToken().getTokenValue()));
             this.restTemplate.setErrorHandler(accessTokenExpiredErrorHandler);

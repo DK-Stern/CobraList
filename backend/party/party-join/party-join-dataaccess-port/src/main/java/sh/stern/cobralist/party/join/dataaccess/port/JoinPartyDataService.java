@@ -1,7 +1,7 @@
 package sh.stern.cobralist.party.join.dataaccess.port;
 
-import sh.stern.cobralist.party.join.api.FindPartyDTO;
-import sh.stern.cobralist.party.join.api.JoinPartyDTO;
+import sh.stern.cobralist.party.join.domain.FindPartyDTO;
+import sh.stern.cobralist.party.join.domain.JoinPartyDTO;
 
 public interface JoinPartyDataService {
     GuestCreatedDTO createGuest(JoinPartyDTO joinPartyDto);

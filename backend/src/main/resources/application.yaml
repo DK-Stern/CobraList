@@ -28,6 +28,8 @@ spring:
               - user-read-email
               - playlist-read-private
               - playlist-read-collaborative
+              - playlist-modify-public
+              - playlist-modify-private
         provider:
           spotify:
             authorizationUri: https://accounts.spotify.com/authorize

@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation project(':backend:party-persistence:party-data-access')
+    implementation project(':backend:party-persistence:party-dataaccess')
     implementation project(':backend:party-persistence:party-domain')
     implementation project(':backend:security')
     implementation project(':backend:user:userprincipal')

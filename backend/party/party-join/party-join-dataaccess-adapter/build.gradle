@@ -9,7 +9,7 @@ dependencies {
     implementation project(':backend:security')
     implementation project(':backend:party-persistence:party-domain')
     implementation project(':backend:party-persistence:party-exceptions')
-    implementation project(':backend:party-persistence:party-data-access')
+    implementation project(':backend:party-persistence:party-dataaccess')
     implementation project(':backend:user:userprincipal')
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test:' + springBootVersion

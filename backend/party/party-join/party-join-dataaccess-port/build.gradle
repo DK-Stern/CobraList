@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    implementation project(':backend:party:party-join:party-join-api')
+    compile project(':backend:party:party-join:party-join-domain')
 }

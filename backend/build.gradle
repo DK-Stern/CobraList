@@ -19,27 +19,33 @@ repositories {
 
 dependencies {
     implementation project(':backend:app-properties')
-    implementation project(':backend:party:party-crud:party-crud-api')
-    implementation project(':backend:party:party-crud:party-crud-adapter')
-    implementation project(':backend:party:party-crud:party-crud-controller')
+    implementation project(':backend:party:party-creation:party-creation-api')
+    implementation project(':backend:party:party-creation:party-creation-domain')
+    implementation project(':backend:party:party-creation:party-creation-usecases')
+    implementation project(':backend:party:party-creation:party-creation-controller')
+    implementation project(':backend:party:party-creation:party-creation-dataaccess-port')
+    implementation project(':backend:party:party-creation:party-creation-dataaccess-adapter')
     implementation project(':backend:party:party-join:party-join-api')
-    implementation project(':backend:party:party-join:party-join-adapter')
+    implementation project(':backend:party:party-join:party-join-usecases')
     implementation project(':backend:party:party-join:party-join-controller')
     implementation project(':backend:party:party-join:party-join-dataaccess-port')
     implementation project(':backend:party:party-join:party-join-dataaccess-adapter')
+    implementation project(':backend:party:party-join:party-join-domain')
     implementation project(':backend:security')
     implementation project(':backend:user:user-controller')
     implementation project(':backend:user:userinfo')
     implementation project(':backend:user:userprincipal')
-    implementation project(':backend:party-persistence:party-data-access')
+    implementation project(':backend:party-persistence:party-dataaccess')
     implementation project(':backend:party-persistence:party-domain')
     implementation project(':backend:token-provider')
     implementation project(':backend:streaming:streaming-api')
     implementation project(':backend:streaming:streaming-domain')
     implementation project(':backend:streaming:streaming-exceptions')
+    implementation project(':backend:streaming:streaming-dataaccess-port')
+    implementation project(':backend:streaming:streaming-dataaccess-adapter')
     implementation project(':backend:streaming:streaming-spotify-adapter')
 
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:2.3.0'
 }
@@ -93,6 +99,8 @@ subprojects {
     apply plugin: 'jacoco'
 
     dependencies {
+        implementation 'org.apache.commons:commons-collections4:4.4'
+
         testImplementation 'org.springframework.boot:spring-boot-starter-test:' + springBootVersion
         testImplementation 'org.assertj:assertj-core:' + assertJVersion
     }

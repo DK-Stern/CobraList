@@ -1,0 +1,11 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    implementation project(':backend:party:party-join:party-join-api')
+    implementation project(':backend:party:party-join:party-join-dataaccess-port')
+    implementation project(':backend:party:party-join:party-join-dataaccess-adapter')
+    implementation project(':backend:token-provider')
+    implementation project(':backend:user:userprincipal')
+}

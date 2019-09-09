@@ -21,7 +21,7 @@
       <mat-checkbox formControlName="downVoting">Down-Voten erlaubt?</mat-checkbox>
 
       <mat-form-field>
-        <mat-select value="none" placeholder="Basisplaylist auswählen">
+        <mat-select formControlName="basePlaylistId" value="none" placeholder="Basisplaylist auswählen">
           <mat-option value="none">Keine Playlist</mat-option>
           <span *ngFor="let playlist of basePlaylists">
             <mat-option value="{{ playlist.playlistId }}">{{playlist.playlistName}}</mat-option>
