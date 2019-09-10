@@ -8,7 +8,7 @@ export const loginSuccess = createAction(
 
 export const loginGuestSuccess = createAction(
   '[Join Party] Login Guest Success',
-  props<{ token: string }>()
+  props<{ token: string, guest: UserDto }>()
 );
 
 export const loadedUser = createAction(

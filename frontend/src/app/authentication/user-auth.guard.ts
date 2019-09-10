@@ -52,9 +52,9 @@ export class UserAuthGuard implements CanActivate, CanActivateChild, CanLoad {
 
   private checkUserIsLoggedIn() {
     if (!this.isLoggedIn) {
-      this.storage.select(state => state.authentication.isAuthenticated).subscribe(isAuthenticated => {
-        this.isLoggedIn = isAuthenticated;
-        if (!isAuthenticated && this.router.url !== '/logout') {
+      this.storage.select(state => state.authentication).subscribe(authentication => {
+        this.isLoggedIn = authentication.isAuthenticated && !authentication.isGuest;
+        if (!this.isLoggedIn && this.router.url !== '/logout') {
           this.router.navigateByUrl('login');
         }
       });

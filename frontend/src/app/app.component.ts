@@ -14,10 +14,7 @@ import {DomSanitizer} from '@angular/platform-browser';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  navElements = Array.of(
-    {name: 'Start', navigate: 'home'},
-    {name: 'Dashboard', navigate: 'user'},
-    {name: 'Party erstellen', navigate: 'user/party/create'});
+  navElements = Array.of({name: 'Start', navigate: 'home'});
 
   mobileQuery: MediaQueryList;
   title = 'CobraList';
@@ -53,6 +50,16 @@ export class AppComponent implements OnInit {
           }
         }
       });
+
+    this.store.select(state => state.authentication.isGuest).subscribe(isGuest => {
+      if (isGuest) {
+        this.navElements = Array.of({name: 'Start', navigate: 'home'});
+      } else {
+        this.navElements = Array.of({name: 'Start', navigate: 'home'},
+          {name: 'Dashboard', navigate: 'user'},
+          {name: 'Party erstellen', navigate: 'user/party/create'});
+      }
+    });
 
     this.store.select(state => state.authentication.user).subscribe(user => {
       if (user !== null) {

@@ -6,6 +6,12 @@ import {JoinPartyService} from './join-party.service';
 import {FindPartyService} from '../find-party/find-party.service';
 import {FindPartyDto} from '../find-party/find-party.dto';
 import {JoinPartyDto} from './join-party.dto';
+import {loginGuestSuccess} from "../../authentication/store/auth.actions";
+import {Store} from "@ngrx/store";
+import {AppState} from "../../storage/app-state.reducer";
+import {Router} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {UserDto} from "../../user/user.dto";
 
 @Component({
   selector: 'app-join-party',
@@ -23,6 +29,9 @@ export class JoinPartyComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private findPartyService: FindPartyService,
               private joinPartyService: JoinPartyService,
+              private store: Store<AppState>,
+              private router: Router,
+              private snackBar: MatSnackBar,
               iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon(
@@ -69,6 +78,30 @@ export class JoinPartyComponent implements OnInit {
       guestName: guestName,
     };
 
-    this.joinPartyService.joinParty(joinPartyDto);
+    this.joinPartyService.joinParty(joinPartyDto)
+      .subscribe(response => {
+          const guestName = this.joinForm.get('guestName').value;
+          let guest: UserDto = {
+            id: null,
+            name: guestName,
+            email: null,
+            authorities: ['GUEST']
+          };
+          this.store.dispatch(loginGuestSuccess({token: response.token, guest: guest}));
+          this.router.navigate(['/party', response.partyCode]);
+        },
+        error => {
+          if (error.status === 403) {
+            const passwordField = this.passwordForm.get('passwordField');
+            passwordField.setErrors({'wrongPassword': true});
+          } else if (error.status === 409) {
+            const guestNameField = this.joinForm.get('guestName');
+            guestNameField.setErrors({'nameAlreadyExists': true});
+          }
+
+          this.snackBar.open(error.error.message, 'OK', {
+            duration: 5000
+          })
+        });
   }
 }

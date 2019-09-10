@@ -23,7 +23,13 @@ const authReducer = createReducer(
   on(loadedUser, (state, {user}) => ({...state, user: user, error: null})),
   on(loadedUserFail, (state, {error}) => ({...state, isAuthenticated: false, token: null, user: null, error: error})),
   on(loginSuccess, (state, {token}) => ({...state, isAuthenticated: true, isGuest: false, token: token})),
-  on(loginGuestSuccess, (state, {token}) => ({...state, isAuthenticated: true, isGuest: true, token: token})),
+  on(loginGuestSuccess, (state, {token, guest}) => ({
+    ...state,
+    isAuthenticated: true,
+    isGuest: true,
+    token: token,
+    user: guest
+  })),
   on(logout, (state => ({...state, isAuthenticated: false, token: null, user: null, error: null}))));
 
 export function reducer(state: AuthState | undefined, action: Action) {

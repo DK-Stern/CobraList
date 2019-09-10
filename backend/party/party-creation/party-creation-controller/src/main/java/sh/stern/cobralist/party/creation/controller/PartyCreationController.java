@@ -31,7 +31,9 @@ public class PartyCreationController {
 
     @PreAuthorize("hasAnyRole('USER','GUEST')")
     @GetMapping("/{partyCode}")
-    public ResponseEntity<PartyDTO> getParty(@PathVariable String partyCode) {
+    public ResponseEntity<PartyDTO> getParty(
+            @CurrentUser UserPrincipal userPrincipal,
+            @PathVariable String partyCode) {
         return ResponseEntity.ok(partyService.getParty(partyCode));
     }
 }

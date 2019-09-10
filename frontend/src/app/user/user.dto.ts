@@ -1,6 +1,6 @@
 export interface UserDto {
-  id: number;
+  id: number | null;
   name: string;
-  email: string;
+  email: string | null;
   authorities: string[]
 }

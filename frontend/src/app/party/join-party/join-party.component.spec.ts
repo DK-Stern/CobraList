@@ -6,11 +6,20 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {JoinPartyService} from './join-party.service';
 import {FindPartyService} from '../find-party/find-party.service';
+import {RouterTestingModule} from "@angular/router/testing";
+import {AppState} from "../../storage/app-state.reducer";
+import {provideMockStore} from "@ngrx/store/testing";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 import createSpyObj = jasmine.createSpyObj;
 
 describe('JoinPartyComponent', () => {
   let component: JoinPartyComponent;
   let fixture: ComponentFixture<JoinPartyComponent>;
+
+  const initialState: AppState = {
+    authentication: null,
+    party: null
+  };
 
   beforeEach(async(() => {
     const joinPartyServiceSpy = createSpyObj('JoinPartyService', ['joinParty']);
@@ -26,9 +35,12 @@ describe('JoinPartyComponent', () => {
         MatInputModule,
         BrowserAnimationsModule,
         MatStepperModule,
-        MatIconModule
+        MatIconModule,
+        RouterTestingModule,
+        MatSnackBarModule
       ],
       providers: [
+        provideMockStore({initialState}),
         {
           provide: JoinPartyService,
           useValue: joinPartyServiceSpy
