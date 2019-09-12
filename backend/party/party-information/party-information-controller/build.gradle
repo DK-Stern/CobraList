@@ -1,0 +1,14 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    compile project(":backend:party:party-information:current-party-track:current-party-track-api")
+    runtimeOnly project(":backend:party:party-information:current-party-track:current-party-track-usecases")
+
+    compile project(":backend:party:party-information:party-music-requests:party-music-requests-api")
+    runtimeOnly project(":backend:party:party-information:party-music-requests:party-music-requests-usecases")
+
+    compile project(":backend:party:party-security:party-security-api")
+    runtimeOnly project(":backend:party:party-security:party-security-usecases")
+}

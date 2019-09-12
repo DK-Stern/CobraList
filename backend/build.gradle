@@ -44,6 +44,20 @@ dependencies {
     implementation project(':backend:streaming:streaming-dataaccess-port')
     implementation project(':backend:streaming:streaming-dataaccess-adapter')
     implementation project(':backend:streaming:streaming-spotify-adapter')
+    implementation project(':backend:party:party-information:party-information-controller')
+    implementation project(':backend:party:party-information:current-party-track:current-party-track-api')
+    implementation project(':backend:party:party-information:current-party-track:current-party-track-usecases')
+    implementation project(':backend:party:party-information:current-party-track:current-party-track-domain')
+    implementation project(':backend:party:party-information:party-music-requests')
+    implementation project(':backend:party:party-security:party-security-api')
+    implementation project(':backend:party:party-security:party-security-usecases')
+    implementation project(':backend:party:party-security:party-security-dataaccess-port')
+    implementation project(':backend:party:party-security:party-security-dataaccess-adapter')
+    implementation project(':backend:party:party-information:party-music-requests:party-music-requests-api')
+    implementation project(':backend:party:party-information:party-music-requests:party-music-requests-usecases')
+    implementation project(':backend:party:party-information:party-music-requests:party-music-requests-domain')
+    implementation project(':backend:party:party-information:party-music-requests:party-music-requests-dataaccess-port')
+    implementation project(':backend:party:party-information:party-music-requests:party-music-requests-dataaccess-adapter')
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
 

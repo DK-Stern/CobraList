@@ -19,15 +19,16 @@ CREATE TABLE playlist
 
 CREATE TABLE party
 (
-    id            BIGINT       NOT NULL AUTO_INCREMENT,
-    party_code    VARCHAR(6)   NOT NULL,
-    creator_id    BIGINT       NOT NULL,
+    id            BIGINT                NOT NULL AUTO_INCREMENT,
+    party_code    VARCHAR(6)            NOT NULL,
+    creator_id    BIGINT                NOT NULL,
     playlist_id   BIGINT,
-    name          VARCHAR(255) NOT NULL,
+    name          VARCHAR(255)          NOT NULL,
     password      VARCHAR(255),
     vote_down     BOOLEAN DEFAULT TRUE,
-    creation_date DATE         NOT NULL,
+    creation_date DATE                  NOT NULL,
     archived      BOOLEAN DEFAULT FALSE,
+    active        BOOLEAN DEFAULT FALSE NOT NULL,
     description   VARCHAR(500),
     PRIMARY KEY (id),
     CONSTRAINT `fk_party_user_id`

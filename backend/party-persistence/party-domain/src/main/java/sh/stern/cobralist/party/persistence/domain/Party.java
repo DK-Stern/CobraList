@@ -43,6 +43,10 @@ public class Party {
     @JoinColumn(name = "playlist_id", referencedColumnName = "id")
     private Playlist playlist;
 
+    @Column(columnDefinition = "boolean default false")
+    private Boolean active;
+
+    @Column(columnDefinition = "boolean default false")
     private boolean archived;
 
     private String description;
@@ -129,5 +133,13 @@ public class Party {
 
     public void setPlaylist(Playlist playlist) {
         this.playlist = playlist;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }
