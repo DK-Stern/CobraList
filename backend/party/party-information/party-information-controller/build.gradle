@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
     compile project(":backend:party:party-information:current-party-track:current-party-track-api")
+    compile project(":backend:party:party-information:current-party-track:current-party-track-domain")
     runtimeOnly project(":backend:party:party-information:current-party-track:current-party-track-usecases")
 
     compile project(":backend:party:party-information:party-music-requests:party-music-requests-api")
@@ -11,4 +12,10 @@ dependencies {
 
     compile project(":backend:party:party-security:party-security-api")
     runtimeOnly project(":backend:party:party-security:party-security-usecases")
+
+    compile project(":backend:security")
+    compile project(':backend:exception-domain')
+
+    implementation 'org.springframework.boot:spring-boot-starter-web:' + springBootVersion
+    implementation 'org.springframework.boot:spring-boot-starter-security:' + springBootVersion
 }

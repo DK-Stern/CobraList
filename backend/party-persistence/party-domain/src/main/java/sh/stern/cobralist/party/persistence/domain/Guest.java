@@ -36,4 +36,8 @@ public class Guest {
     public void setParty(Party party) {
         this.party = party;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

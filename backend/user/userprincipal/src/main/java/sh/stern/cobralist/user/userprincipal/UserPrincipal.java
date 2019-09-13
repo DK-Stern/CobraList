@@ -5,7 +5,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import sh.stern.cobralist.user.domain.StreamingProvider;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 public class UserPrincipal implements OAuth2User, UserDetails {
@@ -13,8 +15,8 @@ public class UserPrincipal implements OAuth2User, UserDetails {
     private Long id;
     private String name;
     private String email;
-    private Collection<SimpleGrantedAuthority> authorities;
-    private Map<String, Object> attributes;
+    private Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+    private Map<String, Object> attributes = new HashMap<>();
     private StreamingProvider streamingProvider;
 
     public Long getId() {

@@ -142,4 +142,8 @@ public class Party {
     public void setActive(Boolean active) {
         this.active = active;
     }
+
+    public void setGuests(Set<Guest> guests) {
+        this.guests = guests;
+    }
 }

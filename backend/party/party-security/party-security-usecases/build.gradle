@@ -1,3 +1,9 @@
 plugins {
     id 'java'
 }
+
+dependencies {
+    compile project(':backend:party:party-security:party-security-api')
+    compile project(':backend:party:party-security:party-security-dataaccess-port')
+    runtimeOnly project(':backend:party:party-security:party-security-dataaccess-adapter')
+}

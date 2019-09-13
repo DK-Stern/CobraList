@@ -4,8 +4,8 @@ plugins {
 
 dependencies {
     implementation project(':backend:app-properties')
-    implementation project(':backend:user:userprincipal')
-    implementation project(':backend:user:userinfo')
+    compile project(':backend:user:userprincipal')
+    compile project(':backend:user:userinfo')
     implementation project(':backend:party-persistence:party-dataaccess')
     implementation project(':backend:token-provider')
     implementation project(':backend:party-persistence:party-domain')
