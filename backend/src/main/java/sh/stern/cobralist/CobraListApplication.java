@@ -4,12 +4,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import sh.stern.cobralist.properties.AppProperties;
 
 @Controller
 @SpringBootApplication
+@EnableScheduling
 @EnableConfigurationProperties(AppProperties.class)
 public class CobraListApplication implements ErrorController {
 

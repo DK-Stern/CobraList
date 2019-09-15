@@ -130,4 +130,18 @@ public class TrackValueObjectToTrackDTOMapperTest {
         // then
         assertThat(resultedDTO.getImageHeight()).isEqualTo(expectedImageHeight);
     }
+
+    @Test
+    public void mapDuration() {
+        // given
+        final Integer expectedDuration = 640000;
+        final TrackValueObject track = new TrackValueObject();
+        track.setDurationMs(expectedDuration);
+
+        // when
+        final TrackDTO resultedDTO = testSubject.map(track);
+
+        // then
+        assertThat(resultedDTO.getDuration()).isEqualTo(expectedDuration);
+    }
 }

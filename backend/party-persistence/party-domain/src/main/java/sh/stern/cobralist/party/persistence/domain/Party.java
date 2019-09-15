@@ -43,11 +43,9 @@ public class Party {
     @JoinColumn(name = "playlist_id", referencedColumnName = "id")
     private Playlist playlist;
 
-    @Column(columnDefinition = "boolean default false")
     private Boolean active;
 
-    @Column(columnDefinition = "boolean default false")
-    private boolean archived;
+    private Boolean archived;
 
     private String description;
 

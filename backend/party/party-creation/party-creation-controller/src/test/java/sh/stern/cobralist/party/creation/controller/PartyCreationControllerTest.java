@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import sh.stern.cobralist.party.creation.api.PartyCreationRequestDTO;
 import sh.stern.cobralist.party.creation.api.PartyCreationResponseDTO;
 import sh.stern.cobralist.party.creation.api.PartyCreationService;
-import sh.stern.cobralist.party.creation.domain.PartyDTO;
 import sh.stern.cobralist.user.userprincipal.UserPrincipal;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,21 +42,6 @@ public class PartyCreationControllerTest {
 
         // when
         final ResponseEntity<PartyCreationResponseDTO> resultedResponse = testSubject.createParty(userPrincipal, partyRequest);
-
-        // then
-        assertThat(resultedResponse.getBody()).isEqualTo(expectedDTO);
-    }
-
-    @Test
-    public void getParty() {
-        // given
-        final String partyCode = "partyCode";
-
-        final PartyDTO expectedDTO = new PartyDTO();
-        when(partyServiceMock.getParty(partyCode)).thenReturn(expectedDTO);
-
-        // when
-        final ResponseEntity<PartyDTO> resultedResponse = testSubject.getParty(partyCode);
 
         // then
         assertThat(resultedResponse.getBody()).isEqualTo(expectedDTO);

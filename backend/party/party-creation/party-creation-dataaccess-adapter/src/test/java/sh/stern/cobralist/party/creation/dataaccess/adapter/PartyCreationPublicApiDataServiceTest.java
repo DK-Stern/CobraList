@@ -166,6 +166,8 @@ public class PartyCreationPublicApiDataServiceTest {
         track.setArtists(artists);
         final String albumName = "albumName";
         track.setAlbumName(albumName);
+        final int duration = 1234;
+        track.setDuration(duration);
 
         tracks.add(track);
         playlistDTO.setTracks(tracks);
@@ -174,7 +176,6 @@ public class PartyCreationPublicApiDataServiceTest {
 
         final Playlist savedPlaylist = new Playlist();
         when(playlistRepositoryMock.save(any(Playlist.class))).thenReturn(savedPlaylist);
-
 
         // when
         testSubject.savePlaylistWithTracks(partyCode, playlistDTO);
@@ -193,6 +194,7 @@ public class PartyCreationPublicApiDataServiceTest {
         softly.assertThat(expectedMusicRequest.getArtist()).isEqualTo(artists);
         softly.assertThat(expectedMusicRequest.getUri()).isEqualTo(uri);
         softly.assertThat(expectedMusicRequest.getPlaylist()).isEqualTo(savedPlaylist);
+        softly.assertThat(expectedMusicRequest.getDuration()).isEqualTo(duration);
         softly.assertAll();
     }
 }

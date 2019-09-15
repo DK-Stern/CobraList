@@ -144,18 +144,4 @@ public class PartyCreationPublicApiServiceTest {
         final PlaylistDTO resultedPlaylistDTO = playlistDTOArgumentCaptor.getValue();
         assertThat(resultedPlaylistDTO.getTracks()).containsExactly(trackDTO);
     }
-
-    @Test
-    public void getParty() {
-        // given
-        final String partyCode = "123456";
-        final PartyDTO expectedPartyDTO = new PartyDTO();
-        when(partyCreationDataServiceMock.getParty(partyCode)).thenReturn(expectedPartyDTO);
-
-        // when
-        final PartyDTO resultedDto = testSubject.getParty(partyCode);
-
-        // then
-        assertThat(resultedDto).isEqualToComparingFieldByField(expectedPartyDTO);
-    }
 }

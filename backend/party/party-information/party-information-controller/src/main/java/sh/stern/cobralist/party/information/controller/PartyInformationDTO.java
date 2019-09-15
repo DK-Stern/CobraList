@@ -1,15 +1,15 @@
 package sh.stern.cobralist.party.information.controller;
 
-import sh.stern.cobralist.party.current.track.domain.CurrentTrackDTO;
+import sh.stern.cobralist.party.current.track.domain.CurrentPlaybackDTO;
 
 public class PartyInformationDTO {
-    private CurrentTrackDTO currentTrackDTO;
+    private CurrentPlaybackDTO currentPlaybackDTO;
 
-    public CurrentTrackDTO getCurrentTrackDTO() {
-        return currentTrackDTO;
+    public CurrentPlaybackDTO getCurrentPlaybackDTO() {
+        return currentPlaybackDTO;
     }
 
-    public void setCurrentTrackDTO(CurrentTrackDTO currentTrackDTO) {
-        this.currentTrackDTO = currentTrackDTO;
+    public void setCurrentPlaybackDTO(CurrentPlaybackDTO currentPlaybackDTO) {
+        this.currentPlaybackDTO = currentPlaybackDTO;
     }
 }

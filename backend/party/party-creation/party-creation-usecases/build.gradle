@@ -4,7 +4,6 @@ plugins {
 
 dependencies {
     compile project(':backend:party:party-creation:party-creation-api')
-    runtimeOnly project(':backend:party:party-creation:party-creation-usecases')
     compile project(':backend:party:party-creation:party-creation-dataaccess-port')
     runtimeOnly project(':backend:party:party-creation:party-creation-dataaccess-adapter')
     compile project(':backend:streaming:streaming-dataaccess-port')

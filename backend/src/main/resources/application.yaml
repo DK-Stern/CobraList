@@ -26,6 +26,7 @@ spring:
             scope:
               - user-read-private
               - user-read-email
+              - user-read-playback-state
               - playlist-read-private
               - playlist-read-collaborative
               - playlist-modify-public

@@ -59,9 +59,4 @@ public class PartyCreationPublicApiService implements PartyCreationService {
 
         return partyDTOToPartyCreationResponseDTOMapper.map(partyDTO, playlistDTO);
     }
-
-    @Override
-    public PartyDTO getParty(String partyCode) {
-        return partyCreationDataService.getParty(partyCode);
-    }
 }

@@ -20,6 +20,7 @@ public class TrackValueObject {
     private String imageUrl;
     private Integer imageHeight;
     private Integer imageWidth;
+    private Integer durationMs;
 
     @JsonProperty("is_local")
     private Boolean isLocal;
@@ -114,5 +115,13 @@ public class TrackValueObject {
 
     public void setLocal(Boolean local) {
         isLocal = local;
+    }
+
+    public Integer getDurationMs() {
+        return durationMs;
+    }
+
+    public void setDurationMs(Integer durationMs) {
+        this.durationMs = durationMs;
     }
 }

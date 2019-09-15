@@ -65,6 +65,8 @@ public class PartyCreationPublicApiDataService implements PartyCreationDataServi
         party.setPassword(password);
         party.setDownVotable(downVoting);
         party.setDescription(description);
+        party.setActive(false);
+        party.setArchived(false);
         party = partyRepository.save(party);
 
         return partyToPartyDTOMapper.map(party);
@@ -93,6 +95,7 @@ public class PartyCreationPublicApiDataService implements PartyCreationDataServi
             musicRequest.setArtist(track.getArtists());
             musicRequest.setUri(track.getUri());
             musicRequest.setPlaylist(savedPlaylist);
+            musicRequest.setDuration(track.getDuration());
             musicRequestRepository.save(musicRequest);
         });
     }

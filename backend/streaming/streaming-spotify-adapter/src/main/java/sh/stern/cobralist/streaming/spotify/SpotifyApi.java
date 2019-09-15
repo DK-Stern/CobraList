@@ -9,10 +9,7 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.stereotype.Component;
 import sh.stern.cobralist.streaming.exceptions.AccessTokenExpiredException;
 import sh.stern.cobralist.streaming.spotify.errorhandler.AccessTokenExpiredErrorHandler;
-import sh.stern.cobralist.streaming.spotify.valueobjects.PagingObject;
-import sh.stern.cobralist.streaming.spotify.valueobjects.PlaylistObject;
-import sh.stern.cobralist.streaming.spotify.valueobjects.SimplifiedPlaylistObject;
-import sh.stern.cobralist.streaming.spotify.valueobjects.TrackValueObjectWrapper;
+import sh.stern.cobralist.streaming.spotify.valueobjects.*;
 import sh.stern.cobralist.streaming.spotify.valueobjects.requests.AddTracksTracksToPlaylistRequest;
 import sh.stern.cobralist.streaming.spotify.valueobjects.requests.CreatePlaylistRequest;
 
@@ -96,6 +93,19 @@ public class SpotifyApi extends ApiBinding {
         checkStatusCode(response.getStatusCode());
 
         return response.getBody();
+    }
+
+    public CurrentPlaybackObject getCurrentPlayback(String url) throws AccessTokenExpiredException {
+        LOG.info("Get current playback.");
+
+        final ResponseEntity<CurrentPlaybackObject> responseEntity = restTemplate.exchange(url,
+                HttpMethod.GET,
+                null,
+                CurrentPlaybackObject.class);
+
+        checkStatusCode(responseEntity.getStatusCode());
+
+        return responseEntity.getBody();
     }
 
     private void checkStatusCode(HttpStatus statusCode) throws AccessTokenExpiredException {

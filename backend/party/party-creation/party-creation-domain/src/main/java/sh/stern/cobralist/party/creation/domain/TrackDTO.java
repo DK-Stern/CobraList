@@ -11,6 +11,7 @@ public class TrackDTO {
     private String imageUrl;
     private Integer imageWidth;
     private Integer imageHeight;
+    private Integer duration;
 
     public String getId() {
         return id;
@@ -74,5 +75,13 @@ public class TrackDTO {
 
     public void setImageHeight(Integer imageHeight) {
         this.imageHeight = imageHeight;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 }

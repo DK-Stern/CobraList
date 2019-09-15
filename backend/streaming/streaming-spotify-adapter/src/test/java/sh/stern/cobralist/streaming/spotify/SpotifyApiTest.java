@@ -16,10 +16,7 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.web.client.RestTemplate;
 import sh.stern.cobralist.streaming.exceptions.AccessTokenExpiredException;
 import sh.stern.cobralist.streaming.spotify.errorhandler.AccessTokenExpiredErrorHandler;
-import sh.stern.cobralist.streaming.spotify.valueobjects.PagingObject;
-import sh.stern.cobralist.streaming.spotify.valueobjects.PlaylistObject;
-import sh.stern.cobralist.streaming.spotify.valueobjects.SimplifiedPlaylistObject;
-import sh.stern.cobralist.streaming.spotify.valueobjects.TrackValueObjectWrapper;
+import sh.stern.cobralist.streaming.spotify.valueobjects.*;
 import sh.stern.cobralist.streaming.spotify.valueobjects.requests.AddTracksTracksToPlaylistRequest;
 import sh.stern.cobralist.streaming.spotify.valueobjects.requests.CreatePlaylistRequest;
 
@@ -199,5 +196,34 @@ public class SpotifyApiTest {
         // when u. then
         assertThatExceptionOfType(AccessTokenExpiredException.class)
                 .isThrownBy(() -> testSubject.postTracksToPlaylist(url, spotifyUris));
+    }
+
+    @Test
+    public void getCurrentPlayback() throws AccessTokenExpiredException {
+        // given
+        final String url = "url";
+
+        final CurrentPlaybackObject expectedCurrentPlaybackObject = new CurrentPlaybackObject();
+        when(restTemplateMock.exchange(url, HttpMethod.GET, null, CurrentPlaybackObject.class))
+                .thenReturn(new ResponseEntity<>(expectedCurrentPlaybackObject, HttpStatus.OK));
+
+        // when
+        final CurrentPlaybackObject resultedCurrentPlayback = testSubject.getCurrentPlayback(url);
+
+        // then
+        assertThat(resultedCurrentPlayback).isEqualTo(expectedCurrentPlaybackObject);
+    }
+
+    @Test
+    public void getCurrentPlaybackThrowsExceptionOnResponseStatusUnauthorized() throws AccessTokenExpiredException {
+        // given
+        final String url = "url";
+
+        when(restTemplateMock.exchange(url, HttpMethod.GET, null, CurrentPlaybackObject.class))
+                .thenReturn(new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED));
+
+        // when u. then
+        assertThatExceptionOfType(AccessTokenExpiredException.class)
+                .isThrownBy(() -> testSubject.getCurrentPlayback(url));
     }
 }

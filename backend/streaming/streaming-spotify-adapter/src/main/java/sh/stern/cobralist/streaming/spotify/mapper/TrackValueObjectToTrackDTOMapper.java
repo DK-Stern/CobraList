@@ -17,6 +17,7 @@ public class TrackValueObjectToTrackDTOMapper {
         trackDTO.setImageUrl(track.getImageUrl());
         trackDTO.setImageWidth(track.getImageWidth());
         trackDTO.setImageHeight(track.getImageHeight());
+        trackDTO.setDuration(track.getDurationMs());
 
         return trackDTO;
     }

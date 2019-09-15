@@ -23,6 +23,8 @@ public class MusicRequest {
 
     private Integer imageWidth;
 
+    private Integer duration;
+
     @ElementCollection
     @CollectionTable(name = "music_request_artist", joinColumns = @JoinColumn(name = "music_request_id"))
     @Column(name = "artist")
@@ -100,5 +102,13 @@ public class MusicRequest {
 
     public void setPlaylist(Playlist playlist) {
         this.playlist = playlist;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 }

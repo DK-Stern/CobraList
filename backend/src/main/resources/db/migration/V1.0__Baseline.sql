@@ -27,7 +27,7 @@ CREATE TABLE party
     password      VARCHAR(255),
     vote_down     BOOLEAN DEFAULT TRUE,
     creation_date DATE                  NOT NULL,
-    archived      BOOLEAN DEFAULT FALSE,
+    archived      BOOLEAN DEFAULT FALSE NOT NULL,
     active        BOOLEAN DEFAULT FALSE NOT NULL,
     description   VARCHAR(500),
     PRIMARY KEY (id),
@@ -79,6 +79,7 @@ CREATE TABLE music_request
     image_url                VARCHAR(255),
     image_width              INT,
     image_height             INT,
+    duration                 INT,
     PRIMARY KEY (id),
     CONSTRAINT `fk_music_request_playlist_id`
         FOREIGN KEY (playlist_id) REFERENCES playlist (id)
