@@ -120,7 +120,7 @@ public class SpotifyPlaylistPublicApiService implements PlaylistService {
     public List<TrackDTO> getTracksFromPlaylist(String userName, String playlistId) {
         spotifyApi.setAuthentication(StreamingProvider.spotify, userName);
 
-        final String playlistUrl = String.format("%splaylists/%s/tracks?fields=items(track(id,is_local,uri,name,artists,album(name,images))),next,href,previous,limit,offset,total", API_URL, playlistId);
+        final String playlistUrl = String.format("%splaylists/%s/tracks?fields=items(track(id,is_local,duration_ms,uri,name,artists,album(name,images))),next,href,previous,limit,offset,total", API_URL, playlistId);
         PagingObject<TrackValueObjectWrapper> pagingObject = getMusicTracksFromPlaylist(userName, playlistUrl);
         final List<TrackValueObjectWrapper> tracks = new ArrayList<>(pagingObject.getItems());
 

@@ -127,7 +127,7 @@ public class PartyCreationPublicApiDataServiceTest {
         when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(party));
 
         final ArgumentCaptor<Playlist> playlistArgumentCaptor = ArgumentCaptor.forClass(Playlist.class);
-        when(playlistRepositoryMock.save(playlistArgumentCaptor.capture())).thenReturn(new Playlist());
+        when(playlistRepositoryMock.saveAndFlush(playlistArgumentCaptor.capture())).thenReturn(new Playlist());
 
         // when
         testSubject.savePlaylistWithTracks(partyCode, playlistDTO);
@@ -175,14 +175,14 @@ public class PartyCreationPublicApiDataServiceTest {
         when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(new Party()));
 
         final Playlist savedPlaylist = new Playlist();
-        when(playlistRepositoryMock.save(any(Playlist.class))).thenReturn(savedPlaylist);
+        when(playlistRepositoryMock.saveAndFlush(any(Playlist.class))).thenReturn(savedPlaylist);
 
         // when
         testSubject.savePlaylistWithTracks(partyCode, playlistDTO);
 
         // then
         final ArgumentCaptor<MusicRequest> musicRequestArgumentCaptor = ArgumentCaptor.forClass(MusicRequest.class);
-        verify(musicRequestRepositoryMock).save(musicRequestArgumentCaptor.capture());
+        verify(musicRequestRepositoryMock).saveAndFlush(musicRequestArgumentCaptor.capture());
         final MusicRequest expectedMusicRequest = musicRequestArgumentCaptor.getValue();
 
         final SoftAssertions softly = new SoftAssertions();

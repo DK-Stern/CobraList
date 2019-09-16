@@ -233,7 +233,7 @@ public class SpotifyPlaylistPublicApiServiceTest {
         final String playlistId = "playlistId";
         final String userName = "username";
 
-        final String url = "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks?fields=items(track(id,is_local,uri,name,artists,album(name,images))),next,href,previous,limit,offset,total";
+        final String url = "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks?fields=items(track(id,is_local,duration_ms,uri,name,artists,album(name,images))),next,href,previous,limit,offset,total";
         when(spotifyApiMock.getTracksFromPlaylist(url)).thenReturn(new PagingObject<>());
 
         // when
@@ -249,7 +249,7 @@ public class SpotifyPlaylistPublicApiServiceTest {
         final String playlistId = "playlistId";
         final String userName = "username";
 
-        final String url = "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks?fields=items(track(id,is_local,uri,name,artists,album(name,images))),next,href,previous,limit,offset,total";
+        final String url = "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks?fields=items(track(id,is_local,duration_ms,uri,name,artists,album(name,images))),next,href,previous,limit,offset,total";
         final PagingObject<TrackValueObjectWrapper> pagingObject = new PagingObject<>();
         final TrackValueObjectWrapper trackValueObjectWrapper = new TrackValueObjectWrapper();
         final TrackValueObject track = new TrackValueObject();
@@ -274,7 +274,7 @@ public class SpotifyPlaylistPublicApiServiceTest {
         final String playlistId = "playlistId";
         final String userName = "username";
 
-        final String url = "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks?fields=items(track(id,is_local,uri,name,artists,album(name,images))),next,href,previous,limit,offset,total";
+        final String url = "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks?fields=items(track(id,is_local,duration_ms,uri,name,artists,album(name,images))),next,href,previous,limit,offset,total";
         final PagingObject<TrackValueObjectWrapper> pagingObject = new PagingObject<>();
 
         final TrackValueObjectWrapper trackValueObjectWrapper = new TrackValueObjectWrapper();
@@ -307,7 +307,7 @@ public class SpotifyPlaylistPublicApiServiceTest {
         final String playlistId = "playlistId";
         final String userName = "username";
 
-        final String url = "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks?fields=items(track(id,is_local,uri,name,artists,album(name,images))),next,href,previous,limit,offset,total";
+        final String url = "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks?fields=items(track(id,is_local,duration_ms,uri,name,artists,album(name,images))),next,href,previous,limit,offset,total";
         final PagingObject<TrackValueObjectWrapper> firstPagingObject = new PagingObject<>();
         final String urlForNextTracks = "urlForNextTracks";
         firstPagingObject.setNext(urlForNextTracks);
@@ -345,7 +345,7 @@ public class SpotifyPlaylistPublicApiServiceTest {
         final String playlistId = "playlistId";
         final String userName = "username";
 
-        final String url = "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks?fields=items(track(id,is_local,uri,name,artists,album(name,images))),next,href,previous,limit,offset,total";
+        final String url = "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks?fields=items(track(id,is_local,duration_ms,uri,name,artists,album(name,images))),next,href,previous,limit,offset,total";
         final PagingObject<TrackValueObjectWrapper> pagingObject = new PagingObject<>();
         final TrackValueObjectWrapper trackValueObjectWrapper = new TrackValueObjectWrapper();
         final TrackValueObject track = new TrackValueObject();
@@ -371,7 +371,7 @@ public class SpotifyPlaylistPublicApiServiceTest {
         final String playlistId = "playlistId";
         final String userName = "username";
 
-        final String url = "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks?fields=items(track(id,is_local,uri,name,artists,album(name,images))),next,href,previous,limit,offset,total";
+        final String url = "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks?fields=items(track(id,is_local,duration_ms,uri,name,artists,album(name,images))),next,href,previous,limit,offset,total";
 
         final PagingObject<TrackValueObjectWrapper> firstPagingObject = new PagingObject<>();
         final String urlForNextTracks = "urlForNextTracks";

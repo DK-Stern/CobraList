@@ -22,6 +22,10 @@ public class Playlist {
     @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL)
     private Set<MusicRequest> musicRequestSet;
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }
@@ -48,5 +52,13 @@ public class Playlist {
 
     public void setParty(Party party) {
         this.party = party;
+    }
+
+    public Set<MusicRequest> getMusicRequestSet() {
+        return musicRequestSet;
+    }
+
+    public void setMusicRequestSet(Set<MusicRequest> musicRequestSet) {
+        this.musicRequestSet = musicRequestSet;
     }
 }

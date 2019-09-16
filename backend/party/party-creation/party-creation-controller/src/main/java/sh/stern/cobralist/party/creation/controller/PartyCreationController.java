@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sh.stern.cobralist.party.creation.api.PartyCreationRequestDTO;
-import sh.stern.cobralist.party.creation.api.PartyCreationResponseDTO;
 import sh.stern.cobralist.party.creation.api.PartyCreationService;
+import sh.stern.cobralist.party.information.domain.PartyInformationDTO;
 import sh.stern.cobralist.security.CurrentUser;
 import sh.stern.cobralist.user.userprincipal.UserPrincipal;
 
@@ -26,8 +26,8 @@ public class PartyCreationController {
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/create")
-    public ResponseEntity<PartyCreationResponseDTO> createParty(@CurrentUser UserPrincipal userPrincipal,
-                                                                @RequestBody PartyCreationRequestDTO partyRequest) {
-        return ResponseEntity.ok(partyService.createParty(userPrincipal.getUsername(), userPrincipal.getId(), partyRequest));
+    public ResponseEntity<PartyInformationDTO> createParty(@CurrentUser UserPrincipal userPrincipal,
+                                                           @RequestBody PartyCreationRequestDTO partyRequest) {
+        return ResponseEntity.ok(partyService.createParty(userPrincipal, partyRequest));
     }
 }

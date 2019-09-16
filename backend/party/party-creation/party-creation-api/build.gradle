@@ -3,5 +3,6 @@ plugins {
 }
 
 dependencies {
-    compile project(":backend:party:party-creation:party-creation-domain")
+    compile project(":backend:party:party-information:party-information-domain")
+    compile project(":backend:user:userprincipal")
 }

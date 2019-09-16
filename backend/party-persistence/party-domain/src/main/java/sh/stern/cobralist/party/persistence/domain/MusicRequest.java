@@ -36,6 +36,13 @@ public class MusicRequest {
     @JoinColumn(name = "playlist_id")
     private Playlist playlist;
 
+    @OneToMany(mappedBy = "musicRequest", cascade = CascadeType.ALL)
+    private List<Vote> votes;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }
@@ -110,5 +117,13 @@ public class MusicRequest {
 
     public void setDuration(Integer duration) {
         this.duration = duration;
+    }
+
+    public List<Vote> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(List<Vote> votes) {
+        this.votes = votes;
     }
 }

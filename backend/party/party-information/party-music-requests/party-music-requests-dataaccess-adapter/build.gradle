@@ -1,3 +1,9 @@
 plugins {
     id 'java'
 }
+
+dependencies {
+    compile project(':backend:party:party-information:party-music-requests:party-music-requests-dataaccess-port')
+    compile project(':backend:party-persistence:party-dataaccess')
+    compile project(':backend:party-persistence:party-exceptions')
+}

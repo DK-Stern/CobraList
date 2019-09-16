@@ -40,7 +40,7 @@ public class Party {
     private Set<User> joinedUsers;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "playlist_id", referencedColumnName = "id")
+    @JoinColumn(name = "playlist_id")
     private Playlist playlist;
 
     private Boolean active;

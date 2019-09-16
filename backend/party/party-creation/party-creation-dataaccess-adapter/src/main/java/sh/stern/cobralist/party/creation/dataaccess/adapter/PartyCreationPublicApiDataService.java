@@ -82,7 +82,10 @@ public class PartyCreationPublicApiDataService implements PartyCreationDataServi
         playlist.setName(playlistDTO.getName());
         playlist.setPlaylistId(playlistDTO.getPlaylistId());
         playlist.setParty(party);
-        final Playlist savedPlaylist = playlistRepository.save(playlist);
+        final Playlist savedPlaylist = playlistRepository.saveAndFlush(playlist);
+
+        party.setPlaylist(playlist);
+        partyRepository.saveAndFlush(party);
 
         final List<TrackDTO> tracks = playlistDTO.getTracks();
         tracks.forEach((TrackDTO track) -> {
@@ -96,7 +99,7 @@ public class PartyCreationPublicApiDataService implements PartyCreationDataServi
             musicRequest.setUri(track.getUri());
             musicRequest.setPlaylist(savedPlaylist);
             musicRequest.setDuration(track.getDuration());
-            musicRequestRepository.save(musicRequest);
+            musicRequestRepository.saveAndFlush(musicRequest);
         });
     }
 }

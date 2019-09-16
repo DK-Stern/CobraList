@@ -7,8 +7,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 import sh.stern.cobralist.party.creation.api.PartyCreationRequestDTO;
-import sh.stern.cobralist.party.creation.api.PartyCreationResponseDTO;
 import sh.stern.cobralist.party.creation.api.PartyCreationService;
+import sh.stern.cobralist.party.information.domain.PartyInformationDTO;
 import sh.stern.cobralist.user.userprincipal.UserPrincipal;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,11 +37,11 @@ public class PartyCreationControllerTest {
         userPrincipal.setEmail(email);
         final PartyCreationRequestDTO partyRequest = new PartyCreationRequestDTO();
 
-        final PartyCreationResponseDTO expectedDTO = new PartyCreationResponseDTO();
-        when(partyServiceMock.createParty(email, userId, partyRequest)).thenReturn(expectedDTO);
+        final PartyInformationDTO expectedDTO = new PartyInformationDTO();
+        when(partyServiceMock.createParty(userPrincipal, partyRequest)).thenReturn(expectedDTO);
 
         // when
-        final ResponseEntity<PartyCreationResponseDTO> resultedResponse = testSubject.createParty(userPrincipal, partyRequest);
+        final ResponseEntity<PartyInformationDTO> resultedResponse = testSubject.createParty(userPrincipal, partyRequest);
 
         // then
         assertThat(resultedResponse.getBody()).isEqualTo(expectedDTO);

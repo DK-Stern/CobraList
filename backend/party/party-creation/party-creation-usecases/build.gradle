@@ -8,6 +8,8 @@ dependencies {
     runtimeOnly project(':backend:party:party-creation:party-creation-dataaccess-adapter')
     compile project(':backend:streaming:streaming-dataaccess-port')
     runtimeOnly project(':backend:streaming:streaming-dataaccess-adapter')
+    compile project(':backend:party:party-information:party-information-api')
+    runtimeOnly project(':backend:party:party-information:party-information-usecases')
 
     compile('org.springframework:spring-context:' + springVersion)
 

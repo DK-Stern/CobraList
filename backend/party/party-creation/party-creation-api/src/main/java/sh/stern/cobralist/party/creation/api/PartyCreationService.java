@@ -1,5 +1,8 @@
 package sh.stern.cobralist.party.creation.api;
 
+import sh.stern.cobralist.party.information.domain.PartyInformationDTO;
+import sh.stern.cobralist.user.userprincipal.UserPrincipal;
+
 public interface PartyCreationService {
-    PartyCreationResponseDTO createParty(String username, Long userId, PartyCreationRequestDTO partyDTO);
+    PartyInformationDTO createParty(UserPrincipal userPrincipal, PartyCreationRequestDTO partyDTO);
 }

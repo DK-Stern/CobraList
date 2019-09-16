@@ -1,3 +1,10 @@
 plugins {
     id 'java'
 }
+
+dependencies {
+    compile project(':backend:party:party-information:party-music-requests:party-music-requests-api')
+    compile project(':backend:party:party-information:party-music-requests:party-music-requests-dataaccess-port')
+    runtimeOnly project(':backend:party:party-information:party-music-requests:party-music-requests-dataaccess-adapter')
+    compile('org.springframework:spring-context:' + springVersion)
+}

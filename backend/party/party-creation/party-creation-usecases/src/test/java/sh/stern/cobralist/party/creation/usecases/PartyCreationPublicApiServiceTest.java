@@ -13,8 +13,11 @@ import sh.stern.cobralist.party.creation.domain.PartyDTO;
 import sh.stern.cobralist.party.creation.domain.PlaylistDTO;
 import sh.stern.cobralist.party.creation.domain.TrackDTO;
 import sh.stern.cobralist.party.creation.usecases.mapper.PartyDTOToPartyCreationResponseDTOMapper;
+import sh.stern.cobralist.party.information.api.PartyInformationService;
+import sh.stern.cobralist.party.information.domain.PartyInformationDTO;
 import sh.stern.cobralist.streaming.api.PlaylistService;
 import sh.stern.cobralist.streaming.dataaccess.port.StreamingDataService;
+import sh.stern.cobralist.user.userprincipal.UserPrincipal;
 
 import java.util.Collections;
 import java.util.List;
@@ -42,7 +45,7 @@ public class PartyCreationPublicApiServiceTest {
     private StreamingDataService streamingDataServiceMock;
 
     @Mock
-    private PartyDTOToPartyCreationResponseDTOMapper partyDTOToPartyCreationResponseDTOMapperMock;
+    private PartyInformationService partyInformationServiceMock;
 
     @Before
     public void setUp() {
@@ -50,8 +53,8 @@ public class PartyCreationPublicApiServiceTest {
                 playlistServiceMock,
                 partyCreationDataServiceMock,
                 streamingDataServiceMock,
-                partyDTOToPartyCreationResponseDTOMapperMock,
-                partyCodeGeneratorMock);
+                partyCodeGeneratorMock,
+                partyInformationServiceMock);
     }
 
     @Test
@@ -60,6 +63,9 @@ public class PartyCreationPublicApiServiceTest {
         final String partyCode = "1234s56";
         final long userId = 123L;
         final String username = "username";
+        final UserPrincipal userPrincipal = new UserPrincipal();
+        userPrincipal.setEmail(username);
+        userPrincipal.setId(userId);
 
         final PartyCreationRequestDTO partyRequestDTO = new PartyCreationRequestDTO();
         final String partyName = "PartyName";
@@ -86,15 +92,15 @@ public class PartyCreationPublicApiServiceTest {
         partyDTO.setPartyCode(partyCode);
         when(partyCreationDataServiceMock.createParty(userId, partyName, partyPassword, downVoting, partyDescription, partyCode)).thenReturn(partyDTO);
 
-        final PartyCreationResponseDTO expectedPartyResponseDTO = new PartyCreationResponseDTO();
-        when(partyDTOToPartyCreationResponseDTOMapperMock.map(partyDTO, playlistDTO)).thenReturn(expectedPartyResponseDTO);
+        final PartyInformationDTO expectedPartyInformationDTO = new PartyInformationDTO();
+        when(partyInformationServiceMock.getPartyInformation(userPrincipal, partyCode)).thenReturn(expectedPartyInformationDTO);
 
         // when
-        final PartyCreationResponseDTO resultedPartyResponseDTO = testSubject.createParty(username, userId, partyRequestDTO);
+        final PartyInformationDTO resultedPartyInformationDTO = testSubject.createParty(userPrincipal, partyRequestDTO);
 
         // then
         verify(partyCreationDataServiceMock).savePlaylistWithTracks(partyCode, playlistDTO);
-        assertThat(resultedPartyResponseDTO).isEqualTo(expectedPartyResponseDTO);
+        assertThat(resultedPartyInformationDTO).isEqualTo(expectedPartyInformationDTO);
     }
 
     @Test
@@ -102,6 +108,10 @@ public class PartyCreationPublicApiServiceTest {
         // given
         final String partyCode = "123456";
         final long userId = 123L;
+        final String username = "username";
+        final UserPrincipal userPrincipal = new UserPrincipal();
+        userPrincipal.setEmail(username);
+        userPrincipal.setId(userId);
 
         final PartyCreationRequestDTO partyRequestDTO = new PartyCreationRequestDTO();
         final String partyName = "PartyName";
@@ -113,7 +123,6 @@ public class PartyCreationPublicApiServiceTest {
         @SuppressWarnings("squid:S2068") // credentials are allowed in tests
         final String partyPassword = "partyPassword";
         partyRequestDTO.setPassword(partyPassword);
-        final String username = "username";
         final String basePlaylistId = "basePlaylistId";
         partyRequestDTO.setBasePlaylistId(basePlaylistId);
 
@@ -136,11 +145,11 @@ public class PartyCreationPublicApiServiceTest {
         when(partyCreationDataServiceMock.createParty(userId, partyName, partyPassword, downVoting, partyDescription, partyCode)).thenReturn(partyDTO);
 
         // when
-        testSubject.createParty(username, userId, partyRequestDTO);
+        testSubject.createParty(userPrincipal, partyRequestDTO);
 
         // then
         final ArgumentCaptor<PlaylistDTO> playlistDTOArgumentCaptor = ArgumentCaptor.forClass(PlaylistDTO.class);
-        verify(partyDTOToPartyCreationResponseDTOMapperMock).map(eq(partyDTO), playlistDTOArgumentCaptor.capture());
+        verify(partyCreationDataServiceMock).savePlaylistWithTracks(eq(partyCode), playlistDTOArgumentCaptor.capture());
         final PlaylistDTO resultedPlaylistDTO = playlistDTOArgumentCaptor.getValue();
         assertThat(resultedPlaylistDTO.getTracks()).containsExactly(trackDTO);
     }

@@ -1,0 +1,9 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    compile project(":backend:party:party-information:current-party-track:current-party-track-domain")
+    compile project(":backend:party:party-information:party-music-requests:party-music-requests-api")
+    compile project(":backend:user:userprincipal")
+}

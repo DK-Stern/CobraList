@@ -39,6 +39,9 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "party_id"))
     private Set<Party> joinedParties;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Vote> votes;
+
     public Long getId() {
         return id;
     }

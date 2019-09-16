@@ -20,6 +20,8 @@ public class TrackValueObject {
     private String imageUrl;
     private Integer imageHeight;
     private Integer imageWidth;
+
+    @JsonProperty("duration_ms")
     private Integer durationMs;
 
     @JsonProperty("is_local")

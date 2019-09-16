@@ -100,10 +100,11 @@ CREATE TABLE music_request_artist
 
 CREATE TABLE vote
 (
-    id               BIGINT NOT NULL AUTO_INCREMENT,
-    music_request_id BIGINT NOT NULL,
+    id               BIGINT                NOT NULL AUTO_INCREMENT,
+    music_request_id BIGINT                NOT NULL,
     user_id          BIGINT,
     guest_id         BIGINT,
+    down_vote        BOOLEAN DEFAULT FALSE NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT `fk_voted_music_request_id`
         FOREIGN KEY (music_request_id) REFERENCES music_request (id)

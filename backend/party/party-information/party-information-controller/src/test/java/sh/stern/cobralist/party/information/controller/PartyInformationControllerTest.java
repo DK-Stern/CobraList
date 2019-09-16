@@ -6,13 +6,11 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
-import sh.stern.cobralist.party.current.track.api.CurrentTrackService;
-import sh.stern.cobralist.party.current.track.domain.CurrentPlaybackDTO;
-import sh.stern.cobralist.party.security.api.PartySecurityService;
+import sh.stern.cobralist.party.information.domain.PartyInformationDTO;
+import sh.stern.cobralist.party.information.api.PartyInformationService;
 import sh.stern.cobralist.user.userprincipal.UserPrincipal;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -21,42 +19,26 @@ public class PartyInformationControllerTest {
     private PartyInformationController testSubject;
 
     @Mock
-    private PartySecurityService partySecurityServiceMock;
-
-    @Mock
-    private CurrentTrackService currentTrackServiceMock;
+    private PartyInformationService partyInformationServiceMock;
 
     @Before
     public void setUp() {
-        testSubject = new PartyInformationController(partySecurityServiceMock, currentTrackServiceMock);
+        testSubject = new PartyInformationController(partyInformationServiceMock);
     }
 
     @Test
-    public void verifyGetCurrentTrackCallsPartySecurityServiceForPartyParticipantValidation() {
-        // given
-        final String partyCode = "partyCode";
-        final UserPrincipal userPrincipal = new UserPrincipal();
-
-        // when
-        testSubject.getPartyInformation(userPrincipal, partyCode);
-
-        // then
-        verify(partySecurityServiceMock).checkGetPartyInformationPermission(userPrincipal, partyCode);
-    }
-
-    @Test
-    public void getCurrentTrackFromParty() {
+    public void getPartyInformation() {
         // given
         final UserPrincipal userPrincipal = new UserPrincipal();
         final String partyCode = "partyCode";
 
-        final CurrentPlaybackDTO expectedCurrentPlaybackDTO = new CurrentPlaybackDTO();
-        when(currentTrackServiceMock.getCurrentTrack(partyCode)).thenReturn(expectedCurrentPlaybackDTO);
+        final PartyInformationDTO expectedPartyInformationDTO = new PartyInformationDTO();
+        when(partyInformationServiceMock.getPartyInformation(userPrincipal, partyCode)).thenReturn(expectedPartyInformationDTO);
 
         // when
         final ResponseEntity<PartyInformationDTO> partyInformationResponse = testSubject.getPartyInformation(userPrincipal, partyCode);
 
         // then
-        assertThat(partyInformationResponse.getBody().getCurrentPlaybackDTO()).isEqualTo(expectedCurrentPlaybackDTO);
+        assertThat(partyInformationResponse.getBody()).isEqualTo(expectedPartyInformationDTO);
     }
 }
