@@ -6,15 +6,15 @@ import sh.stern.cobralist.party.music.requests.MusicRequestDTO;
 import java.util.List;
 
 public class PartyInformationDTO {
-    private CurrentPlaybackDTO currentPlaybackDTO;
+    private CurrentPlaybackDTO currentPlayback;
     private List<MusicRequestDTO> musicRequests;
 
-    public CurrentPlaybackDTO getCurrentPlaybackDTO() {
-        return currentPlaybackDTO;
+    public CurrentPlaybackDTO getCurrentPlayback() {
+        return currentPlayback;
     }
 
-    public void setCurrentPlaybackDTO(CurrentPlaybackDTO currentPlaybackDTO) {
-        this.currentPlaybackDTO = currentPlaybackDTO;
+    public void setCurrentPlayback(CurrentPlaybackDTO currentPlayback) {
+        this.currentPlayback = currentPlayback;
     }
 
     public List<MusicRequestDTO> getMusicRequests() {

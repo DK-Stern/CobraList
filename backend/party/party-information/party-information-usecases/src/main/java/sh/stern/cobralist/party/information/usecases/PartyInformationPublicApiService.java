@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import sh.stern.cobralist.party.current.track.api.CurrentTrackService;
-import sh.stern.cobralist.party.information.domain.PartyInformationDTO;
 import sh.stern.cobralist.party.information.api.PartyInformationService;
+import sh.stern.cobralist.party.information.domain.PartyInformationDTO;
 import sh.stern.cobralist.party.music.requests.MusicRequestDTO;
 import sh.stern.cobralist.party.music.requests.MusicRequestService;
 import sh.stern.cobralist.party.security.api.PartySecurityService;
@@ -36,7 +36,7 @@ public class PartyInformationPublicApiService implements PartyInformationService
         partySecurityService.checkGetPartyInformationPermission(userPrincipal, partyCode);
 
         final PartyInformationDTO partyInformationDTO = new PartyInformationDTO();
-        partyInformationDTO.setCurrentPlaybackDTO(currentTrackService.getCurrentTrack(partyCode));
+        partyInformationDTO.setCurrentPlayback(currentTrackService.getCurrentTrack(partyCode));
 
         final List<MusicRequestDTO> musicRequests = musicRequestService.getMusicRequests(partyCode, userPrincipal.getId(), hasRoleUser(userPrincipal));
         partyInformationDTO.setMusicRequests(musicRequests);

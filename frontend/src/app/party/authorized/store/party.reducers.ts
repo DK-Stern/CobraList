@@ -1,34 +1,22 @@
 import {Action, createReducer, on} from '@ngrx/store';
 import {saveParty} from './party.actions';
+import {PartyInformationDto} from "./party-information.dto";
 
-export interface PartyState {
-  id: string | null,
-  name: string | null,
-  password: string | null,
-  downVoting: boolean | null,
-  description: string | null
-}
 
-export const initialPartyState: PartyState = {
-  id: null,
-  name: null,
-  password: null,
-  downVoting: null,
-  description: null
+export const initialPartyState: PartyInformationDto = {
+  currentPlayback: null,
+  musicRequests: null
 };
 
 const partyReducers = createReducer(
   initialPartyState,
   on(saveParty, (state, {party}) => ({
     ...state,
-    id: party.partyCode,
-    name: party.partyName,
-    password: party.password,
-    downVoting: party.downVoting,
-    description: party.description
+    currentPlayback: party.currentPlayback,
+    musicRequests: party.musicRequests
   }))
 );
 
-export function reducer(state: PartyState | undefined, action: Action) {
+export function reducer(state: PartyInformationDto | undefined, action: Action) {
   return partyReducers(state, action);
 }

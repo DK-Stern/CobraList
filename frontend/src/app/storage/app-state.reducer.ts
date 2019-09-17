@@ -1,5 +1,5 @@
 import * as auth from '../authentication/store/auth.reducers';
-import * as party from '../party/authorized/store/party.reducers';
+import {PartyInformationDto} from "../party/authorized/store/party-information.dto";
 
 export const AppStateReducer = {
   authentication: auth.reducer
@@ -7,5 +7,5 @@ export const AppStateReducer = {
 
 export class AppState {
   authentication: auth.AuthState | null;
-  party: party.PartyState | null;
+  party: PartyInformationDto | null;
 }

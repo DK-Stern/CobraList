@@ -3,7 +3,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {PartyDetailsComponent} from './party-details.component';
 import {ActivatedRoute} from '@angular/router';
 import {of} from 'rxjs';
-import {PartyDto} from '../party.dto';
+import {PartyDetailsDto} from './party-details.dto';
 
 describe('PartyDetailsComponent', () => {
   let component: PartyDetailsComponent;
@@ -11,7 +11,7 @@ describe('PartyDetailsComponent', () => {
   let activatedRouteStub;
 
   beforeEach(async(() => {
-    let partyObject: PartyDto = {
+    let partyObject: PartyDetailsDto = {
       partyCode: "",
       partyName: "",
       downVoting: true,

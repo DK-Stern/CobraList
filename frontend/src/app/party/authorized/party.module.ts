@@ -5,7 +5,7 @@ import {PartyRoutingModule} from './party-routing.module';
 import {PartyDetailsComponent} from './party-details/party-details.component';
 import {PartyComponent} from './party/party.component';
 import {EffectsModule} from '@ngrx/effects';
-import {PartyEffect} from './party.effect';
+import {PartyEffect} from './store/party.effect';
 
 @NgModule({
   declarations: [PartyDetailsComponent, PartyComponent],

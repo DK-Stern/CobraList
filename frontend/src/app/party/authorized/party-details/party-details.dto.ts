@@ -1,4 +1,4 @@
-export interface PartyDto {
+export interface PartyDetailsDto {
   partyCode: string,
   partyName: string,
   password: string,

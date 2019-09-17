@@ -3,6 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
+  partyRefreshTime: 5000,
   production: false,
   apiUrl: 'http://localhost:8080',
   oauthRedirect: 'http://localhost:4200/oauth2/redirect'

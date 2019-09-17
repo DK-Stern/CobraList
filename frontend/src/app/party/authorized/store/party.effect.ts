@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {PartyApiService} from './party-api.service';
-import {errorLoadingParty, loadParty, saveParty} from './store/party.actions';
+import {PartyApiService} from '../party-api.service';
+import {errorLoadingParty, loadParty, saveParty} from './party.actions';
 import {catchError, exhaustMap, map} from 'rxjs/operators';
 import {of} from 'rxjs';
 
@@ -14,7 +14,7 @@ export class PartyEffect {
 
   loadParty$ = createEffect(() => this.actions$.pipe(
     ofType(loadParty),
-    exhaustMap(action => this.partyApiService.getParty(action.id).pipe(
+    exhaustMap(action => this.partyApiService.getPartyInformation(action.partyCode).pipe(
       map(party => saveParty({party: party})),
       catchError(error => of(errorLoadingParty({error: error.toString()})))
       )

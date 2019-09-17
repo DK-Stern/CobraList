@@ -67,7 +67,7 @@ public class PartyInformationPublicApiServiceTest {
         final PartyInformationDTO partyInformation = testSubject.getPartyInformation(userPrincipal, partyCode);
 
         // then
-        assertThat(partyInformation.getCurrentPlaybackDTO()).isEqualTo(expectedCurrentPlaybackDTO);
+        assertThat(partyInformation.getCurrentPlayback()).isEqualTo(expectedCurrentPlaybackDTO);
     }
 
     @Test

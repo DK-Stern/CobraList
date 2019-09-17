@@ -1,14 +1,14 @@
 import {createAction, props} from '@ngrx/store';
-import {PartyDto} from '../party.dto';
+import {PartyInformationDto} from "./party-information.dto";
 
 export const saveParty = createAction(
   '[Party Creation Component] Save Party',
-  props<{ party: PartyDto }>()
+  props<{ party: PartyInformationDto }>()
 );
 
 export const loadParty = createAction(
   '[Party Resolver] Load Party from API',
-  props<{ id: string; }>()
+  props<{ partyCode: string; }>()
 );
 
 export const errorLoadingParty = createAction(
