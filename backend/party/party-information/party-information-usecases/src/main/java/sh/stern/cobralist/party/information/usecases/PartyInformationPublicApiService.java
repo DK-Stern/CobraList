@@ -36,6 +36,7 @@ public class PartyInformationPublicApiService implements PartyInformationService
         partySecurityService.checkGetPartyInformationPermission(userPrincipal, partyCode);
 
         final PartyInformationDTO partyInformationDTO = new PartyInformationDTO();
+        partyInformationDTO.setPartyCode(partyCode);
         partyInformationDTO.setCurrentPlayback(currentTrackService.getCurrentTrack(partyCode));
 
         final List<MusicRequestDTO> musicRequests = musicRequestService.getMusicRequests(partyCode, userPrincipal.getId(), hasRoleUser(userPrincipal));

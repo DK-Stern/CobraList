@@ -6,8 +6,17 @@ import sh.stern.cobralist.party.music.requests.MusicRequestDTO;
 import java.util.List;
 
 public class PartyInformationDTO {
+    private String partyCode;
     private CurrentPlaybackDTO currentPlayback;
     private List<MusicRequestDTO> musicRequests;
+
+    public String getPartyCode() {
+        return partyCode;
+    }
+
+    public void setPartyCode(String partyCode) {
+        this.partyCode = partyCode;
+    }
 
     public CurrentPlaybackDTO getCurrentPlayback() {
         return currentPlayback;

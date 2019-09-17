@@ -177,7 +177,7 @@ public class JoinPartyPublicApiServiceTest {
 
         when(joinPartyDataServiceMock.getPartyPassword(partyCode)).thenReturn(partyPassword);
 
-        when(joinPartyDataServiceMock.countGuestName(guestName)).thenReturn(1L);
+        when(joinPartyDataServiceMock.countGuestName(guestName, joinPartyDto.getPartyCode())).thenReturn(1L);
 
         // when u. then
         assertThatCode(() -> testSubject.joinParty(joinPartyDto))

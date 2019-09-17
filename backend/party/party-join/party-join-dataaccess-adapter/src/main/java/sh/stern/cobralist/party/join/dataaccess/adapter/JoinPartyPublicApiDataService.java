@@ -40,7 +40,7 @@ public class JoinPartyPublicApiDataService implements JoinPartyDataService {
         final Guest savedGuest = guestRepository.saveAndFlush(guest);
 
         final GuestCreatedDTO guestCreatedDTO = new GuestCreatedDTO();
-        guestCreatedDTO.setGuestId(party.getId());
+        guestCreatedDTO.setGuestId(savedGuest.getId());
         guestCreatedDTO.setPartyCode(party.getPartyCode());
         guestCreatedDTO.setName(savedGuest.getName());
 
@@ -61,8 +61,10 @@ public class JoinPartyPublicApiDataService implements JoinPartyDataService {
     }
 
     @Override
-    public Long countGuestName(String guestName) {
-        return guestRepository.countGuestByName(guestName);
+    public Long countGuestName(String guestName, String partyCode) {
+        final Party party = partyRepository.findByPartyCode(partyCode)
+                .orElseThrow(() -> new PartyNotFoundException(partyCode));
+        return guestRepository.countGuestByNameAndParty(guestName, party);
     }
 
     @Override

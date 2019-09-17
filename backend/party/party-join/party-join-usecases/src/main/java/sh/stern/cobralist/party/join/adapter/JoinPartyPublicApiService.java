@@ -68,7 +68,7 @@ public class JoinPartyPublicApiService implements JoinPartyService {
     }
 
     private void checkGuestNameAlreadyExist(JoinPartyDTO joinPartyDto) {
-        final Long countedGuestName = joinPartyDataService.countGuestName(joinPartyDto.getGuestName());
+        final Long countedGuestName = joinPartyDataService.countGuestName(joinPartyDto.getGuestName(), joinPartyDto.getPartyCode());
         if (countedGuestName > 0L) {
             throw new GuestAlreadyExistException(GUEST_NAME_ERROR_MESSAGE);
         }

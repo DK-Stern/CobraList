@@ -8,7 +8,7 @@ public interface JoinPartyDataService {
 
     FindPartyDTO findParty(String partyCode);
 
-    Long countGuestName(String guestName);
+    Long countGuestName(String guestName, String partyCode);
 
     String getPartyPassword(String partyCode);
 }

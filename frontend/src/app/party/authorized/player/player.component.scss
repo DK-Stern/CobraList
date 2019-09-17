@@ -1,0 +1,31 @@
+@import "../../../../theme";
+
+//dark palette forground/background:
+$dark-foreground-palette: map-get($candy-app-theme, foreground);
+$dark-background-palette: map-get($candy-app-theme, background);
+
+#player {
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  height: 9%;
+  min-height: 100px;
+  width: 100%;
+  background-color: #303030;
+}
+
+#album-cover {
+  min-height: 100px;
+  min-width: 100px;
+}
+
+#player-details {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#track-information {
+  padding-left: 1%;
+}

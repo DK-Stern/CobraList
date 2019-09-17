@@ -1,11 +1,11 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {PartyComponent} from './party/party.component';
-import {PartyDetailsComponent} from './party-details/party-details.component';
 import {PartyAuthGuard} from './party-auth.guard';
 import {StoreModule} from '@ngrx/store';
 import * as partyReducer from './store/party.reducers';
 import {PartyResolverService} from './party-resolver.service';
+import {PartyInformationComponent} from "./party-information/party-information.component";
 
 const partyRoutes: Routes = [
   {
@@ -17,7 +17,7 @@ const partyRoutes: Routes = [
       {
         path: '',
         children: [
-          {path: '', component: PartyDetailsComponent}
+          {path: '', component: PartyInformationComponent}
         ]
       }
     ]

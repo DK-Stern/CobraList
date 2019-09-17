@@ -17,8 +17,7 @@ import sh.stern.cobralist.party.persistence.exceptions.PartyNotFoundException;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -66,7 +65,36 @@ public class JoinPartyPublicApiDataServiceTest {
     }
 
     @Test
-    public void createGuestDTOWithpartyCode() {
+    public void createGuestDTOWithGuestId() {
+        // given
+        final String partyCode = "A123D1";
+        final String guestName = "Bob";
+        final long guestId = 123L;
+
+        final JoinPartyDTO joinPartyDto = new JoinPartyDTO();
+        joinPartyDto.setPartyCode(partyCode);
+        joinPartyDto.setGuestName(guestName);
+
+        final Party partyMock = mock(Party.class);
+        when(partyMock.getPartyCode()).thenReturn(partyCode);
+        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(partyMock));
+
+        final Guest savedGuest = new Guest();
+        savedGuest.setId(guestId);
+        savedGuest.setName(guestName);
+        savedGuest.setParty(partyMock);
+
+        when(guestRepositoryMock.saveAndFlush(any(Guest.class))).thenReturn(savedGuest);
+
+        // when
+        final GuestCreatedDTO resultedGuestDTO = testSubject.createGuest(joinPartyDto);
+
+        // then
+        assertThat(resultedGuestDTO.getGuestId()).isEqualTo(guestId);
+    }
+
+    @Test
+    public void createGuestDTOWithPartyCode() {
         // given
         final String partyCode = "A123D1";
         final String guestName = "Bob";
@@ -233,14 +261,34 @@ public class JoinPartyPublicApiDataServiceTest {
     @Test
     public void countGuestName() {
         // given
+        final String partyCode = "partyCode";
         final String guestName = "Bob";
-        when(guestRepositoryMock.countGuestByName(guestName)).thenReturn(1L);
+        final Party party = new Party();
+        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(party));
+
+        when(guestRepositoryMock.countGuestByNameAndParty(guestName, party)).thenReturn(1L);
 
         // when
-        final Long resultedCount = testSubject.countGuestName(guestName);
+        final Long resultedCount = testSubject.countGuestName(guestName, partyCode);
 
         // then
         assertThat(resultedCount).isOne();
+    }
+
+    @Test
+    public void countGuestNameThrowsExceptionifPartyNotFound() {
+        // given
+        final String guestName = "guestName";
+        final String partyCode = "partyCode";
+
+        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.empty());
+
+        // when u. then
+        assertThatExceptionOfType(PartyNotFoundException.class)
+                .describedAs("")
+                .isThrownBy(() -> {
+                    testSubject.countGuestName(guestName, partyCode);
+                });
     }
 
     @Test

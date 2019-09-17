@@ -1,0 +1,11 @@
+<div id="player">
+  <div *ngIf="currentPlayback === null">Aktuell wird kein Lied abgespielt</div>
+
+  <div *ngIf="currentPlayback !== null" id="player-details">
+    <img id="album-cover" [src]="currentTrack.imageUrl" width="8%" height="8%">
+    <div id="track-information">
+      <p>Titel: {{currentTrack.name}}</p>
+      <span>Artist: {{currentTrack.artists}}</span>
+    </div>
+  </div>
+</div>
