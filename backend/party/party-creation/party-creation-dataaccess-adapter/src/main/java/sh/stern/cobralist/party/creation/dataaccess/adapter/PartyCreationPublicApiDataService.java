@@ -88,9 +88,14 @@ public class PartyCreationPublicApiDataService implements PartyCreationDataServi
         partyRepository.saveAndFlush(party);
 
         final List<TrackDTO> tracks = playlistDTO.getTracks();
-        tracks.forEach((TrackDTO track) -> {
+        for (int i = 0; i < tracks.size(); i++) {
+            final TrackDTO track = tracks.get(i);
             final MusicRequest musicRequest = new MusicRequest();
             musicRequest.setTrackId(track.getId());
+            musicRequest.setPosition(i);
+            musicRequest.setUpVotes(0);
+            musicRequest.setDownVotes(0);
+            musicRequest.setPlayed(false);
             musicRequest.setImageUrl(track.getImageUrl());
             musicRequest.setImageWidth(track.getImageWidth());
             musicRequest.setImageHeight(track.getImageHeight());
@@ -100,6 +105,6 @@ public class PartyCreationPublicApiDataService implements PartyCreationDataServi
             musicRequest.setPlaylist(savedPlaylist);
             musicRequest.setDuration(track.getDuration());
             musicRequestRepository.saveAndFlush(musicRequest);
-        });
+        }
     }
 }

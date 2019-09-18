@@ -20,7 +20,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.when;
 
 @SuppressWarnings("squid:S1192") // duplicate literals in tests are ok
@@ -122,72 +123,16 @@ public class MusicRequestPublicApiDataServiceTest {
 
         when(musicRequestRepositoryMock.findByPlaylist_Id(playlistId)).thenReturn(Collections.singletonList(musicRequest));
 
-        when(voteRepositoryMock.countByMusicRequest_IdAndIsDownVote(musicRequestId, true)).thenReturn(1L);
-
         final MusicRequestDTO expectedMusicRequestDTO = new MusicRequestDTO();
-        expectedMusicRequestDTO.setAllVotes(2L);
-        expectedMusicRequestDTO.setDownVotes(1L);
         when(musicRequestToMusicRequestDTOMapperMock.map(musicRequest)).thenReturn(expectedMusicRequestDTO);
 
-        when(voteRepositoryMock.countByMusicRequest_IdAndUser_Id(musicRequestId, participantId)).thenReturn(0L);
+        when(voteRepositoryMock.findByUser_Id(participantId)).thenReturn(Collections.emptyList());
 
         // when
         final List<MusicRequestDTO> resultedMusicRequests = testSubject.getMusicRequests(playlistId, participantId, isUser);
 
         // then
         assertThat(resultedMusicRequests).containsExactly(expectedMusicRequestDTO);
-    }
-
-    @Test
-    public void getMusicRequestsForUserHasUpVotesOne() {
-        // given
-        final long playlistId = 12L;
-        final long participantId = 12L;
-        final boolean isUser = true;
-
-        final MusicRequest musicRequest = new MusicRequest();
-        final int duration = 12346;
-        musicRequest.setDuration(duration);
-        final String uri = "uri";
-        musicRequest.setUri(uri);
-        final List<String> artists = Collections.singletonList("The Hellfreaks");
-        musicRequest.setArtist(artists);
-        final String title = "Men in Grey";
-        musicRequest.setTitle(title);
-        final int imageWidth = 64;
-        musicRequest.setImageWidth(imageWidth);
-        final int imageHeight = 64;
-        musicRequest.setImageHeight(imageHeight);
-        final String imageUrl = "imageUrl";
-        musicRequest.setImageUrl(imageUrl);
-        final String trackId = "trackId";
-        musicRequest.setTrackId(trackId);
-        final long musicRequestId = 132L;
-        musicRequest.setId(musicRequestId);
-        final Vote upVote = new Vote();
-        upVote.setMusicRequest(musicRequest);
-        upVote.setDownVote(false);
-        final Vote downVote = new Vote();
-        downVote.setMusicRequest(musicRequest);
-        downVote.setDownVote(true);
-        musicRequest.setVotes(Arrays.asList(upVote, downVote));
-
-        when(musicRequestRepositoryMock.findByPlaylist_Id(playlistId)).thenReturn(Collections.singletonList(musicRequest));
-
-        when(voteRepositoryMock.countByMusicRequest_IdAndIsDownVote(musicRequestId, true)).thenReturn(1L);
-
-        final MusicRequestDTO expectedMusicRequestDTO = new MusicRequestDTO();
-        expectedMusicRequestDTO.setAllVotes(2L);
-        expectedMusicRequestDTO.setDownVotes(1L);
-        when(musicRequestToMusicRequestDTOMapperMock.map(musicRequest)).thenReturn(expectedMusicRequestDTO);
-
-        when(voteRepositoryMock.countByMusicRequest_IdAndUser_Id(musicRequestId, participantId)).thenReturn(0L);
-
-        // when
-        final List<MusicRequestDTO> resultedMusicRequests = testSubject.getMusicRequests(playlistId, participantId, isUser);
-
-        // then
-        assertThat(resultedMusicRequests).extracting(MusicRequestDTO::getUpVotes).containsExactly(1L);
     }
 
     @Test
@@ -226,14 +171,12 @@ public class MusicRequestPublicApiDataServiceTest {
 
         when(musicRequestRepositoryMock.findByPlaylist_Id(playlistId)).thenReturn(Collections.singletonList(musicRequest));
 
-        when(voteRepositoryMock.countByMusicRequest_IdAndIsDownVote(musicRequestId, true)).thenReturn(1L);
-
         final MusicRequestDTO expectedMusicRequestDTO = new MusicRequestDTO();
-        expectedMusicRequestDTO.setAllVotes(2L);
-        expectedMusicRequestDTO.setDownVotes(1L);
+        expectedMusicRequestDTO.setUpVotes(2);
+        expectedMusicRequestDTO.setDownVotes(1);
         when(musicRequestToMusicRequestDTOMapperMock.map(musicRequest)).thenReturn(expectedMusicRequestDTO);
 
-        when(voteRepositoryMock.countByMusicRequest_IdAndGuest_Id(musicRequestId, participantId)).thenReturn(0L);
+        when(voteRepositoryMock.findByGuest_Id(participantId)).thenReturn(Collections.emptyList());
 
         // when
         final List<MusicRequestDTO> resultedMusicRequests = testSubject.getMusicRequests(playlistId, participantId, isUser);
@@ -243,7 +186,7 @@ public class MusicRequestPublicApiDataServiceTest {
     }
 
     @Test
-    public void getMusicRequestsForGuestHasUpVotesOne() {
+    public void getMusicRequestsWhichIsAlreadyVotedByGuest() {
         // given
         final long playlistId = 12L;
         final long participantId = 12L;
@@ -278,28 +221,28 @@ public class MusicRequestPublicApiDataServiceTest {
 
         when(musicRequestRepositoryMock.findByPlaylist_Id(playlistId)).thenReturn(Collections.singletonList(musicRequest));
 
-        when(voteRepositoryMock.countByMusicRequest_IdAndIsDownVote(musicRequestId, true)).thenReturn(1L);
-
         final MusicRequestDTO expectedMusicRequestDTO = new MusicRequestDTO();
-        expectedMusicRequestDTO.setAllVotes(2L);
-        expectedMusicRequestDTO.setDownVotes(1L);
         when(musicRequestToMusicRequestDTOMapperMock.map(musicRequest)).thenReturn(expectedMusicRequestDTO);
 
-        when(voteRepositoryMock.countByMusicRequest_IdAndGuest_Id(musicRequestId, participantId)).thenReturn(0L);
+        final Vote vote = new Vote();
+        vote.setMusicRequest(musicRequest);
+        when(voteRepositoryMock.findByGuest_Id(participantId)).thenReturn(Collections.singletonList(vote));
 
         // when
         final List<MusicRequestDTO> resultedMusicRequests = testSubject.getMusicRequests(playlistId, participantId, isUser);
 
         // then
-        assertThat(resultedMusicRequests).extracting(MusicRequestDTO::getUpVotes).containsExactly(1L);
+        assertThat(resultedMusicRequests)
+                .hasSize(1)
+                .first().extracting(MusicRequestDTO::getAlreadyVoted).isEqualTo(true);
     }
 
     @Test
-    public void getMusicRequestsForGuestHasRatingZero() {
+    public void getMusicRequestsWhichIsAlreadyVotedByUser() {
         // given
         final long playlistId = 12L;
         final long participantId = 12L;
-        final boolean isUser = false;
+        final boolean isUser = true;
 
         final MusicRequest musicRequest = new MusicRequest();
         final int duration = 12346;
@@ -330,19 +273,19 @@ public class MusicRequestPublicApiDataServiceTest {
 
         when(musicRequestRepositoryMock.findByPlaylist_Id(playlistId)).thenReturn(Collections.singletonList(musicRequest));
 
-        when(voteRepositoryMock.countByMusicRequest_IdAndIsDownVote(musicRequestId, true)).thenReturn(1L);
-
         final MusicRequestDTO expectedMusicRequestDTO = new MusicRequestDTO();
-        expectedMusicRequestDTO.setAllVotes(2L);
-        expectedMusicRequestDTO.setDownVotes(1L);
         when(musicRequestToMusicRequestDTOMapperMock.map(musicRequest)).thenReturn(expectedMusicRequestDTO);
 
-        when(voteRepositoryMock.countByMusicRequest_IdAndGuest_Id(musicRequestId, participantId)).thenReturn(0L);
+        final Vote vote = new Vote();
+        vote.setMusicRequest(musicRequest);
+        when(voteRepositoryMock.findByUser_Id(participantId)).thenReturn(Collections.singletonList(vote));
 
         // when
         final List<MusicRequestDTO> resultedMusicRequests = testSubject.getMusicRequests(playlistId, participantId, isUser);
 
         // then
-        assertThat(resultedMusicRequests).extracting(MusicRequestDTO::getRating).containsExactly(0L);
+        assertThat(resultedMusicRequests)
+                .hasSize(1)
+                .first().extracting(MusicRequestDTO::getAlreadyVoted).isEqualTo(true);
     }
 }

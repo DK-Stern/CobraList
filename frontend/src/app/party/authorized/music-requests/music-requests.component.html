@@ -5,6 +5,12 @@
 
   <table mat-table matSort [dataSource]="dataSource">
 
+    <!-- Position Column -->
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Position</th>
+      <td mat-cell *matCellDef="let row"> {{row.position + 1}} </td>
+    </ng-container>
+
     <!-- Artist Column -->
     <ng-container matColumnDef="artist">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Artist</th>

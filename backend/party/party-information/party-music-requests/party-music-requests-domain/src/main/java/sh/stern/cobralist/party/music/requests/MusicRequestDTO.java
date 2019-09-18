@@ -7,6 +7,8 @@ public class MusicRequestDTO {
 
     private String trackId;
 
+    private Integer position;
+
     private List<String> artist = new ArrayList<>();
 
     private String title;
@@ -21,13 +23,13 @@ public class MusicRequestDTO {
 
     private Boolean alreadyVoted;
 
-    private Long allVotes;
+    private Integer allVotes;
 
-    private Long downVotes;
+    private Integer downVotes;
 
-    private Long upVotes;
+    private Integer upVotes;
 
-    private Long rating;
+    private Integer rating;
 
     public String getTrackId() {
         return trackId;
@@ -93,35 +95,43 @@ public class MusicRequestDTO {
         this.alreadyVoted = alreadyVoted;
     }
 
-    public Long getAllVotes() {
+    public Integer getAllVotes() {
         return allVotes;
     }
 
-    public void setAllVotes(Long allVotes) {
+    public void setAllVotes(Integer allVotes) {
         this.allVotes = allVotes;
     }
 
-    public Long getDownVotes() {
+    public Integer getDownVotes() {
         return downVotes;
     }
 
-    public void setDownVotes(Long downVotes) {
+    public void setDownVotes(Integer downVotes) {
         this.downVotes = downVotes;
     }
 
-    public Long getUpVotes() {
+    public Integer getUpVotes() {
         return upVotes;
     }
 
-    public void setUpVotes(Long upVotes) {
+    public void setUpVotes(Integer upVotes) {
         this.upVotes = upVotes;
     }
 
-    public Long getRating() {
+    public Integer getRating() {
         return rating;
     }
 
-    public void setRating(Long rating) {
+    public void setRating(Integer rating) {
         this.rating = rating;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
     }
 }

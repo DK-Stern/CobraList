@@ -22,16 +22,17 @@ export interface CurrentTrackDTO {
 }
 
 export interface MusicRequestDTO {
-  allVotes: bigint
+  allVotes: number
+  position: number
   alreadyVoted: boolean
   artist: string[]
-  downVotes: bigint
-  duration: bigint
-  imageHeight: bigint
+  downVotes: number
+  duration: number
+  imageHeight: number
   imageUrl: string
-  imageWidth: bigint
-  rating: bigint
+  imageWidth: number
+  rating: number
   title: string
   trackId: string
-  upVotes: bigint
+  upVotes: number
 }

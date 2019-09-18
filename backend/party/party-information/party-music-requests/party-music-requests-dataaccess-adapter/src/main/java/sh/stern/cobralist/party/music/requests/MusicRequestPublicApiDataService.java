@@ -8,10 +8,10 @@ import sh.stern.cobralist.party.persistence.dataaccess.PlaylistRepository;
 import sh.stern.cobralist.party.persistence.dataaccess.VoteRepository;
 import sh.stern.cobralist.party.persistence.domain.MusicRequest;
 import sh.stern.cobralist.party.persistence.domain.Party;
+import sh.stern.cobralist.party.persistence.domain.Vote;
 import sh.stern.cobralist.party.persistence.exceptions.PartyNotFoundException;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,18 +45,20 @@ public class MusicRequestPublicApiDataService implements MusicRequestDataService
     public List<MusicRequestDTO> getMusicRequests(Long playlistId, Long participantId, boolean isUser) {
         final List<MusicRequest> musicRequests = musicRequestRepository.findByPlaylist_Id(playlistId);
 
-        final Map<Long, Long> downVotes = musicRequests.stream()
-                .collect(Collectors.toMap(MusicRequest::getId, musicRequest -> voteRepository.countByMusicRequest_IdAndIsDownVote(musicRequest.getId(), true)));
+        List<Vote> votes;
+        if (isUser) {
+            votes = voteRepository.findByUser_Id(participantId);
+        } else {
+            votes = voteRepository.findByGuest_Id(participantId);
+        }
+
+        final List<Long> musicRequestVotes = votes.stream().map(vote -> vote.getMusicRequest().getId())
+                .collect(Collectors.toList());
 
         return musicRequests.stream()
                 .map(musicRequest -> {
                     final MusicRequestDTO musicRequestDTO = musicRequestToMusicRequestDTOMapper.map(musicRequest);
-                    musicRequestDTO.setDownVotes(downVotes.get(musicRequest.getId()));
-                    musicRequestDTO.setUpVotes(musicRequestDTO.getAllVotes() - musicRequestDTO.getDownVotes());
-                    musicRequestDTO.setAlreadyVoted(isUser
-                            ? voteRepository.countByMusicRequest_IdAndUser_Id(musicRequest.getId(), participantId) == 1
-                            : voteRepository.countByMusicRequest_IdAndGuest_Id(musicRequest.getId(), participantId) == 1);
-                    musicRequestDTO.setRating(musicRequestDTO.getUpVotes() - musicRequestDTO.getDownVotes());
+                    musicRequestDTO.setAlreadyVoted(musicRequestVotes.contains(musicRequest.getId()));
                     return musicRequestDTO;
                 })
                 .collect(Collectors.toList());

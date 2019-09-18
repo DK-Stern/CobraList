@@ -11,6 +11,11 @@ public class MusicRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Integer position;
+
+    @Column(name = "is_played")
+    private Boolean isPlayed;
+
     // id on streaming platform<
     @Column(name = "id_on_streaming_platform")
     private String trackId;
@@ -24,6 +29,12 @@ public class MusicRequest {
     private Integer imageWidth;
 
     private Integer duration;
+
+    @Column(name = "up_votes")
+    private Integer upVotes;
+
+    @Column(name = "down_votes")
+    private Integer downVotes;
 
     @ElementCollection
     @CollectionTable(name = "music_request_artist", joinColumns = @JoinColumn(name = "music_request_id"))
@@ -125,5 +136,37 @@ public class MusicRequest {
 
     public void setVotes(List<Vote> votes) {
         this.votes = votes;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
+
+    public Integer getUpVotes() {
+        return upVotes;
+    }
+
+    public void setUpVotes(Integer upVotes) {
+        this.upVotes = upVotes;
+    }
+
+    public Integer getDownVotes() {
+        return downVotes;
+    }
+
+    public void setDownVotes(Integer downVotes) {
+        this.downVotes = downVotes;
+    }
+
+    public Boolean getPlayed() {
+        return isPlayed;
+    }
+
+    public void setPlayed(Boolean played) {
+        isPlayed = played;
     }
 }

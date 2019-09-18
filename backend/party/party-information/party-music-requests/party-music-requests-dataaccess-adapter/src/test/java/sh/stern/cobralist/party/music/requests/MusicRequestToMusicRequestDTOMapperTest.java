@@ -3,9 +3,7 @@ package sh.stern.cobralist.party.music.requests;
 import org.junit.Before;
 import org.junit.Test;
 import sh.stern.cobralist.party.persistence.domain.MusicRequest;
-import sh.stern.cobralist.party.persistence.domain.Vote;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,7 +24,8 @@ public class MusicRequestToMusicRequestDTOMapperTest {
         final MusicRequest musicRequest = new MusicRequest();
         final String trackId = "trackId";
         musicRequest.setTrackId(trackId);
-        musicRequest.setVotes(Collections.emptyList());
+        musicRequest.setUpVotes(1);
+        musicRequest.setDownVotes(1);
 
         // when
         final MusicRequestDTO musicRequestDTO = testSubject.map(musicRequest);
@@ -41,7 +40,8 @@ public class MusicRequestToMusicRequestDTOMapperTest {
         final MusicRequest musicRequest = new MusicRequest();
         final List<String> artists = Collections.singletonList("Lygo");
         musicRequest.setArtist(artists);
-        musicRequest.setVotes(Collections.emptyList());
+        musicRequest.setUpVotes(1);
+        musicRequest.setDownVotes(1);
 
         // when
         final MusicRequestDTO musicRequestDTO = testSubject.map(musicRequest);
@@ -56,7 +56,8 @@ public class MusicRequestToMusicRequestDTOMapperTest {
         final MusicRequest musicRequest = new MusicRequest();
         final String title = "Kloß im Hals";
         musicRequest.setTitle(title);
-        musicRequest.setVotes(Collections.emptyList());
+        musicRequest.setUpVotes(1);
+        musicRequest.setDownVotes(1);
 
         // when
         final MusicRequestDTO musicRequestDTO = testSubject.map(musicRequest);
@@ -71,7 +72,8 @@ public class MusicRequestToMusicRequestDTOMapperTest {
         final MusicRequest musicRequest = new MusicRequest();
         final String imageUrl = "imageUrl";
         musicRequest.setImageUrl(imageUrl);
-        musicRequest.setVotes(Collections.emptyList());
+        musicRequest.setUpVotes(1);
+        musicRequest.setDownVotes(1);
 
         // when
         final MusicRequestDTO musicRequestDTO = testSubject.map(musicRequest);
@@ -86,7 +88,8 @@ public class MusicRequestToMusicRequestDTOMapperTest {
         final MusicRequest musicRequest = new MusicRequest();
         final Integer imageWidth = 64;
         musicRequest.setImageWidth(imageWidth);
-        musicRequest.setVotes(Collections.emptyList());
+        musicRequest.setUpVotes(1);
+        musicRequest.setDownVotes(1);
 
         // when
         final MusicRequestDTO musicRequestDTO = testSubject.map(musicRequest);
@@ -101,7 +104,8 @@ public class MusicRequestToMusicRequestDTOMapperTest {
         final MusicRequest musicRequest = new MusicRequest();
         final Integer imageHeight = 64;
         musicRequest.setImageHeight(imageHeight);
-        musicRequest.setVotes(Collections.emptyList());
+        musicRequest.setUpVotes(1);
+        musicRequest.setDownVotes(1);
 
         // when
         final MusicRequestDTO musicRequestDTO = testSubject.map(musicRequest);
@@ -116,7 +120,8 @@ public class MusicRequestToMusicRequestDTOMapperTest {
         final MusicRequest musicRequest = new MusicRequest();
         final Integer duration = 64;
         musicRequest.setDuration(duration);
-        musicRequest.setVotes(Collections.emptyList());
+        musicRequest.setUpVotes(1);
+        musicRequest.setDownVotes(1);
 
         // when
         final MusicRequestDTO musicRequestDTO = testSubject.map(musicRequest);
@@ -126,16 +131,80 @@ public class MusicRequestToMusicRequestDTOMapperTest {
     }
 
     @Test
-    public void mapAllVotes() {
+    public void mapPosition() {
         // given
         final MusicRequest musicRequest = new MusicRequest();
-        final List<Vote> votes = Arrays.asList(new Vote(), new Vote());
-        musicRequest.setVotes(votes);
+        final int position = 5;
+        musicRequest.setPosition(position);
+        musicRequest.setUpVotes(1);
+        musicRequest.setDownVotes(1);
 
         // when
         final MusicRequestDTO musicRequestDTO = testSubject.map(musicRequest);
 
         // then
-        assertThat(musicRequestDTO.getAllVotes()).isEqualTo(2L);
+        assertThat(musicRequestDTO.getPosition()).isEqualTo(position);
+    }
+
+    @Test
+    public void mapUpVotes() {
+        // given
+        final MusicRequest musicRequest = new MusicRequest();
+        final int upVotes = 5;
+        musicRequest.setUpVotes(upVotes);
+        musicRequest.setDownVotes(1);
+
+        // when
+        final MusicRequestDTO musicRequestDTO = testSubject.map(musicRequest);
+
+        // then
+        assertThat(musicRequestDTO.getUpVotes()).isEqualTo(upVotes);
+    }
+
+    @Test
+    public void mapDownVotes() {
+        // given
+        final MusicRequest musicRequest = new MusicRequest();
+        final int downVotes = 5;
+        musicRequest.setDownVotes(downVotes);
+        musicRequest.setUpVotes(1);
+
+        // when
+        final MusicRequestDTO musicRequestDTO = testSubject.map(musicRequest);
+
+        // then
+        assertThat(musicRequestDTO.getDownVotes()).isEqualTo(downVotes);
+    }
+
+    @Test
+    public void mapAllVotes() {
+        // given
+        final MusicRequest musicRequest = new MusicRequest();
+        final int upVotes = 4;
+        musicRequest.setUpVotes(upVotes);
+        final int downVotes = 5;
+        musicRequest.setDownVotes(downVotes);
+
+        // when
+        final MusicRequestDTO musicRequestDTO = testSubject.map(musicRequest);
+
+        // then
+        assertThat(musicRequestDTO.getAllVotes()).isEqualTo(upVotes + downVotes);
+    }
+
+    @Test
+    public void mapRating() {
+        // given
+        final MusicRequest musicRequest = new MusicRequest();
+        final int upVotes = 4;
+        musicRequest.setUpVotes(upVotes);
+        final int downVotes = 5;
+        musicRequest.setDownVotes(downVotes);
+
+        // when
+        final MusicRequestDTO musicRequestDTO = testSubject.map(musicRequest);
+
+        // then
+        assertThat(musicRequestDTO.getRating()).isEqualTo(upVotes - downVotes);
     }
 }

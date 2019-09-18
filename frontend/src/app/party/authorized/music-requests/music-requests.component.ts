@@ -13,6 +13,7 @@ import {MatSort} from "@angular/material/sort";
 export class MusicRequestsComponent implements OnInit {
 
   displayedColumns: string[] = [
+    'position',
     'artist',
     'title',
     'duration',
