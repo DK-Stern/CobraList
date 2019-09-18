@@ -29,4 +29,10 @@ public class PartyExceptionAdviser {
         final String url = ((ServletWebRequest) request).getRequest().getRequestURL().toString();
         return new ResponseEntity<>(new ErrorInfo(url, ex), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(MusicRequestNotFoundException.class)
+    public ResponseEntity<ErrorInfo> handleMusicRequestNotFoundException(MusicRequestNotFoundException ex, WebRequest request) {
+        final String url = ((ServletWebRequest) request).getRequest().getRequestURL().toString();
+        return new ResponseEntity<>(new ErrorInfo(url, ex), HttpStatus.NOT_FOUND);
+    }
 }

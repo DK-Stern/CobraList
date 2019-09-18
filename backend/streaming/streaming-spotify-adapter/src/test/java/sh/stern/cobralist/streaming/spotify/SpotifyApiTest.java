@@ -19,9 +19,12 @@ import sh.stern.cobralist.streaming.spotify.errorhandler.AccessTokenExpiredError
 import sh.stern.cobralist.streaming.spotify.valueobjects.*;
 import sh.stern.cobralist.streaming.spotify.valueobjects.requests.AddTracksTracksToPlaylistRequest;
 import sh.stern.cobralist.streaming.spotify.valueobjects.requests.CreatePlaylistRequest;
+import sh.stern.cobralist.streaming.spotify.valueobjects.requests.RemoveTrack;
+import sh.stern.cobralist.streaming.spotify.valueobjects.requests.Track;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -225,5 +228,38 @@ public class SpotifyApiTest {
         // when u. then
         assertThatExceptionOfType(AccessTokenExpiredException.class)
                 .isThrownBy(() -> testSubject.getCurrentPlayback(url));
+    }
+
+    @Test
+    public void removeTrackFromPlaylist() throws AccessTokenExpiredException {
+        // given
+        final String url = "url";
+        final String trackId = "trackId";
+
+        final ArgumentCaptor<HttpEntity> httpEntityArgumentCaptor = ArgumentCaptor.forClass(HttpEntity.class);
+        when(restTemplateMock.exchange(eq(url), eq(HttpMethod.DELETE), httpEntityArgumentCaptor.capture(), eq(String.class))).thenReturn(ResponseEntity.ok("snapshotId"));
+
+        // when
+        testSubject.removeTrackFromPlaylist(url, trackId);
+
+        // then
+        final HttpEntity httpEntity = httpEntityArgumentCaptor.getValue();
+        final RemoveTrack resultedRequest = (RemoveTrack) httpEntity.getBody();
+        assertThat(Objects.requireNonNull(resultedRequest).getTracks())
+                .extracting(Track::getUri).containsExactly("spotify:track:" + trackId);
+    }
+
+    @Test
+    public void removeTrackFromPlaylistThrowsExceptionIfStatusCodeUnauthorized() throws AccessTokenExpiredException {
+        // given
+        final String url = "url";
+        final String trackId = "trackId";
+
+        final ArgumentCaptor<HttpEntity> httpEntityArgumentCaptor = ArgumentCaptor.forClass(HttpEntity.class);
+        when(restTemplateMock.exchange(eq(url), eq(HttpMethod.DELETE), httpEntityArgumentCaptor.capture(), eq(String.class))).thenReturn(new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED));
+
+        // when u. then
+        assertThatExceptionOfType(AccessTokenExpiredException.class)
+                .isThrownBy(() -> testSubject.removeTrackFromPlaylist(url, trackId));
     }
 }

@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import sh.stern.cobralist.party.creation.domain.TrackDTO;
 import sh.stern.cobralist.party.current.track.dataaccess.port.CurrentTrackDataService;
 import sh.stern.cobralist.party.current.track.domain.ActivePartyDTO;
 import sh.stern.cobralist.party.current.track.domain.CurrentPlaybackDTO;
@@ -40,10 +41,12 @@ public class CurrentTrackPublicApiServiceTest {
         // given
         final String partyCode = "partyCode";
         final String creatorName = "creatorName";
+        final String creatorEmail = "creatorEmail";
 
         final ActivePartyDTO activePartyDTO = new ActivePartyDTO();
         activePartyDTO.setPartyCode(partyCode);
         activePartyDTO.setCreatorName(creatorName);
+        activePartyDTO.setCreatorEmail(creatorEmail);
         final List<ActivePartyDTO> activeParties = Collections.singletonList(activePartyDTO);
         when(currentTrackDataServiceMock.getActiveParties()).thenReturn(activeParties);
 
@@ -79,10 +82,12 @@ public class CurrentTrackPublicApiServiceTest {
         // given
         final String partyCode = "partyCode";
         final String creatorName = "creatorName";
+        final String creatorEmail = "creatorEmail";
 
         final ActivePartyDTO activePartyDTO = new ActivePartyDTO();
         activePartyDTO.setPartyCode(partyCode);
         activePartyDTO.setCreatorName(creatorName);
+        activePartyDTO.setCreatorEmail(creatorEmail);
         final List<ActivePartyDTO> activeParties = Collections.singletonList(activePartyDTO);
         when(currentTrackDataServiceMock.getActiveParties()).thenReturn(activeParties);
 
@@ -99,5 +104,43 @@ public class CurrentTrackPublicApiServiceTest {
 
         // then
         verify(currentTrackDataServiceMock).changePartyActiveStatus(partyCode, false);
+    }
+
+    @Test
+    public void changeMusicRequestPlayedStatusIfPlayedStatusIsFalse() {
+        // given
+        final String partyCode = "partyCode";
+        final String creatorName = "creatorName";
+        final String creatorEmail = "creatorEmail";
+
+        final ActivePartyDTO activePartyDTO = new ActivePartyDTO();
+        activePartyDTO.setPartyCode(partyCode);
+        activePartyDTO.setCreatorName(creatorName);
+        activePartyDTO.setCreatorEmail(creatorEmail);
+        final List<ActivePartyDTO> activeParties = Collections.singletonList(activePartyDTO);
+        when(currentTrackDataServiceMock.getActiveParties()).thenReturn(activeParties);
+
+        final HashMap<String, CurrentPlaybackDTO> currentPartyTracks = new HashMap<>();
+        final CurrentPlaybackDTO currentPlaybackDTO = new CurrentPlaybackDTO();
+        final TrackDTO currentTrack = new TrackDTO();
+        final String currentTrackId = "12";
+        currentTrack.setId(currentTrackId);
+        currentPlaybackDTO.setCurrentTrack(currentTrack);
+        currentPlaybackDTO.setPlaying(false);
+        currentPartyTracks.put(partyCode, currentPlaybackDTO);
+        when(currentTrackStreamingServiceMock.getCurrentTrackFromParties(activeParties)).thenReturn(currentPartyTracks);
+
+        when(currentTrackDataServiceMock.hasMusicRequestStatusPlayed(partyCode, currentTrackId)).thenReturn(false);
+        final String playlistStreamingId = "playlistStreamingId";
+        when(currentTrackDataServiceMock.getPlaylistStreamingId(partyCode)).thenReturn(playlistStreamingId);
+
+        testSubject.refreshCurrentTracks();
+
+        // when
+        testSubject.getCurrentTrack(partyCode);
+
+        // then
+        verify(currentTrackStreamingServiceMock).removeTrackFromPlaylist(creatorEmail, playlistStreamingId, currentTrackId);
+        verify(currentTrackDataServiceMock).changeMusicRequestPlayedStatus(partyCode, currentTrackId, true);
     }
 }

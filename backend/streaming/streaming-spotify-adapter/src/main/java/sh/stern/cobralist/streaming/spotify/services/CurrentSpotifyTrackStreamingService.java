@@ -74,4 +74,16 @@ public class CurrentSpotifyTrackStreamingService implements CurrentTrackStreamin
             return getCurrentPlayback(username, url);
         }
     }
+
+    @Override
+    public void removeTrackFromPlaylist(String username, String playlistStreamingId, String trackId) {
+        final String url = String.format("https://api.spotify.com/v1/playlists/%s/tracks", playlistStreamingId);
+        try {
+            spotifyApi.setAuthentication(StreamingProvider.spotify, username);
+            spotifyApi.removeTrackFromPlaylist(url, trackId);
+        } catch (AccessTokenExpiredException e) {
+            removeTrackFromPlaylist(username, playlistStreamingId, trackId);
+        }
+
+    }
 }

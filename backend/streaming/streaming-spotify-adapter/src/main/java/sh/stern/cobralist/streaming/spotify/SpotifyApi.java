@@ -12,7 +12,9 @@ import sh.stern.cobralist.streaming.spotify.errorhandler.AccessTokenExpiredError
 import sh.stern.cobralist.streaming.spotify.valueobjects.*;
 import sh.stern.cobralist.streaming.spotify.valueobjects.requests.AddTracksTracksToPlaylistRequest;
 import sh.stern.cobralist.streaming.spotify.valueobjects.requests.CreatePlaylistRequest;
+import sh.stern.cobralist.streaming.spotify.valueobjects.requests.RemoveTrack;
 
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -112,5 +114,21 @@ public class SpotifyApi extends ApiBinding {
         if (statusCode == HttpStatus.UNAUTHORIZED) {
             throw new AccessTokenExpiredException();
         }
+    }
+
+    public void removeTrackFromPlaylist(String url, String trackId) throws AccessTokenExpiredException {
+        LOG.info(String.format("Remove track with id '%s", trackId));
+
+        final HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        final RemoveTrack request = new RemoveTrack(Collections.singletonList(String.format("spotify:track:%s", trackId)));
+
+        final ResponseEntity<String> responseEntitiy = restTemplate.exchange(url,
+                HttpMethod.DELETE,
+                new HttpEntity<>(request, httpHeaders),
+                String.class);
+
+        checkStatusCode(responseEntitiy.getStatusCode());
     }
 }

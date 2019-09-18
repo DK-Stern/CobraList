@@ -4,14 +4,16 @@ public class ActivePartyDTO {
     private String partyCode;
     private String creatorName;
     private String creatorEmail;
+    private Long playlistId;
 
     public ActivePartyDTO() {
     }
 
-    public ActivePartyDTO(String partyCode, String creatorName, String creatorEmail) {
+    public ActivePartyDTO(String partyCode, String creatorName, String creatorEmail, Long playlistId) {
         this.partyCode = partyCode;
         this.creatorName = creatorName;
         this.creatorEmail = creatorEmail;
+        this.playlistId = playlistId;
     }
 
     public String getPartyCode() {
@@ -36,5 +38,13 @@ public class ActivePartyDTO {
 
     public void setCreatorEmail(String creatorEmail) {
         this.creatorEmail = creatorEmail;
+    }
+
+    public Long getPlaylistId() {
+        return playlistId;
+    }
+
+    public void setPlaylistId(Long playlistId) {
+        this.playlistId = playlistId;
     }
 }

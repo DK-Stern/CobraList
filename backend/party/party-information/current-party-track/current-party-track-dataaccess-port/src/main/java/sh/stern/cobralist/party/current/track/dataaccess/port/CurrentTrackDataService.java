@@ -8,4 +8,10 @@ public interface CurrentTrackDataService {
     List<ActivePartyDTO> getActiveParties();
 
     void changePartyActiveStatus(String partyCode, Boolean activeStatus);
+
+    boolean hasMusicRequestStatusPlayed(String partyCode, String trackId);
+
+    void changeMusicRequestPlayedStatus(String partyCode, String trackId, boolean isPlayedStatus);
+
+    String getPlaylistStreamingId(String partyCode);
 }

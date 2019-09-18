@@ -8,4 +8,6 @@ import java.util.Map;
 
 public interface CurrentTrackStreamingService {
     Map<String, CurrentPlaybackDTO> getCurrentTrackFromParties(List<ActivePartyDTO> activeParties);
+
+    void removeTrackFromPlaylist(String username, String playlistStreamingId, String trackId);
 }

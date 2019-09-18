@@ -119,4 +119,19 @@ public class CurrentSpotifyTrackStreamingServiceTest {
         final CurrentPlaybackDTO currentPlaybackDTO = currentTrackFromParties.get(partyCode);
         assertThat(currentPlaybackDTO.getPlaying()).isFalse();
     }
+
+    @Test
+    public void removeTrackFromPlaylist() throws AccessTokenExpiredException {
+        // given
+        final String username = "username";
+        final String playlistId = "playlistId";
+        final String trackId = "trackId";
+
+        // when
+        testSubject.removeTrackFromPlaylist(username, playlistId, trackId);
+
+        // then
+        verify(spotifyApiMock).setAuthentication(StreamingProvider.spotify, username);
+        verify(spotifyApiMock).removeTrackFromPlaylist("https://api.spotify.com/v1/playlists/" + playlistId + "/tracks", trackId);
+    }
 }
