@@ -15,4 +15,6 @@ public interface MusicRequestRepository extends JpaRepository<MusicRequest, Long
     List<MusicRequest> findByPlaylist_Id(Long playlistId);
 
     Optional<MusicRequest> findByPlaylistAndTrackId(Playlist playlist, String trackId);
+
+    Optional<MusicRequest> findByPlaylist_IdAndTrackId(Long playlistId, String trackId);
 }

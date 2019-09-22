@@ -16,6 +16,7 @@ import sh.stern.cobralist.streaming.spotify.valueobjects.requests.RemoveTrack;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class SpotifyApi extends ApiBinding {
@@ -130,5 +131,20 @@ public class SpotifyApi extends ApiBinding {
                 String.class);
 
         checkStatusCode(responseEntitiy.getStatusCode());
+    }
+
+    public SearchTrackValueObject searchTrack(String url) throws AccessTokenExpiredException {
+        LOG.info(String.format("Search Tracks: %s", url));
+
+        final ResponseEntity<SearchTrackValueObjectWrapper> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                SearchTrackValueObjectWrapper.class
+        );
+
+        checkStatusCode(response.getStatusCode());
+
+        return Objects.requireNonNull(response.getBody()).getTracks();
     }
 }

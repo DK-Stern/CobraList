@@ -262,4 +262,33 @@ public class SpotifyApiTest {
         assertThatExceptionOfType(AccessTokenExpiredException.class)
                 .isThrownBy(() -> testSubject.removeTrackFromPlaylist(url, trackId));
     }
+
+    @Test
+    public void searchTrack() throws AccessTokenExpiredException {
+        // given
+        final String url = "https://api.spotify.com/v1/search?q=abba&type=track";
+
+        final SearchTrackValueObjectWrapper searchTrackValueObjectWrapper = new SearchTrackValueObjectWrapper();
+        final SearchTrackValueObject tracks = new SearchTrackValueObject();
+        searchTrackValueObjectWrapper.setTracks(tracks);
+        when(restTemplateMock.exchange(url, HttpMethod.GET, null, SearchTrackValueObjectWrapper.class)).thenReturn(new ResponseEntity<>(searchTrackValueObjectWrapper, HttpStatus.OK));
+
+        // when
+        final SearchTrackValueObject resultedResponse = testSubject.searchTrack(url);
+
+        // then
+        assertThat(resultedResponse).isEqualTo(tracks);
+    }
+
+    @Test
+    public void searchTrackThrowsExceptionIfStatusCodeUnauthorized() throws AccessTokenExpiredException {
+        // given
+        final String url = "https://api.spotify.com/v1/search?q=abba&type=track";
+
+        when(restTemplateMock.exchange(url, HttpMethod.GET, null, SearchTrackValueObjectWrapper.class)).thenReturn(new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED));
+
+        // when u. then
+        assertThatExceptionOfType(AccessTokenExpiredException.class)
+                .isThrownBy(() -> testSubject.searchTrack(url));
+    }
 }

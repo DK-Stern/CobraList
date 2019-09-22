@@ -1,0 +1,10 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    compile project(':backend:user:userprincipal')
+    compile project(':backend:party:search-musicrequest:search-musicrequest-domain')
+    compile project(':backend:party:party-security:party-security-api')
+    runtimeOnly project(':backend:party:party-security:party-security-usecases')
+}
