@@ -1,0 +1,11 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    compile project(':backend:music-request:search-music-request:search-music-request-api')
+    compile project(':backend:music-request:search-music-request:search-music-request-dataaccess-port')
+    runtimeOnly project(':backend:music-request:search-music-request:search-music-request-dataaccess-adapter')
+    compile project(':backend:streaming:streaming-api')
+    runtimeOnly project(':backend:streaming:streaming-spotify-adapter')
+}

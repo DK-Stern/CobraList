@@ -1,0 +1,13 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    compile project(':backend:music-request:search-music-request:search-music-request-api')
+    runtimeOnly project(':backend:music-request:search-music-request:search-music-request-usecases')
+
+    compile project(":backend:security")
+
+    implementation 'org.springframework.boot:spring-boot-starter-web:' + springBootVersion
+    implementation 'org.springframework.boot:spring-boot-starter-security:' + springBootVersion
+}
