@@ -1,5 +1,6 @@
 package sh.stern.cobralist.party.current.track.dataaccess.adapter;
 
+import org.assertj.core.api.SoftAssertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -277,6 +278,150 @@ public class CurrentTrackPublicApiDataServiceTest {
     }
 
     @Test
+    public void changeMusicRequestPlayedStatusResetsRatingIfPlayedIsTrue() {
+        // given
+        final String partyCode = "partyCode";
+        final String trackId = "trackId";
+        final boolean isPlayedStatus = true;
+
+        final Party party = new Party();
+        final Playlist playlist = new Playlist();
+        party.setPlaylist(playlist);
+        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(party));
+
+        final MusicRequest musicRequest = new MusicRequest();
+        musicRequest.setUpVotes(3);
+        musicRequest.setDownVotes(1);
+        musicRequest.setRating(2);
+        musicRequest.setPosition(8);
+        when(musicRequestRepositoryMock.findByPlaylistAndTrackId(playlist, trackId)).thenReturn(Optional.of(musicRequest));
+
+        // when
+        testSubject.changeMusicRequestPlayedStatus(partyCode, trackId, isPlayedStatus);
+
+        // then
+        verify(musicRequestRepositoryMock).saveAndFlush(musicRequest);
+        assertThat(musicRequest.getRating()).isZero();
+    }
+
+    @Test
+    public void changeMusicRequestPlayedStatusResetsUpVotesIfPlayedIsTrue() {
+        // given
+        final String partyCode = "partyCode";
+        final String trackId = "trackId";
+        final boolean isPlayedStatus = true;
+
+        final Party party = new Party();
+        final Playlist playlist = new Playlist();
+        party.setPlaylist(playlist);
+        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(party));
+
+        final MusicRequest musicRequest = new MusicRequest();
+        musicRequest.setUpVotes(3);
+        musicRequest.setDownVotes(1);
+        musicRequest.setRating(2);
+        musicRequest.setPosition(8);
+        when(musicRequestRepositoryMock.findByPlaylistAndTrackId(playlist, trackId)).thenReturn(Optional.of(musicRequest));
+
+        // when
+        testSubject.changeMusicRequestPlayedStatus(partyCode, trackId, isPlayedStatus);
+
+        // then
+        verify(musicRequestRepositoryMock).saveAndFlush(musicRequest);
+        assertThat(musicRequest.getUpVotes()).isZero();
+    }
+
+    @Test
+    public void changeMusicRequestPlayedStatusResetsDownVotesIfPlayedIsTrue() {
+        // given
+        final String partyCode = "partyCode";
+        final String trackId = "trackId";
+        final boolean isPlayedStatus = true;
+
+        final Party party = new Party();
+        final Playlist playlist = new Playlist();
+        party.setPlaylist(playlist);
+        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(party));
+
+        final MusicRequest musicRequest = new MusicRequest();
+        musicRequest.setUpVotes(3);
+        musicRequest.setDownVotes(1);
+        musicRequest.setRating(2);
+        musicRequest.setPosition(8);
+        when(musicRequestRepositoryMock.findByPlaylistAndTrackId(playlist, trackId)).thenReturn(Optional.of(musicRequest));
+
+        // when
+        testSubject.changeMusicRequestPlayedStatus(partyCode, trackId, isPlayedStatus);
+
+        // then
+        verify(musicRequestRepositoryMock).saveAndFlush(musicRequest);
+        assertThat(musicRequest.getDownVotes()).isZero();
+    }
+
+    @Test
+    public void changeMusicRequestPlayedStatusResetsPositionIfPlayedIsTrue() {
+        // given
+        final String partyCode = "partyCode";
+        final String trackId = "trackId";
+        final boolean isPlayedStatus = true;
+
+        final Party party = new Party();
+        final Playlist playlist = new Playlist();
+        party.setPlaylist(playlist);
+        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(party));
+
+        final MusicRequest musicRequest = new MusicRequest();
+        musicRequest.setUpVotes(3);
+        musicRequest.setDownVotes(1);
+        musicRequest.setRating(2);
+        musicRequest.setPosition(8);
+        when(musicRequestRepositoryMock.findByPlaylistAndTrackId(playlist, trackId)).thenReturn(Optional.of(musicRequest));
+
+        // when
+        testSubject.changeMusicRequestPlayedStatus(partyCode, trackId, isPlayedStatus);
+
+        // then
+        verify(musicRequestRepositoryMock).saveAndFlush(musicRequest);
+        assertThat(musicRequest.getPosition()).isNull();
+    }
+
+    @Test
+    public void changeMusicRequestPlayedStatusDoesNotResetsIfPlayedIsFalse() {
+        // given
+        final String partyCode = "partyCode";
+        final String trackId = "trackId";
+        final boolean isPlayedStatus = false;
+
+        final Party party = new Party();
+        final Playlist playlist = new Playlist();
+        party.setPlaylist(playlist);
+        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(party));
+
+        final MusicRequest musicRequest = new MusicRequest();
+        final int upVotes = 3;
+        musicRequest.setUpVotes(upVotes);
+        final int downVotes = 1;
+        musicRequest.setDownVotes(downVotes);
+        final int rating = 2;
+        musicRequest.setRating(rating);
+        final int position = 8;
+        musicRequest.setPosition(position);
+        when(musicRequestRepositoryMock.findByPlaylistAndTrackId(playlist, trackId)).thenReturn(Optional.of(musicRequest));
+
+        // when
+        testSubject.changeMusicRequestPlayedStatus(partyCode, trackId, isPlayedStatus);
+
+        // then
+        verify(musicRequestRepositoryMock).saveAndFlush(musicRequest);
+        final SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(musicRequest.getPosition()).isEqualTo(position);
+        softly.assertThat(musicRequest.getDownVotes()).isEqualTo(downVotes);
+        softly.assertThat(musicRequest.getUpVotes()).isEqualTo(upVotes);
+        softly.assertThat(musicRequest.getRating()).isEqualTo(rating);
+        softly.assertAll();
+    }
+
+    @Test
     public void changeMusicRequestPlayedStatusThrowsExceptionIfPartyNotFound() {
         // given
         final String partyCode = "partyCode";
@@ -312,5 +457,36 @@ public class CurrentTrackPublicApiDataServiceTest {
         assertThatExceptionOfType(MusicRequestNotFoundException.class)
                 .isThrownBy(() -> testSubject.changeMusicRequestPlayedStatus(partyCode, trackId, isPlayedStatus))
                 .withMessage("MusicRequest mit der PlaylistId '" + playlistId + "' und TrackId '" + trackId + "' konnte nicht gefunden werden.");
+    }
+
+    @Test
+    public void getPlaylistStreamingId() {
+        // given
+        final String partyCode = "partyCode";
+
+        final Party party = new Party();
+        final Playlist playlist = new Playlist();
+        final String expectedPlaylistStramingId = "playlistStramingId";
+        playlist.setPlaylistId(expectedPlaylistStramingId);
+        party.setPlaylist(playlist);
+        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(party));
+
+        // when
+        final String resultedPlaylistStreamingId = testSubject.getPlaylistStreamingId(partyCode);
+
+        // then
+        assertThat(resultedPlaylistStreamingId).isEqualTo(expectedPlaylistStramingId);
+    }
+
+    @Test
+    public void getPlaylistStreamingIdThrowsExceptionifPartyNotFound() {
+        // given
+        final String partyCode = "partyCode";
+        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.empty());
+
+        // when u. then
+        assertThatExceptionOfType(PartyNotFoundException.class)
+                .isThrownBy(() -> testSubject.getPlaylistStreamingId(partyCode))
+                .withMessage("Party mit dem Code '" + partyCode + "' konnte nicht gefunden werden.");
     }
 }

@@ -196,15 +196,15 @@ public class MusicRequestToMusicRequestDTOMapperTest {
     public void mapRating() {
         // given
         final MusicRequest musicRequest = new MusicRequest();
-        final int upVotes = 4;
-        musicRequest.setUpVotes(upVotes);
-        final int downVotes = 5;
-        musicRequest.setDownVotes(downVotes);
+        final int rating = 4;
+        musicRequest.setUpVotes(5);
+        musicRequest.setDownVotes(1);
+        musicRequest.setRating(rating);
 
         // when
         final MusicRequestDTO musicRequestDTO = testSubject.map(musicRequest);
 
         // then
-        assertThat(musicRequestDTO.getRating()).isEqualTo(upVotes - downVotes);
+        assertThat(musicRequestDTO.getRating()).isEqualTo(rating);
     }
 }

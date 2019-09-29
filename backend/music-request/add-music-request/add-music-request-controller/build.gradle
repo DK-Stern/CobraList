@@ -1,3 +1,13 @@
 plugins {
     id 'java'
 }
+
+dependencies {
+    compile project(":backend:music-request:add-music-request:add-music-request-api")
+    compile project(":backend:party:party-creation:party-creation-domain")
+    compile project(":backend:security")
+    compile project(":backend:exception-domain")
+
+    implementation 'org.springframework.boot:spring-boot-starter-web:' + springBootVersion
+    implementation 'org.springframework.boot:spring-boot-starter-security:' + springBootVersion
+}

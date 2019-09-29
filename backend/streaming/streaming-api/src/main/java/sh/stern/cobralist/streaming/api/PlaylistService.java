@@ -14,5 +14,7 @@ public interface PlaylistService {
 
     String addTracksToPlaylist(String userName, String playlistId, List<TrackDTO> tracks);
 
+    String addTracksWithPositionToPlaylist(String userName, String playlistId, List<TrackDTO> tracks, int position);
+
     List<TrackDTO> getTracksFromPlaylist(String userName, String playlistId);
 }

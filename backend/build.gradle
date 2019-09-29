@@ -56,6 +56,8 @@ dependencies {
     implementation project(':backend:music-request:search-music-request:search-music-request-dataaccess-adapter')
     implementation project(':backend:music-request:position-music-request:position-music-request-api')
     implementation project(':backend:music-request:position-music-request:position-music-request-usecases')
+    implementation project(':backend:music-request:position-music-request:position-music-request-dataaccess-port')
+    implementation project(':backend:music-request:position-music-request:position-music-request-dataaccess-adapter')
     implementation project(':backend:music-request:add-music-request:add-music-request-controller')
     implementation project(':backend:music-request:add-music-request:add-music-request-api')
     implementation project(':backend:music-request:add-music-request:add-music-request-usecases')

@@ -95,6 +95,7 @@ public class PartyCreationPublicApiDataService implements PartyCreationDataServi
             musicRequest.setPosition(i);
             musicRequest.setUpVotes(0);
             musicRequest.setDownVotes(0);
+            musicRequest.setRating(0);
             musicRequest.setPlayed(false);
             musicRequest.setImageUrl(track.getImageUrl());
             musicRequest.setImageWidth(track.getImageWidth());

@@ -1,3 +1,11 @@
 plugins {
     id 'java'
 }
+
+dependencies {
+    compile project(':backend:music-request:position-music-request:position-music-request-api')
+    compile project(':backend:music-request:position-music-request:position-music-request-dataaccess-port')
+    runtimeOnly project(':backend:music-request:position-music-request:position-music-request-dataaccess-adapter')
+
+    compile('org.springframework:spring-context:' + springVersion)
+}

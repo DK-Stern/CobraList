@@ -72,7 +72,7 @@ CREATE TABLE user_joined_party
 CREATE TABLE music_request
 (
     id                       BIGINT       NOT NULL AUTO_INCREMENT,
-    position                 INT          NOT NULL,
+    position                 INT,
     is_played                BOOLEAN      NOT NULL,
     playlist_id              BIGINT       NOT NULL,
     title                    VARCHAR(255) NOT NULL,
@@ -84,6 +84,7 @@ CREATE TABLE music_request
     duration                 INT,
     up_votes                 INT          NOT NULL,
     down_votes               INT          NOT NULL,
+    rating                   INT          NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT `fk_music_request_playlist_id`
         FOREIGN KEY (playlist_id) REFERENCES playlist (id)

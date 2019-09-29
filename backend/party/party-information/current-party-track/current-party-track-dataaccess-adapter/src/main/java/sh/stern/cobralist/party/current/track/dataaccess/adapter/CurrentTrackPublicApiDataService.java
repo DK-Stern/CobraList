@@ -64,7 +64,17 @@ public class CurrentTrackPublicApiDataService implements CurrentTrackDataService
         final MusicRequest musicRequest = musicRequestRepository.findByPlaylistAndTrackId(party.getPlaylist(), trackId)
                 .orElseThrow(() -> new MusicRequestNotFoundException(party.getPlaylist().getId(), trackId));
         musicRequest.setPlayed(isPlayedStatus);
+        if (isPlayedStatus) {
+            resetRatingAndPosition(musicRequest);
+        }
         musicRequestRepository.saveAndFlush(musicRequest);
+    }
+
+    private void resetRatingAndPosition(MusicRequest musicRequest) {
+        musicRequest.setPosition(null);
+        musicRequest.setRating(0);
+        musicRequest.setDownVotes(0);
+        musicRequest.setUpVotes(0);
     }
 
     @Override

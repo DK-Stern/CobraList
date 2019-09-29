@@ -88,9 +88,7 @@ public class SpotifyPlaylistPublicApiService implements PlaylistService {
 
     @Override
     public String addTracksToPlaylist(String userName, String playlistId, List<TrackDTO> tracks) {
-        final List<String> uriList = tracks.stream()
-                .map(TrackDTO::getUri)
-                .collect(Collectors.toList());
+        final List<String> uriList = getUrisFromTrackList(tracks);
         final List<List<String>> splittedUriList = splitList(uriList);
 
         spotifyApi.setAuthentication(StreamingProvider.spotify, userName);
@@ -103,6 +101,12 @@ public class SpotifyPlaylistPublicApiService implements PlaylistService {
         return snapshots.get(snapshots.size() - 1);
     }
 
+    private List<String> getUrisFromTrackList(List<TrackDTO> tracks) {
+        return tracks.stream()
+                .map(TrackDTO::getUri)
+                .collect(Collectors.toList());
+    }
+
     List<List<String>> splitList(List<String> uriList) {
         return ListUtils.partition(uriList, LIST_SIZE_FOR_ADDING_TRACKS);
     }
@@ -113,6 +117,30 @@ public class SpotifyPlaylistPublicApiService implements PlaylistService {
         } catch (AccessTokenExpiredException e) {
             spotifyApi.setAuthentication(StreamingProvider.spotify, username);
             return postTracksToPlaylist(username, url, trackUris);
+        }
+    }
+
+    @Override
+    public String addTracksWithPositionToPlaylist(String userName, String playlistId, List<TrackDTO> tracks, int position) {
+        final List<String> uriList = getUrisFromTrackList(tracks);
+        final List<List<String>> splittedUriList = splitList(uriList);
+
+        spotifyApi.setAuthentication(StreamingProvider.spotify, userName);
+
+        final String url = String.format("%splaylists/%s/tracks", API_URL, playlistId);
+        final List<String> snapshots = splittedUriList.stream()
+                .map((List<String> uris) -> postTracksWithPositionToPlaylist(userName, url, uris, position))
+                .collect(Collectors.toList());
+
+        return snapshots.get(snapshots.size() - 1);
+    }
+
+    private String postTracksWithPositionToPlaylist(String username, String url, List<String> trackUris, int position) {
+        try {
+            return spotifyApi.postTracksWithPositionToPlaylist(url, trackUris, position);
+        } catch (AccessTokenExpiredException e) {
+            spotifyApi.setAuthentication(StreamingProvider.spotify, username);
+            return postTracksWithPositionToPlaylist(username, url, trackUris, position);
         }
     }
 

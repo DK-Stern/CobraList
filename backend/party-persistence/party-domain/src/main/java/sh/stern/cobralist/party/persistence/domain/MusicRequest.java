@@ -36,6 +36,8 @@ public class MusicRequest {
     @Column(name = "down_votes")
     private Integer downVotes;
 
+    private Integer rating;
+
     @ElementCollection
     @CollectionTable(name = "music_request_artist", joinColumns = @JoinColumn(name = "music_request_id"))
     @Column(name = "artist")
@@ -168,5 +170,13 @@ public class MusicRequest {
 
     public void setPlayed(Boolean played) {
         isPlayed = played;
+    }
+
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
     }
 }

@@ -11,6 +11,7 @@ import sh.stern.cobralist.streaming.exceptions.AccessTokenExpiredException;
 import sh.stern.cobralist.streaming.spotify.errorhandler.AccessTokenExpiredErrorHandler;
 import sh.stern.cobralist.streaming.spotify.valueobjects.*;
 import sh.stern.cobralist.streaming.spotify.valueobjects.requests.AddTracksTracksToPlaylistRequest;
+import sh.stern.cobralist.streaming.spotify.valueobjects.requests.AddTracksTracksToPlaylistRequestWithPosition;
 import sh.stern.cobralist.streaming.spotify.valueobjects.requests.CreatePlaylistRequest;
 import sh.stern.cobralist.streaming.spotify.valueobjects.requests.RemoveTrack;
 
@@ -22,7 +23,6 @@ import java.util.Objects;
 public class SpotifyApi extends ApiBinding {
 
     private static final Logger LOG = LoggerFactory.getLogger(SpotifyApi.class);
-
 
     @Autowired
     public SpotifyApi(AccessTokenExpiredErrorHandler accessTokenExpiredErrorHandler,
@@ -91,6 +91,22 @@ public class SpotifyApi extends ApiBinding {
         final ResponseEntity<String> response = restTemplate.exchange(url,
                 HttpMethod.POST,
                 new HttpEntity<>(new AddTracksTracksToPlaylistRequest(trackUris), httpHeaders),
+                String.class);
+
+        checkStatusCode(response.getStatusCode());
+
+        return response.getBody();
+    }
+
+    public String postTracksWithPositionToPlaylist(String url, List<String> trackUris, int position) throws AccessTokenExpiredException {
+        LOG.info(String.format("Add tracks to playlist: %s, with position: %s", url, position));
+
+        final HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        final ResponseEntity<String> response = restTemplate.exchange(url,
+                HttpMethod.POST,
+                new HttpEntity<>(new AddTracksTracksToPlaylistRequestWithPosition(trackUris, position), httpHeaders),
                 String.class);
 
         checkStatusCode(response.getStatusCode());

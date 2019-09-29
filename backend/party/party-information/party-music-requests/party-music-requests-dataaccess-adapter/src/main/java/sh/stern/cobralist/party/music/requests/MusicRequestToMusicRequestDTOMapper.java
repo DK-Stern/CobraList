@@ -18,7 +18,7 @@ public class MusicRequestToMusicRequestDTOMapper {
         musicRequestDTO.setImageHeight(musicRequest.getImageHeight());
         musicRequestDTO.setDuration(musicRequest.getDuration());
         musicRequestDTO.setAllVotes(musicRequest.getUpVotes() + musicRequest.getDownVotes());
-        musicRequestDTO.setRating(musicRequest.getUpVotes() - musicRequest.getDownVotes());
+        musicRequestDTO.setRating(musicRequest.getRating());
         return musicRequestDTO;
     }
 }

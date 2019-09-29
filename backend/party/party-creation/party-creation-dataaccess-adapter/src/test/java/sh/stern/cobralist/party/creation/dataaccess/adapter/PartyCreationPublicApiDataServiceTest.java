@@ -195,6 +195,10 @@ public class PartyCreationPublicApiDataServiceTest {
         softly.assertThat(expectedMusicRequest.getUri()).isEqualTo(uri);
         softly.assertThat(expectedMusicRequest.getPlaylist()).isEqualTo(savedPlaylist);
         softly.assertThat(expectedMusicRequest.getDuration()).isEqualTo(duration);
+        softly.assertThat(expectedMusicRequest.getUpVotes()).isZero();
+        softly.assertThat(expectedMusicRequest.getDownVotes()).isZero();
+        softly.assertThat(expectedMusicRequest.getRating()).isZero();
+        softly.assertThat(expectedMusicRequest.getPlayed()).isFalse();
         softly.assertAll();
     }
 }

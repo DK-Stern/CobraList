@@ -565,4 +565,45 @@ public class SpotifyPlaylistPublicApiServiceTest {
         final List<List<String>> resultedTrackUris = listArgumentCaptor.getAllValues();
         assertThat(resultedTrackUris).containsExactly(firstTrackList, firstTrackList, secondTrackList);
     }
+
+    @Test
+    public void addTracksWithPositionToPlaylist() throws AccessTokenExpiredException {
+        // given
+        final String username = "username";
+        final String playlistStreamingId = "playlistStreamingId";
+        final TrackDTO trackDto = new TrackDTO();
+        final String streamingUri = "streamingUri";
+        trackDto.setUri(streamingUri);
+        final List<TrackDTO> tracks = Collections.singletonList(trackDto);
+        final int position = 3;
+
+        // when
+        testSubject.addTracksWithPositionToPlaylist(username, playlistStreamingId, tracks, position);
+
+        // then
+        verify(spotifyApiMock).setAuthentication(StreamingProvider.spotify, username);
+        final String expectedUrl = "https://api.spotify.com/v1/playlists/" + playlistStreamingId + "/tracks";
+        verify(spotifyApiMock).postTracksWithPositionToPlaylist(expectedUrl, Collections.singletonList(streamingUri), position);
+    }
+
+    @Test
+    public void retryAddingTracksWithPositionToPlaylistAfterAccesTokenExpiredExceptionIsThrown() throws AccessTokenExpiredException {
+        // given
+        final String username = "username";
+        final String playlistStreamingId = "playlistStreamingId";
+        final TrackDTO trackDto = new TrackDTO();
+        final String streamingUri = "streamingUri";
+        trackDto.setUri(streamingUri);
+        final List<TrackDTO> tracks = Collections.singletonList(trackDto);
+        final int position = 3;
+
+        final String url = "https://api.spotify.com/v1/playlists/" + playlistStreamingId + "/tracks";
+        when(spotifyApiMock.postTracksWithPositionToPlaylist(url, Collections.singletonList(streamingUri), position)).thenThrow(new AccessTokenExpiredException()).thenReturn("shnapshotId");
+
+        // when
+        testSubject.addTracksWithPositionToPlaylist(username, playlistStreamingId, tracks, position);
+
+        // then
+        verify(spotifyApiMock, times(2)).setAuthentication(StreamingProvider.spotify, username);
+    }
 }

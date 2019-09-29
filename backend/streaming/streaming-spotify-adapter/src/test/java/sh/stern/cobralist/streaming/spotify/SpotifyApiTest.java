@@ -17,10 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import sh.stern.cobralist.streaming.exceptions.AccessTokenExpiredException;
 import sh.stern.cobralist.streaming.spotify.errorhandler.AccessTokenExpiredErrorHandler;
 import sh.stern.cobralist.streaming.spotify.valueobjects.*;
-import sh.stern.cobralist.streaming.spotify.valueobjects.requests.AddTracksTracksToPlaylistRequest;
-import sh.stern.cobralist.streaming.spotify.valueobjects.requests.CreatePlaylistRequest;
-import sh.stern.cobralist.streaming.spotify.valueobjects.requests.RemoveTrack;
-import sh.stern.cobralist.streaming.spotify.valueobjects.requests.Track;
+import sh.stern.cobralist.streaming.spotify.valueobjects.requests.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -281,7 +278,7 @@ public class SpotifyApiTest {
     }
 
     @Test
-    public void searchTrackThrowsExceptionIfStatusCodeUnauthorized() throws AccessTokenExpiredException {
+    public void searchTrackThrowsExceptionIfStatusCodeUnauthorized() {
         // given
         final String url = "https://api.spotify.com/v1/search?q=abba&type=track";
 
@@ -290,5 +287,30 @@ public class SpotifyApiTest {
         // when u. then
         assertThatExceptionOfType(AccessTokenExpiredException.class)
                 .isThrownBy(() -> testSubject.searchTrack(url));
+    }
+
+    @Test
+    public void postTracksWithPositionToPlaylist() throws AccessTokenExpiredException {
+        // given
+        final String url = "url";
+        final List<String> spotifyUris = Collections.singletonList("spotifyUri");
+        final int position = 5;
+
+        final String expectedSnapshotId = "snapshotId";
+        final ArgumentCaptor<HttpEntity> httpEntityArgumentCaptor = ArgumentCaptor.forClass(HttpEntity.class);
+        when(restTemplateMock.exchange(eq(url), eq(HttpMethod.POST), httpEntityArgumentCaptor.capture(), eq(String.class)))
+                .thenReturn(new ResponseEntity<>(expectedSnapshotId, HttpStatus.OK));
+
+        // when
+        final String resultedSnapshotId = testSubject.postTracksWithPositionToPlaylist(url, spotifyUris, position);
+
+        // then
+        final HttpEntity httpEntityArgumentCaptorValue = httpEntityArgumentCaptor.getValue();
+        final AddTracksTracksToPlaylistRequestWithPosition resultedBody = (AddTracksTracksToPlaylistRequestWithPosition) httpEntityArgumentCaptorValue.getBody();
+
+        final SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(resultedBody).isNotNull().extracting(AddTracksTracksToPlaylistRequestWithPosition::getUris).isEqualTo(spotifyUris);
+        softly.assertThat(resultedSnapshotId).isEqualTo(expectedSnapshotId);
+        softly.assertAll();
     }
 }
