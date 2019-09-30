@@ -11,6 +11,7 @@ import sh.stern.cobralist.party.persistence.domain.MusicRequest;
 import sh.stern.cobralist.party.persistence.domain.Party;
 import sh.stern.cobralist.party.persistence.exceptions.MusicRequestNotFoundException;
 import sh.stern.cobralist.party.persistence.exceptions.PartyNotFoundException;
+import sh.stern.cobralist.position.music.request.api.MusicRequestPositionService;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,12 +22,15 @@ public class CurrentTrackPublicApiDataService implements CurrentTrackDataService
 
     private final PartyRepository partyRepository;
     private final MusicRequestRepository musicRequestRepository;
+    private final MusicRequestPositionService musicRequestPositionService;
 
     @Autowired
     public CurrentTrackPublicApiDataService(PartyRepository partyRepository,
-                                            MusicRequestRepository musicRequestRepository) {
+                                            MusicRequestRepository musicRequestRepository,
+                                            MusicRequestPositionService musicRequestPositionService) {
         this.partyRepository = partyRepository;
         this.musicRequestRepository = musicRequestRepository;
+        this.musicRequestPositionService = musicRequestPositionService;
     }
 
     @Override
@@ -66,8 +70,13 @@ public class CurrentTrackPublicApiDataService implements CurrentTrackDataService
         musicRequest.setPlayed(isPlayedStatus);
         if (isPlayedStatus) {
             resetRatingAndPosition(musicRequest);
+            decrementMusicRequestPositions(party.getPlaylist().getId());
         }
         musicRequestRepository.saveAndFlush(musicRequest);
+    }
+
+    private void decrementMusicRequestPositions(Long playlistId) {
+        musicRequestPositionService.decreaseMusicRequestPositions(playlistId);
     }
 
     private void resetRatingAndPosition(MusicRequest musicRequest) {

@@ -31,4 +31,9 @@ public class MusicRequestPositionPublicApiService implements MusicRequestPositio
         musicRequestPositionDataService.increaseMusicRequestPositions(playlistId, position);
         musicRequestPositionDataService.saveMusicRequest(playlistId, trackDTO, position);
     }
+
+    @Override
+    public int decreaseMusicRequestPositions(Long playlistId) {
+        return musicRequestPositionDataService.decreaseMusicRequestPositions(playlistId);
+    }
 }

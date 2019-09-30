@@ -82,4 +82,16 @@ public class MusicRequestPositionPublicApiServiceTest {
         // then
         verify(musicRequestPositionDataServiceMock).saveMusicRequest(playlistId, trackDTO, position);
     }
+
+    @Test
+    public void decreaseMusicRequestPositions() {
+        // given
+        final long playlistId = 4536L;
+
+        // when
+        testSubject.decreaseMusicRequestPositions(playlistId);
+
+        // then
+        verify(musicRequestPositionDataServiceMock).decreaseMusicRequestPositions(playlistId);
+    }
 }

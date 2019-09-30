@@ -77,6 +77,12 @@ public class MusicRequestPositionPublicApiDataService implements MusicRequestPos
 
     @Override
     @Transactional
+    public int decreaseMusicRequestPositions(Long playlistId) {
+        return musicRequestRepository.decreaseMusicRequestPositions(playlistId);
+    }
+
+    @Override
+    @Transactional
     public void saveMusicRequest(Long playlistId, TrackDTO trackDTO, int position) {
         final Playlist playlist = playlistRepository.findById(playlistId)
                 .orElseThrow(() -> {

@@ -9,5 +9,7 @@ public interface MusicRequestPositionDataService {
 
     int increaseMusicRequestPositions(Long playlistId, int position);
 
+    int decreaseMusicRequestPositions(Long playlistId);
+
     void saveMusicRequest(Long playlistId, TrackDTO trackDTO, int position);
 }

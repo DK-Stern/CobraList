@@ -4,6 +4,8 @@ plugins {
 
 dependencies {
     compile project(':backend:party:party-information:current-party-track:current-party-track-dataaccess-port')
+    compile project(':backend:music-request:position-music-request:position-music-request-api')
+    runtimeOnly project(':backend:music-request:position-music-request:position-music-request-usecases')
     compile project(':backend:party-persistence:party-dataaccess')
     compile project(':backend:party-persistence:party-exceptions')
 }

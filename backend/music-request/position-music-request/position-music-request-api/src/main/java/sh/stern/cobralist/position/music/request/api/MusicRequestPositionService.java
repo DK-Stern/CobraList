@@ -8,4 +8,6 @@ public interface MusicRequestPositionService {
     Long getPlaylistId(String partyCode);
 
     void persistNewMusicRequest(Long playlistId, TrackDTO trackDTO, int position);
+
+    int decreaseMusicRequestPositions(Long playlistId);
 }

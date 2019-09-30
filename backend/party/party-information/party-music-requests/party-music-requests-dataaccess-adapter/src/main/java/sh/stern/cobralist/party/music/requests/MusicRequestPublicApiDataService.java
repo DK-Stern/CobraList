@@ -43,7 +43,7 @@ public class MusicRequestPublicApiDataService implements MusicRequestDataService
 
     @Override
     public List<MusicRequestDTO> getMusicRequests(Long playlistId, Long participantId, boolean isUser) {
-        final List<MusicRequest> musicRequests = musicRequestRepository.findByPlaylist_Id(playlistId);
+        final List<MusicRequest> musicRequests = musicRequestRepository.findByPlaylist_IdAndIsPlayed(playlistId, false);
 
         List<Vote> votes;
         if (isUser) {

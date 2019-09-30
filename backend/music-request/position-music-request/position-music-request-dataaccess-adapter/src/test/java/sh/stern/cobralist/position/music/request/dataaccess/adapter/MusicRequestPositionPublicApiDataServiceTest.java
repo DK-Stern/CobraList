@@ -277,4 +277,16 @@ public class MusicRequestPositionPublicApiDataServiceTest {
                 .isThrownBy(() -> testSubject.saveMusicRequest(playlistId, trackDTO, position))
                 .withMessage("Playlist mit der id '" + playlistId + "' konnte nicht gefunden werden.");
     }
+
+    @Test
+    public void decreaseMusicRequestPositions() {
+        // given
+        final long playlistId = 123L;
+
+        // when
+        testSubject.decreaseMusicRequestPositions(playlistId);
+
+        // then
+        verify(musicRequestRepositoryMock).decreaseMusicRequestPositions(playlistId);
+    }
 }

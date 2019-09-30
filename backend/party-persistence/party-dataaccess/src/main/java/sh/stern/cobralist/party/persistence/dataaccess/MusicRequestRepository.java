@@ -14,7 +14,7 @@ import java.util.Optional;
 @SuppressWarnings("squid:S00100")
 @Repository
 public interface MusicRequestRepository extends JpaRepository<MusicRequest, Long> {
-    List<MusicRequest> findByPlaylist_Id(Long playlistId);
+    List<MusicRequest> findByPlaylist_IdAndIsPlayed(Long playlistId, Boolean played);
 
     Optional<MusicRequest> findByPlaylistAndTrackId(Playlist playlist, String trackId);
 
@@ -29,4 +29,10 @@ public interface MusicRequestRepository extends JpaRepository<MusicRequest, Long
             value = "UPDATE music_request AS mr SET mr.position = mr.position + 1 WHERE mr.playlist_id = ?1 AND mr.position >= ?2",
             nativeQuery = true)
     int increasePositions(Long playlistId, int position);
+
+    @Modifying
+    @Query(
+            value = "UPDATE music_request AS mr SET mr.position = mr.position - 1 WHERE mr.playlist_id = ?1",
+            nativeQuery = true)
+    int decreaseMusicRequestPositions(Long playlistId);
 }

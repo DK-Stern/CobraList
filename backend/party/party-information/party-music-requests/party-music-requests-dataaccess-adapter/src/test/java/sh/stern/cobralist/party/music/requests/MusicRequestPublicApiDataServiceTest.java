@@ -121,7 +121,7 @@ public class MusicRequestPublicApiDataServiceTest {
         downVote.setDownVote(true);
         musicRequest.setVotes(Arrays.asList(upVote, downVote));
 
-        when(musicRequestRepositoryMock.findByPlaylist_Id(playlistId)).thenReturn(Collections.singletonList(musicRequest));
+        when(musicRequestRepositoryMock.findByPlaylist_IdAndIsPlayed(playlistId, false)).thenReturn(Collections.singletonList(musicRequest));
 
         final MusicRequestDTO expectedMusicRequestDTO = new MusicRequestDTO();
         when(musicRequestToMusicRequestDTOMapperMock.map(musicRequest)).thenReturn(expectedMusicRequestDTO);
@@ -169,7 +169,7 @@ public class MusicRequestPublicApiDataServiceTest {
         downVote.setDownVote(true);
         musicRequest.setVotes(Arrays.asList(upVote, downVote));
 
-        when(musicRequestRepositoryMock.findByPlaylist_Id(playlistId)).thenReturn(Collections.singletonList(musicRequest));
+        when(musicRequestRepositoryMock.findByPlaylist_IdAndIsPlayed(playlistId, false)).thenReturn(Collections.singletonList(musicRequest));
 
         final MusicRequestDTO expectedMusicRequestDTO = new MusicRequestDTO();
         expectedMusicRequestDTO.setUpVotes(2);
@@ -219,7 +219,7 @@ public class MusicRequestPublicApiDataServiceTest {
         downVote.setDownVote(true);
         musicRequest.setVotes(Arrays.asList(upVote, downVote));
 
-        when(musicRequestRepositoryMock.findByPlaylist_Id(playlistId)).thenReturn(Collections.singletonList(musicRequest));
+        when(musicRequestRepositoryMock.findByPlaylist_IdAndIsPlayed(playlistId, false)).thenReturn(Collections.singletonList(musicRequest));
 
         final MusicRequestDTO expectedMusicRequestDTO = new MusicRequestDTO();
         when(musicRequestToMusicRequestDTOMapperMock.map(musicRequest)).thenReturn(expectedMusicRequestDTO);
@@ -271,7 +271,7 @@ public class MusicRequestPublicApiDataServiceTest {
         downVote.setDownVote(true);
         musicRequest.setVotes(Arrays.asList(upVote, downVote));
 
-        when(musicRequestRepositoryMock.findByPlaylist_Id(playlistId)).thenReturn(Collections.singletonList(musicRequest));
+        when(musicRequestRepositoryMock.findByPlaylist_IdAndIsPlayed(playlistId, false)).thenReturn(Collections.singletonList(musicRequest));
 
         final MusicRequestDTO expectedMusicRequestDTO = new MusicRequestDTO();
         when(musicRequestToMusicRequestDTOMapperMock.map(musicRequest)).thenReturn(expectedMusicRequestDTO);
