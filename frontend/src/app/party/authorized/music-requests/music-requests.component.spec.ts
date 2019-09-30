@@ -7,6 +7,8 @@ import {provideMockStore} from "@ngrx/store/testing";
 import {AppState} from "../../../storage/app-state.reducer";
 import {MatTableModule} from "@angular/material/table";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 describe('MusicRequestsComponent', () => {
   let component: MusicRequestsComponent;
@@ -39,6 +41,9 @@ describe('MusicRequestsComponent', () => {
         MatFormFieldModule,
         MatInputModule,
         MatTableModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatAutocompleteModule,
         BrowserAnimationsModule
       ],
       providers: [

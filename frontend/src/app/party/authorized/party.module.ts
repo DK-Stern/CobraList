@@ -13,9 +13,16 @@ import {MatTableModule} from "@angular/material/table";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatSortModule} from "@angular/material/sort";
+import {SearchMusicRequestComponent} from './search-music-request/search-music-request.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
-  declarations: [PartyDetailsComponent, PartyComponent, PartyInformationComponent, MusicRequestsComponent, PlayerComponent],
+  declarations: [PartyDetailsComponent, PartyComponent, PartyInformationComponent, MusicRequestsComponent, PlayerComponent, SearchMusicRequestComponent],
+  exports: [
+    SearchMusicRequestComponent
+  ],
   imports: [
     CommonModule,
     PartyRoutingModule,
@@ -23,6 +30,11 @@ import {MatSortModule} from "@angular/material/sort";
     MatFormFieldModule,
     MatInputModule,
     MatSortModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    HttpClientModule,
     EffectsModule.forFeature([PartyEffect])
   ]
 })

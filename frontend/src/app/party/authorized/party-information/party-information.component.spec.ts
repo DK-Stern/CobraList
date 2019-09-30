@@ -8,6 +8,13 @@ describe('PartyInformationComponent', () => {
   let fixture: ComponentFixture<PartyInformationComponent>;
 
   @Component({
+    selector: 'app-search-music-request',
+    template: '<p>Mock Search Music Request Component</p>'
+  })
+  class MockSearchMusicRequestComponent {
+  }
+
+  @Component({
     selector: 'app-music-requests',
     template: '<p>Mock Music Request Component</p>'
   })
@@ -25,6 +32,7 @@ describe('PartyInformationComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         PartyInformationComponent,
+        MockSearchMusicRequestComponent,
         MockMusicRequestComponent,
         MockPlayerComponent
       ]

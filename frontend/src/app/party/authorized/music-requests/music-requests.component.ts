@@ -4,6 +4,7 @@ import {AppState} from "../../../storage/app-state.reducer";
 import {MusicRequestDTO} from "../store/party-information.dto";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-music-requests',
@@ -23,6 +24,7 @@ export class MusicRequestsComponent implements OnInit {
 
   musicRequests: MusicRequestDTO[];
   dataSource;
+  filterCtrl: FormControl = new FormControl();
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
@@ -30,12 +32,19 @@ export class MusicRequestsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.select(state => state.party.musicRequests).subscribe(musicRequests => this.musicRequests = musicRequests);
-    this.dataSource = new MatTableDataSource<MusicRequestDTO>(this.musicRequests);
-    this.dataSource.sort = this.sort;
+    this.store.select(state => state.party.musicRequests).subscribe(musicRequests => {
+      this.dataSource = new MatTableDataSource<MusicRequestDTO>(this.musicRequests);
+      this.dataSource.sort = this.sort;
+      if (this.filterCtrl.value !== "" && this.filterCtrl.value !== null) {
+        this.applyFilter();
+      }
+      return this.musicRequests = musicRequests;
+    });
   }
 
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  applyFilter() {
+    if (this.filterCtrl.value !== "" && this.filterCtrl.value !== null) {
+      this.dataSource.filter = this.filterCtrl.value.trim().toLowerCase();
+    }
   }
 }
