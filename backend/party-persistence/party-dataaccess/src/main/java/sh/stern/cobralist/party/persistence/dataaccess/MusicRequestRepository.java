@@ -27,7 +27,7 @@ public interface MusicRequestRepository extends JpaRepository<MusicRequest, Long
 
     Optional<MusicRequest> findTopByPlaylist_IdOrderByRatingAsc(Long playlistId);
 
-    Optional<MusicRequest> findTopByPlaylist_IdOrderByPositionAsc(Long playlistId);
+    Optional<MusicRequest> findTopByPlaylist_IdAndIsPlayedOrderByPositionAsc(Long playlistId, Boolean played);
 
     Optional<MusicRequest> findTopByPlaylist_IdOrderByPositionDesc(Long playlistId);
 

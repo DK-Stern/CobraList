@@ -6,6 +6,7 @@ import sh.stern.cobralist.party.persistence.dataaccess.PartyRepository;
 import sh.stern.cobralist.party.persistence.domain.Party;
 import sh.stern.cobralist.party.persistence.domain.User;
 import sh.stern.cobralist.party.persistence.exceptions.PartyNotFoundException;
+import sh.stern.cobralist.party.persistence.exceptions.UserNotFoundException;
 import sh.stern.cobralist.party.security.dataaccess.port.PartySecurityDataService;
 
 @Service
@@ -33,5 +34,12 @@ public class PartySecurityPublicApiDataService implements PartySecurityDataServi
                 .orElseThrow(() -> new PartyNotFoundException(partyCode));
 
         return (party.getGuests().stream().filter(guest -> guest.getId().equals(guestId)).count() == 1);
+    }
+
+    @Override
+    public boolean isPartyCreator(Long userId, String partyCode) {
+        final Long creatorId = partyRepository.findByPartyCode(partyCode)
+                .map(Party::getUser).map(User::getId).orElseThrow(() -> new UserNotFoundException(userId));
+        return creatorId.equals(userId);
     }
 }

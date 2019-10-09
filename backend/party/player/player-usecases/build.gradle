@@ -1,0 +1,16 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    compile project(':backend:party:player:player-api')
+    compile project(':backend:party:player:player-dataaccess-port')
+    runtimeOnly project(':backend:party:player:player-dataaccess-adapter')
+    compile project(':backend:party:party-security:party-security-api')
+    runtimeOnly project(':backend:party:party-security:party-security-usecases')
+    compile project(':backend:streaming:streaming-api')
+    runtimeOnly project(':backend:streaming:streaming-spotify-adapter')
+    compile project(':backend:exception-domain')
+
+    implementation 'org.springframework.boot:spring-boot-starter-web:' + springBootVersion
+}

@@ -3,6 +3,7 @@ package sh.stern.cobralist.party.security.usecases;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
+import sh.stern.cobralist.party.security.api.NoPartyCreatorException;
 import sh.stern.cobralist.party.security.api.NoPartyParticipantException;
 import sh.stern.cobralist.party.security.api.PartySecurityService;
 import sh.stern.cobralist.party.security.dataaccess.port.PartySecurityDataService;
@@ -37,6 +38,14 @@ public class PartySecurityPublicApiService implements PartySecurityService {
             if (!userPartyParticipant) {
                 throw new NoPartyParticipantException("Benutzer ist der Party nicht zugehörig.");
             }
+        }
+    }
+
+    @Override
+    public void checkControlPlayerPermission(UserPrincipal userPrincipal, String partyCode) {
+        final boolean partyCreator = partySecurityDataService.isPartyCreator(userPrincipal.getId(), partyCode);
+        if (!partyCreator) {
+            throw new NoPartyCreatorException(userPrincipal.getId(), partyCode);
         }
     }
 }

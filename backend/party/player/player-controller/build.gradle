@@ -1,0 +1,13 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    compile project(':backend:party:player:player-api')
+    runtimeOnly project(':backend:party:player:player-usecases')
+    compile project(':backend:security')
+    compile project(':backend:exception-domain')
+    compile project(':backend:user:userprincipal')
+
+    implementation 'org.springframework.boot:spring-boot-starter-web:' + springBootVersion
+}

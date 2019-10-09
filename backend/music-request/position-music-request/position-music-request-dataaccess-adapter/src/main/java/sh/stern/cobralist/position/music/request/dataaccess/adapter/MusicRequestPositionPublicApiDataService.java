@@ -75,7 +75,7 @@ public class MusicRequestPositionPublicApiDataService implements MusicRequestPos
 
     @Override
     public boolean isPlaylistEmpty(Long playlistId) {
-        return !musicRequestRepository.findTopByPlaylist_IdOrderByPositionAsc(playlistId).isPresent();
+        return !musicRequestRepository.findTopByPlaylist_IdAndIsPlayedOrderByPositionAsc(playlistId, false).isPresent();
     }
 
     @Override

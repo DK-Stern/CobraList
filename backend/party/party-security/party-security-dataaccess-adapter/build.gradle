@@ -4,4 +4,6 @@ plugins {
 
 dependencies {
     compile project(':backend:party:party-security:party-security-dataaccess-port')
+    compile project(':backend:party-persistence:party-dataaccess')
+    compile project(':backend:party-persistence:party-exceptions')
 }

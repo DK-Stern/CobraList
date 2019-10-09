@@ -181,4 +181,45 @@ public class SpotifyApi extends ApiBinding {
 
         return response.getBody();
     }
+
+    public void startPlaylist(String url, String playlistStreamingId) throws AccessTokenExpiredException {
+        LOG.info(String.format("Start playing playlist: '%s'", playlistStreamingId));
+
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        final StartPlaylistRequest startPlaylistRequest = new StartPlaylistRequest();
+        startPlaylistRequest.setContextUri(String.format("spotify:playlist:%s", playlistStreamingId));
+
+        final ResponseEntity<String> response = restTemplate.exchange(
+                url,
+                HttpMethod.PUT,
+                new HttpEntity<>(startPlaylistRequest, headers),
+                String.class);
+
+        checkStatusCode(response.getStatusCode());
+    }
+
+    public void pausePlayback(String url) throws AccessTokenExpiredException {
+        LOG.info("Pause users playback.");
+        final ResponseEntity<String> response = restTemplate.exchange(
+                url,
+                HttpMethod.PUT,
+                null,
+                String.class);
+
+        checkStatusCode(response.getStatusCode());
+    }
+
+    public void skipSong(String url) throws AccessTokenExpiredException {
+        LOG.info("Skip song.");
+        final ResponseEntity<String> response = restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                null,
+                String.class);
+
+        checkStatusCode(response.getStatusCode());
+    }
+
 }

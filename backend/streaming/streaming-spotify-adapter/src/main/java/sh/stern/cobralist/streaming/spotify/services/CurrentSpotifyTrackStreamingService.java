@@ -50,6 +50,7 @@ public class CurrentSpotifyTrackStreamingService implements CurrentTrackStreamin
 
             final CurrentPlaybackDTO currentPlaybackDTO = new CurrentPlaybackDTO();
             try {
+                // todo nullsafe machen
                 currentPlayback = getCurrentPlayback(party.getCreatorEmail(), API_PLAYBACK_URL);
 
                 trackDTO = trackValueObjectToTrackDTOMapper.map(currentPlayback.getItem());

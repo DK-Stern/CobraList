@@ -3,6 +3,7 @@ package sh.stern.cobralist.party.current.track.usecases;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import sh.stern.cobralist.party.creation.domain.TrackDTO;
 import sh.stern.cobralist.party.current.track.api.CurrentTrackService;
 import sh.stern.cobralist.party.current.track.dataaccess.port.CurrentTrackDataService;
 import sh.stern.cobralist.party.current.track.domain.ActivePartyDTO;
@@ -40,17 +41,20 @@ public class CurrentTrackPublicApiService implements CurrentTrackService {
     private void handleTrackIsPlayedStatus(List<ActivePartyDTO> activeParties) {
         this.partyPlaybacks.forEach((partyCode, currentPlaybackDTO) -> {
             Long playlistId = currentTrackDataService.getPlaylistId(partyCode);
-            Long musicRequestId = currentTrackDataService.getMusicRequestId(playlistId, currentPlaybackDTO.getCurrentTrack().getStreamingId());
-            final boolean isPlayed = currentTrackDataService.hasMusicRequestStatusPlayed(musicRequestId);
-            if (!isPlayed) {
-                final Optional<String> username = activeParties.stream()
-                        .filter(activePartyDTO -> activePartyDTO.getPartyCode().equals(partyCode))
-                        .map(ActivePartyDTO::getCreatorEmail)
-                        .findFirst();
-                if (username.isPresent()) {
-                    final String playlistStreamingId = currentTrackDataService.getPlaylistStreamingId(partyCode);
-                    currentTrackStreamingService.removeTrackFromPlaylist(username.get(), playlistStreamingId, currentPlaybackDTO.getCurrentTrack().getStreamingId());
-                    currentTrackDataService.changeMusicRequestPlayedStatus(musicRequestId, true);
+            final TrackDTO currentTrack = currentPlaybackDTO.getCurrentTrack();
+            if (currentTrack != null) {
+                Long musicRequestId = currentTrackDataService.getMusicRequestId(playlistId, currentTrack.getStreamingId());
+                final boolean isPlayed = currentTrackDataService.hasMusicRequestStatusPlayed(musicRequestId);
+                if (!isPlayed) {
+                    final Optional<String> username = activeParties.stream()
+                            .filter(activePartyDTO -> activePartyDTO.getPartyCode().equals(partyCode))
+                            .map(ActivePartyDTO::getCreatorEmail)
+                            .findFirst();
+                    if (username.isPresent()) {
+                        final String playlistStreamingId = currentTrackDataService.getPlaylistStreamingId(partyCode);
+                        currentTrackStreamingService.removeTrackFromPlaylist(username.get(), playlistStreamingId, currentPlaybackDTO.getCurrentTrack().getStreamingId());
+                        currentTrackDataService.changeMusicRequestPlayedStatus(musicRequestId, true);
+                    }
                 }
             }
         });
