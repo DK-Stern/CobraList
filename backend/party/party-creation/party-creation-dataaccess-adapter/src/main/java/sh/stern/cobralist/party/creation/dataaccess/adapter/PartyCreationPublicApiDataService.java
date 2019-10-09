@@ -91,7 +91,7 @@ public class PartyCreationPublicApiDataService implements PartyCreationDataServi
         for (int i = 0; i < tracks.size(); i++) {
             final TrackDTO track = tracks.get(i);
             final MusicRequest musicRequest = new MusicRequest();
-            musicRequest.setTrackId(track.getId());
+            musicRequest.setTrackId(track.getStreamingId());
             musicRequest.setPosition(i);
             musicRequest.setUpVotes(0);
             musicRequest.setDownVotes(0);

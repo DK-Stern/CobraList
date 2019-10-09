@@ -17,7 +17,6 @@ dependencies {
     runtimeOnly project(":backend:party:party-security:party-security-usecases")
 
     compile project(":backend:security")
-    compile project(':backend:exception-domain')
 
     implementation 'org.springframework.boot:spring-boot-starter-web:' + springBootVersion
     implementation 'org.springframework.boot:spring-boot-starter-security:' + springBootVersion

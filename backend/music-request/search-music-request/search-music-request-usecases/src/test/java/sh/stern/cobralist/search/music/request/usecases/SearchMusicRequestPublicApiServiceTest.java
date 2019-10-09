@@ -80,6 +80,8 @@ public class SearchMusicRequestPublicApiServiceTest {
         when(trackDTOToSearchMusicRequestDTOMapperMock.map(trackDTO)).thenReturn(expectedSearchMusicRequestDTO);
         when(searchMusicRequestDataServiceMock.isMusicRequestAlreadyInPlaylist(playlistId, trackId)).thenReturn(false);
 
+        when(searchMusicRequestDataServiceMock.getPartyCreatorStreamingId(partyCode)).thenReturn(username);
+
         // when
         final List<SearchMusicRequestDTO> resultedSearchMusicRequestDTOS = testSubject.searchMusicRequest(userPrincipal, partyCode, searchString);
 

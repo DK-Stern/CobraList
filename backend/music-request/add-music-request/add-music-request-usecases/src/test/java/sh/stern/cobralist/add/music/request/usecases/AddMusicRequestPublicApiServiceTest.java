@@ -51,7 +51,7 @@ public class AddMusicRequestPublicApiServiceTest {
         final String partyCode = "partyCode";
         addMusicRequestDTO.setPartyCode(partyCode);
         final TrackDTO trackDTO = new TrackDTO();
-        trackDTO.setId("id");
+        trackDTO.setStreamingId("id");
         trackDTO.setArtists(Collections.singletonList("artist"));
         trackDTO.setUri("uri");
         trackDTO.setName("name");
@@ -60,7 +60,7 @@ public class AddMusicRequestPublicApiServiceTest {
         trackDTO.setImageWidth(1);
         trackDTO.setImageHeight(1);
         trackDTO.setDuration(12);
-        addMusicRequestDTO.setTrackDTO(trackDTO);
+        addMusicRequestDTO.setTrack(trackDTO);
 
         // when
         testSubject.addMusicRequest(userPrincipal, addMusicRequestDTO);
@@ -78,7 +78,7 @@ public class AddMusicRequestPublicApiServiceTest {
         addMusicRequestDTO.setPartyCode(partyCode);
         final TrackDTO trackDTO = new TrackDTO();
         final String trackStreamingId = "id";
-        trackDTO.setId(trackStreamingId);
+        trackDTO.setStreamingId(trackStreamingId);
         trackDTO.setArtists(Collections.singletonList("artist"));
         trackDTO.setUri("uri");
         trackDTO.setName("name");
@@ -87,7 +87,7 @@ public class AddMusicRequestPublicApiServiceTest {
         trackDTO.setImageWidth(1);
         trackDTO.setImageHeight(1);
         trackDTO.setDuration(12);
-        addMusicRequestDTO.setTrackDTO(trackDTO);
+        addMusicRequestDTO.setTrack(trackDTO);
 
         final long playlistId = 123L;
         when(musicRequestPositionServiceMock.getPlaylistId(partyCode)).thenReturn(playlistId);
@@ -111,7 +111,7 @@ public class AddMusicRequestPublicApiServiceTest {
         addMusicRequestDTO.setPartyCode(partyCode);
         final TrackDTO trackDTO = new TrackDTO();
         final String trackStreamingId = "id";
-        trackDTO.setId(trackStreamingId);
+        trackDTO.setStreamingId(trackStreamingId);
         trackDTO.setArtists(Collections.singletonList("artist"));
         trackDTO.setUri("uri");
         trackDTO.setName("name");
@@ -120,13 +120,13 @@ public class AddMusicRequestPublicApiServiceTest {
         trackDTO.setImageWidth(1);
         trackDTO.setImageHeight(1);
         trackDTO.setDuration(12);
-        addMusicRequestDTO.setTrackDTO(trackDTO);
+        addMusicRequestDTO.setTrack(trackDTO);
 
         final long playlistId = 123L;
         when(musicRequestPositionServiceMock.getPlaylistId(partyCode)).thenReturn(playlistId);
 
         final int position = 5;
-        when(musicRequestPositionServiceMock.calculateMusicRequestPosition(playlistId, 0)).thenReturn(position);
+        when(musicRequestPositionServiceMock.getPositionOfLastMusicRequest(playlistId)).thenReturn(position);
 
         final String playlistStreamingId = "playlistSteamingId";
         when(addMusicRequestDataServiceMock.getPlaylistStreamingId(playlistId)).thenReturn(playlistStreamingId);
@@ -135,8 +135,9 @@ public class AddMusicRequestPublicApiServiceTest {
         testSubject.addMusicRequest(userPrincipal, addMusicRequestDTO);
 
         // then
-        verify(playlistServiceMock).addTracksWithPositionToPlaylist(username, playlistStreamingId, Collections.singletonList(trackDTO), position);
-        verify(musicRequestPositionServiceMock).persistNewMusicRequest(playlistId, trackDTO, position);
+        final int expectedPosition = position + 1;
+        verify(playlistServiceMock).addTracksWithPositionToPlaylist(username, playlistStreamingId, Collections.singletonList(trackDTO), expectedPosition);
+        verify(musicRequestPositionServiceMock).persistNewMusicRequest(playlistId, trackDTO, expectedPosition);
     }
 
     @Test
@@ -161,7 +162,7 @@ public class AddMusicRequestPublicApiServiceTest {
         // when u. then
         assertThatExceptionOfType(AddMusicRequestDTONotFulfilledException.class)
                 .isThrownBy(() -> testSubject.addMusicRequest(userPrincipal, addMusicRequestDTO))
-                .withMessage("Das Request-Objekt ist nicht vollstaendig. Das Attribute 'trackDTO' ist leer.");
+                .withMessage("Das Request-Objekt ist nicht vollstaendig. Das Attribute 'track' ist leer.");
     }
 
     @Test
@@ -170,12 +171,12 @@ public class AddMusicRequestPublicApiServiceTest {
         final UserPrincipal userPrincipal = new UserPrincipal();
         final AddMusicRequestDTO addMusicRequestDTO = new AddMusicRequestDTO();
         addMusicRequestDTO.setPartyCode("partyCode");
-        addMusicRequestDTO.setTrackDTO(new TrackDTO());
+        addMusicRequestDTO.setTrack(new TrackDTO());
 
         // when u. then
         assertThatExceptionOfType(AddMusicRequestDTONotFulfilledException.class)
                 .isThrownBy(() -> testSubject.addMusicRequest(userPrincipal, addMusicRequestDTO))
-                .withMessage("Das Request-Objekt ist nicht vollstaendig. Das Attribute 'trackDTO.id' ist leer.");
+                .withMessage("Das Request-Objekt ist nicht vollstaendig. Das Attribute 'track.id' ist leer.");
     }
 
     @Test
@@ -185,13 +186,13 @@ public class AddMusicRequestPublicApiServiceTest {
         final AddMusicRequestDTO addMusicRequestDTO = new AddMusicRequestDTO();
         addMusicRequestDTO.setPartyCode("partyCode");
         final TrackDTO trackDTO = new TrackDTO();
-        trackDTO.setId("id");
-        addMusicRequestDTO.setTrackDTO(trackDTO);
+        trackDTO.setStreamingId("id");
+        addMusicRequestDTO.setTrack(trackDTO);
 
         // when u. then
         assertThatExceptionOfType(AddMusicRequestDTONotFulfilledException.class)
                 .isThrownBy(() -> testSubject.addMusicRequest(userPrincipal, addMusicRequestDTO))
-                .withMessage("Das Request-Objekt ist nicht vollstaendig. Das Attribute 'trackDTO.artists' ist leer.");
+                .withMessage("Das Request-Objekt ist nicht vollstaendig. Das Attribute 'track.artists' ist leer.");
     }
 
     @Test
@@ -201,14 +202,14 @@ public class AddMusicRequestPublicApiServiceTest {
         final AddMusicRequestDTO addMusicRequestDTO = new AddMusicRequestDTO();
         addMusicRequestDTO.setPartyCode("partyCode");
         final TrackDTO trackDTO = new TrackDTO();
-        trackDTO.setId("id");
+        trackDTO.setStreamingId("id");
         trackDTO.setArtists(Collections.emptyList());
-        addMusicRequestDTO.setTrackDTO(trackDTO);
+        addMusicRequestDTO.setTrack(trackDTO);
 
         // when u. then
         assertThatExceptionOfType(AddMusicRequestDTONotFulfilledException.class)
                 .isThrownBy(() -> testSubject.addMusicRequest(userPrincipal, addMusicRequestDTO))
-                .withMessage("Das Request-Objekt ist nicht vollstaendig. Das Attribute 'trackDTO.artists' ist leer.");
+                .withMessage("Das Request-Objekt ist nicht vollstaendig. Das Attribute 'track.artists' ist leer.");
     }
 
     @Test
@@ -218,14 +219,14 @@ public class AddMusicRequestPublicApiServiceTest {
         final AddMusicRequestDTO addMusicRequestDTO = new AddMusicRequestDTO();
         addMusicRequestDTO.setPartyCode("partyCode");
         final TrackDTO trackDTO = new TrackDTO();
-        trackDTO.setId("id");
+        trackDTO.setStreamingId("id");
         trackDTO.setArtists(Collections.singletonList("  "));
-        addMusicRequestDTO.setTrackDTO(trackDTO);
+        addMusicRequestDTO.setTrack(trackDTO);
 
         // when u. then
         assertThatExceptionOfType(AddMusicRequestDTONotFulfilledException.class)
                 .isThrownBy(() -> testSubject.addMusicRequest(userPrincipal, addMusicRequestDTO))
-                .withMessage("Das Request-Objekt ist nicht vollstaendig. Das Attribute 'trackDTO.artists' ist leer.");
+                .withMessage("Das Request-Objekt ist nicht vollstaendig. Das Attribute 'track.artists' ist leer.");
     }
 
     @Test
@@ -235,14 +236,14 @@ public class AddMusicRequestPublicApiServiceTest {
         final AddMusicRequestDTO addMusicRequestDTO = new AddMusicRequestDTO();
         addMusicRequestDTO.setPartyCode("partyCode");
         final TrackDTO trackDTO = new TrackDTO();
-        trackDTO.setId("id");
+        trackDTO.setStreamingId("id");
         trackDTO.setArtists(Collections.singletonList("artist"));
-        addMusicRequestDTO.setTrackDTO(trackDTO);
+        addMusicRequestDTO.setTrack(trackDTO);
 
         // when u. then
         assertThatExceptionOfType(AddMusicRequestDTONotFulfilledException.class)
                 .isThrownBy(() -> testSubject.addMusicRequest(userPrincipal, addMusicRequestDTO))
-                .withMessage("Das Request-Objekt ist nicht vollstaendig. Das Attribute 'trackDTO.uri' ist leer.");
+                .withMessage("Das Request-Objekt ist nicht vollstaendig. Das Attribute 'track.uri' ist leer.");
     }
 
     @Test
@@ -252,15 +253,15 @@ public class AddMusicRequestPublicApiServiceTest {
         final AddMusicRequestDTO addMusicRequestDTO = new AddMusicRequestDTO();
         addMusicRequestDTO.setPartyCode("partyCode");
         final TrackDTO trackDTO = new TrackDTO();
-        trackDTO.setId("id");
+        trackDTO.setStreamingId("id");
         trackDTO.setArtists(Collections.singletonList("artist"));
         trackDTO.setUri("uri");
-        addMusicRequestDTO.setTrackDTO(trackDTO);
+        addMusicRequestDTO.setTrack(trackDTO);
 
         // when u. then
         assertThatExceptionOfType(AddMusicRequestDTONotFulfilledException.class)
                 .isThrownBy(() -> testSubject.addMusicRequest(userPrincipal, addMusicRequestDTO))
-                .withMessage("Das Request-Objekt ist nicht vollstaendig. Das Attribute 'trackDTO.name' ist leer.");
+                .withMessage("Das Request-Objekt ist nicht vollstaendig. Das Attribute 'track.name' ist leer.");
     }
 
     @Test
@@ -270,16 +271,16 @@ public class AddMusicRequestPublicApiServiceTest {
         final AddMusicRequestDTO addMusicRequestDTO = new AddMusicRequestDTO();
         addMusicRequestDTO.setPartyCode("partyCode");
         final TrackDTO trackDTO = new TrackDTO();
-        trackDTO.setId("id");
+        trackDTO.setStreamingId("id");
         trackDTO.setArtists(Collections.singletonList("artist"));
         trackDTO.setUri("uri");
         trackDTO.setName("name");
-        addMusicRequestDTO.setTrackDTO(trackDTO);
+        addMusicRequestDTO.setTrack(trackDTO);
 
         // when u. then
         assertThatExceptionOfType(AddMusicRequestDTONotFulfilledException.class)
                 .isThrownBy(() -> testSubject.addMusicRequest(userPrincipal, addMusicRequestDTO))
-                .withMessage("Das Request-Objekt ist nicht vollstaendig. Das Attribute 'trackDTO.albumName' ist leer.");
+                .withMessage("Das Request-Objekt ist nicht vollstaendig. Das Attribute 'track.albumName' ist leer.");
     }
 
     @Test
@@ -289,17 +290,17 @@ public class AddMusicRequestPublicApiServiceTest {
         final AddMusicRequestDTO addMusicRequestDTO = new AddMusicRequestDTO();
         addMusicRequestDTO.setPartyCode("partyCode");
         final TrackDTO trackDTO = new TrackDTO();
-        trackDTO.setId("id");
+        trackDTO.setStreamingId("id");
         trackDTO.setArtists(Collections.singletonList("artist"));
         trackDTO.setUri("uri");
         trackDTO.setName("name");
         trackDTO.setAlbumName("albumName");
-        addMusicRequestDTO.setTrackDTO(trackDTO);
+        addMusicRequestDTO.setTrack(trackDTO);
 
         // when u. then
         assertThatExceptionOfType(AddMusicRequestDTONotFulfilledException.class)
                 .isThrownBy(() -> testSubject.addMusicRequest(userPrincipal, addMusicRequestDTO))
-                .withMessage("Das Request-Objekt ist nicht vollstaendig. Das Attribute 'trackDTO.imageUrl' ist leer.");
+                .withMessage("Das Request-Objekt ist nicht vollstaendig. Das Attribute 'track.imageUrl' ist leer.");
     }
 
     @Test
@@ -309,18 +310,18 @@ public class AddMusicRequestPublicApiServiceTest {
         final AddMusicRequestDTO addMusicRequestDTO = new AddMusicRequestDTO();
         addMusicRequestDTO.setPartyCode("partyCode");
         final TrackDTO trackDTO = new TrackDTO();
-        trackDTO.setId("id");
+        trackDTO.setStreamingId("id");
         trackDTO.setArtists(Collections.singletonList("artist"));
         trackDTO.setUri("uri");
         trackDTO.setName("name");
         trackDTO.setAlbumName("albumName");
         trackDTO.setImageUrl("imageUrl");
-        addMusicRequestDTO.setTrackDTO(trackDTO);
+        addMusicRequestDTO.setTrack(trackDTO);
 
         // when u. then
         assertThatExceptionOfType(AddMusicRequestDTONotFulfilledException.class)
                 .isThrownBy(() -> testSubject.addMusicRequest(userPrincipal, addMusicRequestDTO))
-                .withMessage("Das Request-Objekt ist nicht vollstaendig. Das Attribute 'trackDTO.imageWidth' ist leer.");
+                .withMessage("Das Request-Objekt ist nicht vollstaendig. Das Attribute 'track.imageWidth' ist leer.");
     }
 
     @Test
@@ -330,19 +331,19 @@ public class AddMusicRequestPublicApiServiceTest {
         final AddMusicRequestDTO addMusicRequestDTO = new AddMusicRequestDTO();
         addMusicRequestDTO.setPartyCode("partyCode");
         final TrackDTO trackDTO = new TrackDTO();
-        trackDTO.setId("id");
+        trackDTO.setStreamingId("id");
         trackDTO.setArtists(Collections.singletonList("artist"));
         trackDTO.setUri("uri");
         trackDTO.setName("name");
         trackDTO.setAlbumName("albumName");
         trackDTO.setImageUrl("imageUrl");
         trackDTO.setImageWidth(1);
-        addMusicRequestDTO.setTrackDTO(trackDTO);
+        addMusicRequestDTO.setTrack(trackDTO);
 
         // when u. then
         assertThatExceptionOfType(AddMusicRequestDTONotFulfilledException.class)
                 .isThrownBy(() -> testSubject.addMusicRequest(userPrincipal, addMusicRequestDTO))
-                .withMessage("Das Request-Objekt ist nicht vollstaendig. Das Attribute 'trackDTO.imageHeight' ist leer.");
+                .withMessage("Das Request-Objekt ist nicht vollstaendig. Das Attribute 'track.imageHeight' ist leer.");
     }
 
     @Test
@@ -352,7 +353,7 @@ public class AddMusicRequestPublicApiServiceTest {
         final AddMusicRequestDTO addMusicRequestDTO = new AddMusicRequestDTO();
         addMusicRequestDTO.setPartyCode("partyCode");
         final TrackDTO trackDTO = new TrackDTO();
-        trackDTO.setId("id");
+        trackDTO.setStreamingId("id");
         trackDTO.setArtists(Collections.singletonList("artist"));
         trackDTO.setUri("uri");
         trackDTO.setName("name");
@@ -360,11 +361,11 @@ public class AddMusicRequestPublicApiServiceTest {
         trackDTO.setImageUrl("imageUrl");
         trackDTO.setImageWidth(1);
         trackDTO.setImageHeight(1);
-        addMusicRequestDTO.setTrackDTO(trackDTO);
+        addMusicRequestDTO.setTrack(trackDTO);
 
         // when u. then
         assertThatExceptionOfType(AddMusicRequestDTONotFulfilledException.class)
                 .isThrownBy(() -> testSubject.addMusicRequest(userPrincipal, addMusicRequestDTO))
-                .withMessage("Das Request-Objekt ist nicht vollstaendig. Das Attribute 'trackDTO.duration' ist leer.");
+                .withMessage("Das Request-Objekt ist nicht vollstaendig. Das Attribute 'track.duration' ist leer.");
     }
 }

@@ -11,4 +11,8 @@ public interface VoteRepository extends JpaRepository<Vote, Long> {
     List<Vote> findByUser_Id(Long userID);
 
     List<Vote> findByGuest_Id(Long guestID);
+
+    int countByMusicRequest_IdAndUser_Id(Long musicRequestId, Long userId);
+
+    int countByMusicRequest_IdAndGuest_Id(Long musicRequestId, Long guestId);
 }

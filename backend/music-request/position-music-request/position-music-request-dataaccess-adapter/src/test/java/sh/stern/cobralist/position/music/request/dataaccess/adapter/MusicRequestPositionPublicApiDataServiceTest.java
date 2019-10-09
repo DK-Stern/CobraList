@@ -46,125 +46,6 @@ public class MusicRequestPositionPublicApiDataServiceTest {
     }
 
     @Test
-    public void getPositionOfLastMusicRequestWithNoExistingMusicRequests() {
-        // given
-        final long playlistId = 123L;
-        final int rating = 0;
-
-        when(musicRequestRepositoryMock.findTopByPlaylist_IdAndRatingOrderByPositionDesc(playlistId, rating)).thenReturn(Optional.empty());
-
-        // when
-        final int resultedPosition = testSubject.getPositionOfLastMusicRequestWithRating(playlistId, rating);
-
-        // then
-        assertThat(resultedPosition).isZero();
-    }
-
-    @Test
-    public void getPositionOfLastMusicRequestWithNoExistingMusicRequestWithSameRatingButWithBetterRating() {
-        // given
-        final long playlistId = 123L;
-        final int rating = 0;
-
-        when(musicRequestRepositoryMock.findTopByPlaylist_IdAndRatingOrderByPositionDesc(playlistId, rating)).thenReturn(Optional.empty());
-        when(musicRequestRepositoryMock.count()).thenReturn(1L);
-
-        final MusicRequest topMusicRequest = new MusicRequest();
-        topMusicRequest.setRating(5);
-        topMusicRequest.setPosition(0);
-        when(musicRequestRepositoryMock.findByPlaylist_IdAndPosition(playlistId, 0)).thenReturn(Optional.of(topMusicRequest));
-
-        final MusicRequest otherMusicRequestWithSameRating = new MusicRequest();
-        otherMusicRequestWithSameRating.setRating(1);
-        final int expectedPosition = 2;
-        otherMusicRequestWithSameRating.setPosition(expectedPosition);
-        when(musicRequestRepositoryMock.findTopByPlaylist_IdAndRatingOrderByPositionDesc(playlistId, 1)).thenReturn(Optional.of(otherMusicRequestWithSameRating));
-
-        // when
-        final int resultedPosition = testSubject.getPositionOfLastMusicRequestWithRating(playlistId, rating);
-
-        // then
-        assertThat(resultedPosition).isEqualTo(expectedPosition);
-    }
-
-    @Test
-    public void getPositionOfLastMusicRequestWithNoExistingMusicRequest() {
-        // given
-        final long playlistId = 123L;
-        final int rating = 0;
-
-        when(musicRequestRepositoryMock.findTopByPlaylist_IdAndRatingOrderByPositionDesc(playlistId, rating)).thenReturn(Optional.empty());
-        when(musicRequestRepositoryMock.count()).thenReturn(1L); // for code coverage this case can't happen
-
-        when(musicRequestRepositoryMock.findByPlaylist_IdAndPosition(playlistId, 0)).thenReturn(Optional.empty());
-
-        // when
-        final int resultedPosition = testSubject.getPositionOfLastMusicRequestWithRating(playlistId, rating);
-
-        // then
-        assertThat(resultedPosition).isZero();
-    }
-
-    @Test
-    public void getPositionOfLastMusicRequestWithNoExistingMusicRequestAndCountZero() {
-        // given
-        final long playlistId = 123L;
-        final int rating = 0;
-
-        when(musicRequestRepositoryMock.findTopByPlaylist_IdAndRatingOrderByPositionDesc(playlistId, rating)).thenReturn(Optional.empty());
-        when(musicRequestRepositoryMock.count()).thenReturn(0L);
-
-        // when
-        final int resultedPosition = testSubject.getPositionOfLastMusicRequestWithRating(playlistId, rating);
-
-        // then
-        assertThat(resultedPosition).isZero();
-    }
-
-    @Test
-    public void getPositionOfLastMusicRequestWithExistingMusicRequestWithSameRating() {
-        // given
-        final long playlistId = 123L;
-        final int rating = 0;
-
-        final MusicRequest musicRequest = new MusicRequest();
-        final int expectedPosition = 4;
-        musicRequest.setPosition(expectedPosition);
-        when(musicRequestRepositoryMock.findTopByPlaylist_IdAndRatingOrderByPositionDesc(playlistId, rating)).thenReturn(Optional.of(musicRequest));
-
-        // when
-        final int resultedPosition = testSubject.getPositionOfLastMusicRequestWithRating(playlistId, rating);
-
-        // then
-        assertThat(resultedPosition).isEqualTo(expectedPosition);
-    }
-
-    @Test
-    public void getPositionOfLastMusicRequestWithNoExistingMusicRequestWithHigherRating() {
-        // given
-        final long playlistId = 123L;
-        final int rating = 5;
-
-        final MusicRequest musicRequest = new MusicRequest();
-        musicRequest.setRating(4);
-        final int topMusicRequestPosition = 3;
-        musicRequest.setPosition(topMusicRequestPosition);
-        when(musicRequestRepositoryMock.findTopByPlaylist_IdAndRatingOrderByPositionDesc(playlistId, rating)).thenReturn(Optional.empty());
-
-        when(musicRequestRepositoryMock.count()).thenReturn(1L);
-
-        final MusicRequest topMusicRequest = new MusicRequest();
-        topMusicRequest.setRating(3);
-        when(musicRequestRepositoryMock.findByPlaylist_IdAndPosition(playlistId, 0)).thenReturn(Optional.of(topMusicRequest));
-
-        // when
-        final int resultedPosition = testSubject.getPositionOfLastMusicRequestWithRating(playlistId, rating);
-
-        // then
-        assertThat(resultedPosition).isZero();
-    }
-
-    @Test
     public void getPlaylistId() {
         // given
         final String partyCode = "partyCode";
@@ -203,10 +84,10 @@ public class MusicRequestPositionPublicApiDataServiceTest {
         final int position = 3;
 
         // when
-        testSubject.increaseMusicRequestPositions(playlistId, position);
+        testSubject.incrementMusicRequestPositions(playlistId, position);
 
         // then
-        verify(musicRequestRepositoryMock).increasePositions(playlistId, position);
+        verify(musicRequestRepositoryMock).incrementPositions(playlistId, position);
     }
 
     @Test
@@ -217,7 +98,7 @@ public class MusicRequestPositionPublicApiDataServiceTest {
 
         final TrackDTO trackDTO = new TrackDTO();
         final String trackStreamingId = "id";
-        trackDTO.setId(trackStreamingId);
+        trackDTO.setStreamingId(trackStreamingId);
         final List<String> artists = Collections.singletonList("artist");
         trackDTO.setArtists(artists);
         final String uri = "uri";
@@ -276,17 +157,5 @@ public class MusicRequestPositionPublicApiDataServiceTest {
         assertThatExceptionOfType(PlaylistNotFoundException.class)
                 .isThrownBy(() -> testSubject.saveMusicRequest(playlistId, trackDTO, position))
                 .withMessage("Playlist mit der id '" + playlistId + "' konnte nicht gefunden werden.");
-    }
-
-    @Test
-    public void decreaseMusicRequestPositions() {
-        // given
-        final long playlistId = 123L;
-
-        // when
-        testSubject.decreaseMusicRequestPositions(playlistId);
-
-        // then
-        verify(musicRequestRepositoryMock).decreaseMusicRequestPositions(playlistId);
     }
 }

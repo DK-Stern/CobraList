@@ -24,7 +24,7 @@ public class TrackDTOToSearchMusicRequestDTOMapperTest {
         // given
         final TrackDTO trackDTO = new TrackDTO();
         final String id = "id";
-        trackDTO.setId(id);
+        trackDTO.setStreamingId(id);
 
         // when
         final SearchMusicRequestDTO mappedDTO = testSubject.map(trackDTO);

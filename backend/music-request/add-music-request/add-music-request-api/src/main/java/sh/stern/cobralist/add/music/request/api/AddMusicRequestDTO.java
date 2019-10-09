@@ -4,7 +4,7 @@ import sh.stern.cobralist.party.creation.domain.TrackDTO;
 
 public class AddMusicRequestDTO {
     private String partyCode;
-    private TrackDTO trackDTO;
+    private TrackDTO track;
 
     public String getPartyCode() {
         return partyCode;
@@ -14,11 +14,11 @@ public class AddMusicRequestDTO {
         this.partyCode = partyCode;
     }
 
-    public TrackDTO getTrackDTO() {
-        return trackDTO;
+    public TrackDTO getTrack() {
+        return track;
     }
 
-    public void setTrackDTO(TrackDTO trackDTO) {
-        this.trackDTO = trackDTO;
+    public void setTrack(TrackDTO track) {
+        this.track = track;
     }
 }

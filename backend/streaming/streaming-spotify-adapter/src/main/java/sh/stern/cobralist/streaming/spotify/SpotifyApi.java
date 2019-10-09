@@ -10,10 +10,7 @@ import org.springframework.stereotype.Component;
 import sh.stern.cobralist.streaming.exceptions.AccessTokenExpiredException;
 import sh.stern.cobralist.streaming.spotify.errorhandler.AccessTokenExpiredErrorHandler;
 import sh.stern.cobralist.streaming.spotify.valueobjects.*;
-import sh.stern.cobralist.streaming.spotify.valueobjects.requests.AddTracksTracksToPlaylistRequest;
-import sh.stern.cobralist.streaming.spotify.valueobjects.requests.AddTracksTracksToPlaylistRequestWithPosition;
-import sh.stern.cobralist.streaming.spotify.valueobjects.requests.CreatePlaylistRequest;
-import sh.stern.cobralist.streaming.spotify.valueobjects.requests.RemoveTrack;
+import sh.stern.cobralist.streaming.spotify.valueobjects.requests.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -162,5 +159,26 @@ public class SpotifyApi extends ApiBinding {
         checkStatusCode(response.getStatusCode());
 
         return Objects.requireNonNull(response.getBody()).getTracks();
+    }
+
+    public String reorderTrack(String url, int oldPosition, int newPosition) throws AccessTokenExpiredException {
+        LOG.info(String.format("Reorder Track: '%s', from position: '%s', to position: '%s'", url, oldPosition, newPosition));
+
+        final ReorderTrackRequest reorderTrackRequest = new ReorderTrackRequest();
+        reorderTrackRequest.setRangeStart(oldPosition);
+        reorderTrackRequest.setInsertBefore(newPosition);
+
+        final HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        final ResponseEntity<String> response = restTemplate.exchange(
+                url,
+                HttpMethod.PUT,
+                new HttpEntity<>(reorderTrackRequest, httpHeaders),
+                String.class);
+
+        checkStatusCode(response.getStatusCode());
+
+        return response.getBody();
     }
 }

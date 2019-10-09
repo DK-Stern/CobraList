@@ -9,9 +9,13 @@ public interface CurrentTrackDataService {
 
     void changePartyActiveStatus(String partyCode, Boolean activeStatus);
 
-    boolean hasMusicRequestStatusPlayed(String partyCode, String trackId);
+    boolean hasMusicRequestStatusPlayed(Long musicRequestId);
 
-    void changeMusicRequestPlayedStatus(String partyCode, String trackId, boolean isPlayedStatus);
+    void changeMusicRequestPlayedStatus(Long musicRequestId, boolean isPlayedStatus);
 
     String getPlaylistStreamingId(String partyCode);
+
+    Long getMusicRequestId(Long playlistId, String trackStreamingId);
+
+    Long getPlaylistId(String partyCode);
 }

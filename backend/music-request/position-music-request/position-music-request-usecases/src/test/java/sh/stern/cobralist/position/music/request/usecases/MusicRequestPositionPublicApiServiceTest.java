@@ -26,22 +26,6 @@ public class MusicRequestPositionPublicApiServiceTest {
     }
 
     @Test
-    public void calculateMusicRequestPosition() {
-        // given
-        final long playlistId = 123L;
-        final int rating = 3;
-
-        final int positionOfLastMusicRequestWithRating = 3;
-        when(musicRequestPositionDataServiceMock.getPositionOfLastMusicRequestWithRating(playlistId, rating)).thenReturn(positionOfLastMusicRequestWithRating);
-
-        // when
-        final int resultedPosition = testSubject.calculateMusicRequestPosition(playlistId, rating);
-
-        // then
-        assertThat(resultedPosition).isEqualTo(positionOfLastMusicRequestWithRating + 1);
-    }
-
-    @Test
     public void getPlaylistId() {
         // given
         final String partyCode = "partyCode";
@@ -66,7 +50,7 @@ public class MusicRequestPositionPublicApiServiceTest {
         testSubject.persistNewMusicRequest(playlistId, trackDTO, position);
 
         // then
-        verify(musicRequestPositionDataServiceMock).increaseMusicRequestPositions(playlistId, position);
+        verify(musicRequestPositionDataServiceMock).incrementMusicRequestPositions(playlistId, position);
     }
 
     @Test
@@ -87,11 +71,12 @@ public class MusicRequestPositionPublicApiServiceTest {
     public void decreaseMusicRequestPositions() {
         // given
         final long playlistId = 4536L;
+        final int position = 3;
 
         // when
-        testSubject.decreaseMusicRequestPositions(playlistId);
+        testSubject.decreaseMusicRequestPositions(playlistId, position);
 
         // then
-        verify(musicRequestPositionDataServiceMock).decreaseMusicRequestPositions(playlistId);
+        verify(musicRequestPositionDataServiceMock).decrementMusicRequestPositions(playlistId, position);
     }
 }

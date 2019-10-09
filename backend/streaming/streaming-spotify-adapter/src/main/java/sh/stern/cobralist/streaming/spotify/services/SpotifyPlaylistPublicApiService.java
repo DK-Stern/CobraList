@@ -25,6 +25,7 @@ public class SpotifyPlaylistPublicApiService implements PlaylistService {
 
     private static final String API_URL = "https://api.spotify.com/v1/";
     private static final int LIST_SIZE_FOR_ADDING_TRACKS = 100;
+    public static final String PLAYLIST_TRACKS_API_URL = "%splaylists/%s/tracks";
 
     private final SpotifyApi spotifyApi;
     private final TrackValueObjectToTrackDTOMapper trackValueObjectToTrackDTOMapper;
@@ -93,7 +94,7 @@ public class SpotifyPlaylistPublicApiService implements PlaylistService {
 
         spotifyApi.setAuthentication(StreamingProvider.spotify, userName);
 
-        final String url = String.format("%splaylists/%s/tracks", API_URL, playlistId);
+        final String url = String.format(PLAYLIST_TRACKS_API_URL, API_URL, playlistId);
         final List<String> snapshots = splittedUriList.stream()
                 .map((List<String> uris) -> postTracksToPlaylist(userName, url, uris))
                 .collect(Collectors.toList());
@@ -127,7 +128,7 @@ public class SpotifyPlaylistPublicApiService implements PlaylistService {
 
         spotifyApi.setAuthentication(StreamingProvider.spotify, userName);
 
-        final String url = String.format("%splaylists/%s/tracks", API_URL, playlistId);
+        final String url = String.format(PLAYLIST_TRACKS_API_URL, API_URL, playlistId);
         final List<String> snapshots = splittedUriList.stream()
                 .map((List<String> uris) -> postTracksWithPositionToPlaylist(userName, url, uris, position))
                 .collect(Collectors.toList());
@@ -170,6 +171,22 @@ public class SpotifyPlaylistPublicApiService implements PlaylistService {
         } catch (AccessTokenExpiredException e) {
             spotifyApi.setAuthentication(StreamingProvider.spotify, userName);
             return getMusicTracksFromPlaylist(userName, url);
+        }
+    }
+
+    @Override
+    public String moveTrackPosition(String userName, String playlistId, int oldPosition, int newPosition) {
+        final String url = String.format(PLAYLIST_TRACKS_API_URL, API_URL, playlistId);
+        spotifyApi.setAuthentication(StreamingProvider.spotify, userName);
+        return reorderTrackPosition(userName, url, oldPosition, newPosition);
+    }
+
+    private String reorderTrackPosition(String username, String url, int oldPosition, int newPosition) {
+        try {
+            return spotifyApi.reorderTrack(url, oldPosition, newPosition);
+        } catch (AccessTokenExpiredException e) {
+            spotifyApi.setAuthentication(StreamingProvider.spotify, username);
+            return reorderTrackPosition(username, url, oldPosition, newPosition);
         }
     }
 }

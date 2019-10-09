@@ -17,4 +17,6 @@ public interface PlaylistService {
     String addTracksWithPositionToPlaylist(String userName, String playlistId, List<TrackDTO> tracks, int position);
 
     List<TrackDTO> getTracksFromPlaylist(String userName, String playlistId);
+
+    String moveTrackPosition(String userName, String playlistId, int oldPosition, int newPosition);
 }

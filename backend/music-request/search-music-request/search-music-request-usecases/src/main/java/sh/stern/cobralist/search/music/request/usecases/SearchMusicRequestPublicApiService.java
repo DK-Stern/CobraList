@@ -34,7 +34,8 @@ public class SearchMusicRequestPublicApiService implements SearchMusicRequestSer
     public List<SearchMusicRequestDTO> searchMusicRequest(UserPrincipal userPrincipal, String partyCode, String searchString) {
         partySecurityService.checkGetPartyInformationPermission(userPrincipal, partyCode);
 
-        final List<TrackDTO> trackDTOS = searchTrackStreamingService.searchTrack(userPrincipal.getUsername(), searchString);
+        String creatorStreamingId = searchMusicRequestDataService.getPartyCreatorStreamingId(partyCode);
+        final List<TrackDTO> trackDTOS = searchTrackStreamingService.searchTrack(creatorStreamingId, searchString);
         final Long playlistId = searchMusicRequestDataService.getPlaylistId(partyCode);
 
         return trackDTOS.stream()

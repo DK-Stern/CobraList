@@ -1,4 +1,4 @@
-package sh.stern.cobralist.party.information.controller;
+package sh.stern.cobralist.party.security.usecases;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

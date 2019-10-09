@@ -56,8 +56,8 @@ export class SearchMusicRequestComponent implements OnInit {
     if (!musicRequest.alreadyInPlaylist) {
       const addMusicRequestDTO: AddMusicRequestDto = {
         partyCode: this.partyCode,
-        trackDTO: {
-          id: musicRequest.trackId,
+        track: {
+          streamingId: musicRequest.trackId,
           albumName: musicRequest.albumName,
           artists: musicRequest.artists,
           duration: musicRequest.duration,

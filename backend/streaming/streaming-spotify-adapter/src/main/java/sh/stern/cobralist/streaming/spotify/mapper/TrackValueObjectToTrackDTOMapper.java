@@ -9,7 +9,7 @@ public class TrackValueObjectToTrackDTOMapper {
     public TrackDTO map(TrackValueObject track) {
         final TrackDTO trackDTO = new TrackDTO();
 
-        trackDTO.setId(track.getId());
+        trackDTO.setStreamingId(track.getId());
         trackDTO.setArtists(track.getArtists());
         trackDTO.setName(track.getName());
         trackDTO.setAlbumName(track.getAlbumName());

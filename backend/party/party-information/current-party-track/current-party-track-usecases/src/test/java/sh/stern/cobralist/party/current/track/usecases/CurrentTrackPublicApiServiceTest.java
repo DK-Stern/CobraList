@@ -124,13 +124,17 @@ public class CurrentTrackPublicApiServiceTest {
         final CurrentPlaybackDTO currentPlaybackDTO = new CurrentPlaybackDTO();
         final TrackDTO currentTrack = new TrackDTO();
         final String currentTrackId = "12";
-        currentTrack.setId(currentTrackId);
+        currentTrack.setStreamingId(currentTrackId);
         currentPlaybackDTO.setCurrentTrack(currentTrack);
         currentPlaybackDTO.setPlaying(false);
         currentPartyTracks.put(partyCode, currentPlaybackDTO);
         when(currentTrackStreamingServiceMock.getCurrentTrackFromParties(activeParties)).thenReturn(currentPartyTracks);
 
-        when(currentTrackDataServiceMock.hasMusicRequestStatusPlayed(partyCode, currentTrackId)).thenReturn(false);
+        final long playlistId = 1234L;
+        when(currentTrackDataServiceMock.getPlaylistId(partyCode)).thenReturn(playlistId);
+        final long musicRequestId = 23L;
+        when(currentTrackDataServiceMock.getMusicRequestId(playlistId, currentTrackId)).thenReturn(musicRequestId);
+
         final String playlistStreamingId = "playlistStreamingId";
         when(currentTrackDataServiceMock.getPlaylistStreamingId(partyCode)).thenReturn(playlistStreamingId);
 
@@ -141,6 +145,6 @@ public class CurrentTrackPublicApiServiceTest {
 
         // then
         verify(currentTrackStreamingServiceMock).removeTrackFromPlaylist(creatorEmail, playlistStreamingId, currentTrackId);
-        verify(currentTrackDataServiceMock).changeMusicRequestPlayedStatus(partyCode, currentTrackId, true);
+        verify(currentTrackDataServiceMock).changeMusicRequestPlayedStatus(musicRequestId, true);
     }
 }

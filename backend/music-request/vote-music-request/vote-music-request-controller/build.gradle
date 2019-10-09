@@ -1,3 +1,14 @@
 plugins {
     id 'java'
 }
+
+dependencies {
+    compile project(':backend:music-request:vote-music-request:vote-music-request-api')
+    runtimeOnly project(':backend:music-request:vote-music-request:vote-music-request-usecases')
+
+    compile project(":backend:security")
+    compile project(":backend:exception-domain")
+
+    implementation 'org.springframework.boot:spring-boot-starter-web:' + springBootVersion
+    implementation 'org.springframework.boot:spring-boot-starter-security:' + springBootVersion
+}

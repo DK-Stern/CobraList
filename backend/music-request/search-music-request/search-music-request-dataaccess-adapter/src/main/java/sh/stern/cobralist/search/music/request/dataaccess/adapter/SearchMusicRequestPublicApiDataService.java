@@ -38,4 +38,11 @@ public class SearchMusicRequestPublicApiDataService implements SearchMusicReques
 
         return optionalMusicRequest.isPresent() && !optionalMusicRequest.get().getPlayed();
     }
+
+    @Override
+    public String getPartyCreatorStreamingId(String partyCode) {
+        final Party party = partyRepository.findByPartyCode(partyCode)
+                .orElseThrow(() -> new PartyNotFoundException(partyCode));
+        return party.getUser().getEmail();
+    }
 }

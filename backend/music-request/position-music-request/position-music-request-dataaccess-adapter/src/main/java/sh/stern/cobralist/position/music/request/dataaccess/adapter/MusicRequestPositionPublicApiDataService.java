@@ -12,11 +12,15 @@ import sh.stern.cobralist.party.persistence.dataaccess.PlaylistRepository;
 import sh.stern.cobralist.party.persistence.domain.MusicRequest;
 import sh.stern.cobralist.party.persistence.domain.Party;
 import sh.stern.cobralist.party.persistence.domain.Playlist;
+import sh.stern.cobralist.party.persistence.exceptions.MusicRequestNotFoundException;
 import sh.stern.cobralist.party.persistence.exceptions.PartyNotFoundException;
 import sh.stern.cobralist.party.persistence.exceptions.PlaylistNotFoundException;
+import sh.stern.cobralist.position.music.request.dataaccess.port.MusicRequestPositionDTO;
 import sh.stern.cobralist.position.music.request.dataaccess.port.MusicRequestPositionDataService;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MusicRequestPositionPublicApiDataService implements MusicRequestPositionDataService {
@@ -37,29 +41,47 @@ public class MusicRequestPositionPublicApiDataService implements MusicRequestPos
     }
 
     @Override
-    public int getPositionOfLastMusicRequestWithRating(Long playlistId, int rating) {
-        final Optional<MusicRequest> lastMusicRequest = musicRequestRepository.findTopByPlaylist_IdAndRatingOrderByPositionDesc(playlistId, rating);
+    public int getPositionOfLastMusicRequest(Long playlistId) {
+        return musicRequestRepository.findTopByPlaylist_IdOrderByPositionDesc(playlistId).map(MusicRequest::getPosition).orElse(0);
+    }
 
-        if (!lastMusicRequest.isPresent()) {
-            final long countEntries = musicRequestRepository.count();
-            if (countEntries == 0) {
-                return 0;
-            }
+    @Override
+    public List<MusicRequestPositionDTO> getMusicRequestWithSameRatingForUpVote(Long playlistId, int rating) {
+        return musicRequestRepository.findByPlaylist_IdAndRatingOrderByUpVotesAsc(playlistId, rating)
+                .stream()
+                .map(currentMusicRequest -> new MusicRequestPositionDTO(currentMusicRequest.getId(), currentMusicRequest.getPosition(), currentMusicRequest.getRating(), currentMusicRequest.getUpVotes()))
+                .collect(Collectors.toList());
+    }
 
-            // music request with position 0 has the best rating
-            final Optional<MusicRequest> topMusicRequest = musicRequestRepository.findByPlaylist_IdAndPosition(playlistId, 0);
-            if (!topMusicRequest.isPresent()) {
-                return 0;
-            }
-            final Integer topMusicRequestRating = topMusicRequest.get().getRating();
-            if (topMusicRequestRating > rating) {
-                return getPositionOfLastMusicRequestWithRating(playlistId, rating + 1);
-            } else {
-                return 0;
-            }
-        }
+    @Override
+    public List<MusicRequestPositionDTO> getMusicRequestWithSameRatingForDownVote(Long playlistId, int rating) {
+        return musicRequestRepository.findByPlaylist_IdAndRatingOrderByUpVotesAscPositionAsc(playlistId, rating)
+                .stream()
+                .map(foundedMusicRequest -> new MusicRequestPositionDTO(foundedMusicRequest.getId(), foundedMusicRequest.getPosition(), foundedMusicRequest.getRating(), foundedMusicRequest.getUpVotes()))
+                .collect(Collectors.toList());
+    }
 
-        return lastMusicRequest.get().getPosition();
+    @Override
+    public int getTopRatingInPlaylist(Long playlistId) {
+        final Optional<MusicRequest> topMusicRequest = musicRequestRepository.findByPlaylist_IdAndPosition(playlistId, 0);
+        return topMusicRequest.map(MusicRequest::getRating).orElse(0);
+    }
+
+    @Override
+    public int getWorstRatingInPlaylist(Long playlistId) {
+        final Optional<MusicRequest> musicRequest = musicRequestRepository.findTopByPlaylist_IdOrderByRatingAsc(playlistId);
+        return musicRequest.map(MusicRequest::getRating).orElse(0);
+    }
+
+    @Override
+    public boolean isPlaylistEmpty(Long playlistId) {
+        return !musicRequestRepository.findTopByPlaylist_IdOrderByPositionAsc(playlistId).isPresent();
+    }
+
+    @Override
+    public int getUpVotes(Long musicRequestId) {
+        return musicRequestRepository.findById(musicRequestId).map(MusicRequest::getUpVotes)
+                .orElseThrow(() -> new MusicRequestNotFoundException(musicRequestId));
     }
 
     @Override
@@ -71,14 +93,26 @@ public class MusicRequestPositionPublicApiDataService implements MusicRequestPos
 
     @Override
     @Transactional
-    public int increaseMusicRequestPositions(Long playlistId, int position) {
-        return musicRequestRepository.increasePositions(playlistId, position);
+    public int incrementMusicRequestPositions(Long playlistId, int position) {
+        return musicRequestRepository.incrementPositions(playlistId, position);
     }
 
     @Override
     @Transactional
-    public int decreaseMusicRequestPositions(Long playlistId) {
-        return musicRequestRepository.decreaseMusicRequestPositions(playlistId);
+    public int incrementMusicRequestPositionInterval(Long playlistId, int startPosition, int endPosition) {
+        return musicRequestRepository.incrementPositionInterval(playlistId, startPosition, endPosition);
+    }
+
+    @Override
+    @Transactional
+    public int decrementMusicRequestPositions(Long playlistId, int position) {
+        return musicRequestRepository.decrementMusicRequestPositions(playlistId, position);
+    }
+
+    @Override
+    @Transactional
+    public int decrementMusicRequestPositionInterval(Long playlistId, int startPosition, int endPosition) {
+        return musicRequestRepository.decrementMusicRequestPositionInterval(playlistId, startPosition, endPosition);
     }
 
     @Override
@@ -91,7 +125,7 @@ public class MusicRequestPositionPublicApiDataService implements MusicRequestPos
                 });
 
         final MusicRequest musicRequest = new MusicRequest();
-        musicRequest.setTrackId(trackDTO.getId());
+        musicRequest.setTrackId(trackDTO.getStreamingId());
         musicRequest.setUri(trackDTO.getUri());
         musicRequest.setImageUrl(trackDTO.getImageUrl());
         musicRequest.setImageHeight(trackDTO.getImageHeight());
@@ -105,6 +139,15 @@ public class MusicRequestPositionPublicApiDataService implements MusicRequestPos
         musicRequest.setPlaylist(playlist);
         musicRequest.setArtist(trackDTO.getArtists());
         musicRequest.setTitle(trackDTO.getName());
+        musicRequestRepository.saveAndFlush(musicRequest);
+    }
+
+    @Override
+    @Transactional
+    public void updateMusicRequestPosition(Long musicRequestId, int newPosition) {
+        final MusicRequest musicRequest = musicRequestRepository.findById(musicRequestId)
+                .orElseThrow(() -> new MusicRequestNotFoundException(musicRequestId));
+        musicRequest.setPosition(newPosition);
         musicRequestRepository.saveAndFlush(musicRequest);
     }
 }

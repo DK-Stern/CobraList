@@ -22,6 +22,7 @@ export interface CurrentTrackDTO {
 }
 
 export interface MusicRequestDTO {
+  musicRequestId: number
   allVotes: number
   position: number
   alreadyVoted: boolean
@@ -33,6 +34,5 @@ export interface MusicRequestDTO {
   imageWidth: number
   rating: number
   title: string
-  trackId: string
   upVotes: number
 }

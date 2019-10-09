@@ -39,7 +39,9 @@ public class CurrentTrackPublicApiService implements CurrentTrackService {
 
     private void handleTrackIsPlayedStatus(List<ActivePartyDTO> activeParties) {
         this.partyPlaybacks.forEach((partyCode, currentPlaybackDTO) -> {
-            final boolean isPlayed = currentTrackDataService.hasMusicRequestStatusPlayed(partyCode, currentPlaybackDTO.getCurrentTrack().getId());
+            Long playlistId = currentTrackDataService.getPlaylistId(partyCode);
+            Long musicRequestId = currentTrackDataService.getMusicRequestId(playlistId, currentPlaybackDTO.getCurrentTrack().getStreamingId());
+            final boolean isPlayed = currentTrackDataService.hasMusicRequestStatusPlayed(musicRequestId);
             if (!isPlayed) {
                 final Optional<String> username = activeParties.stream()
                         .filter(activePartyDTO -> activePartyDTO.getPartyCode().equals(partyCode))
@@ -47,8 +49,8 @@ public class CurrentTrackPublicApiService implements CurrentTrackService {
                         .findFirst();
                 if (username.isPresent()) {
                     final String playlistStreamingId = currentTrackDataService.getPlaylistStreamingId(partyCode);
-                    currentTrackStreamingService.removeTrackFromPlaylist(username.get(), playlistStreamingId, currentPlaybackDTO.getCurrentTrack().getId());
-                    currentTrackDataService.changeMusicRequestPlayedStatus(partyCode, currentPlaybackDTO.getCurrentTrack().getId(), true);
+                    currentTrackStreamingService.removeTrackFromPlaylist(username.get(), playlistStreamingId, currentPlaybackDTO.getCurrentTrack().getStreamingId());
+                    currentTrackDataService.changeMusicRequestPlayedStatus(musicRequestId, true);
                 }
             }
         });

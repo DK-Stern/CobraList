@@ -52,31 +52,26 @@ public class CurrentTrackPublicApiDataService implements CurrentTrackDataService
     }
 
     @Override
-    public boolean hasMusicRequestStatusPlayed(String partyCode, String trackId) {
-        final Party party = partyRepository.findByPartyCode(partyCode)
-                .orElseThrow(() -> new PartyNotFoundException(partyCode));
-
-        final Optional<MusicRequest> musicRequestOptional = musicRequestRepository.findByPlaylistAndTrackId(party.getPlaylist(), trackId);
-
+    public boolean hasMusicRequestStatusPlayed(Long musicRequestId) {
+        final Optional<MusicRequest> musicRequestOptional = musicRequestRepository.findById(musicRequestId);
         return !musicRequestOptional.isPresent() || musicRequestOptional.get().getPlayed();
     }
 
     @Override
-    public void changeMusicRequestPlayedStatus(String partyCode, String trackId, boolean isPlayedStatus) {
-        final Party party = partyRepository.findByPartyCode(partyCode)
-                .orElseThrow(() -> new PartyNotFoundException(partyCode));
-        final MusicRequest musicRequest = musicRequestRepository.findByPlaylistAndTrackId(party.getPlaylist(), trackId)
-                .orElseThrow(() -> new MusicRequestNotFoundException(party.getPlaylist().getId(), trackId));
+    public void changeMusicRequestPlayedStatus(Long musicRequestId, boolean isPlayedStatus) {
+        final MusicRequest musicRequest = musicRequestRepository.findById(musicRequestId)
+                .orElseThrow(() -> new MusicRequestNotFoundException(musicRequestId));
+
         musicRequest.setPlayed(isPlayedStatus);
         if (isPlayedStatus) {
             resetRatingAndPosition(musicRequest);
-            decrementMusicRequestPositions(party.getPlaylist().getId());
+            decrementMusicRequestPositions(musicRequest.getPlaylist().getId());
         }
         musicRequestRepository.saveAndFlush(musicRequest);
     }
 
     private void decrementMusicRequestPositions(Long playlistId) {
-        musicRequestPositionService.decreaseMusicRequestPositions(playlistId);
+        musicRequestPositionService.decreaseMusicRequestPositions(playlistId, 0);
     }
 
     private void resetRatingAndPosition(MusicRequest musicRequest) {
@@ -91,5 +86,19 @@ public class CurrentTrackPublicApiDataService implements CurrentTrackDataService
         final Party party = partyRepository.findByPartyCode(partyCode)
                 .orElseThrow(() -> new PartyNotFoundException(partyCode));
         return party.getPlaylist().getPlaylistId();
+    }
+
+    @Override
+    public Long getMusicRequestId(Long playlistId, String streamingId) {
+        return musicRequestRepository.findFirstByPlaylist_IdAndTrackId(playlistId, streamingId)
+                .map(MusicRequest::getId)
+                .orElseThrow(MusicRequestNotFoundException::new);
+    }
+
+    @Override
+    public Long getPlaylistId(String partyCode) {
+        return partyRepository.findByPartyCode(partyCode)
+                .map(Party::getId)
+                .orElseThrow(() -> new PartyNotFoundException(partyCode));
     }
 }

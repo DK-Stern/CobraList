@@ -3,7 +3,8 @@ package sh.stern.cobralist.party.creation.domain;
 import java.util.List;
 
 public class TrackDTO {
-    private String id;
+    private Long musicRequestId;
+    private String streamingId;
     private List<String> artists;
     private String uri;
     private String name;
@@ -13,12 +14,12 @@ public class TrackDTO {
     private Integer imageHeight;
     private Integer duration;
 
-    public String getId() {
-        return id;
+    public String getStreamingId() {
+        return streamingId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setStreamingId(String streamingId) {
+        this.streamingId = streamingId;
     }
 
     public List<String> getArtists() {
@@ -83,5 +84,13 @@ public class TrackDTO {
 
     public void setDuration(Integer duration) {
         this.duration = duration;
+    }
+
+    public Long getMusicRequestId() {
+        return musicRequestId;
+    }
+
+    public void setMusicRequestId(Long musicRequestId) {
+        this.musicRequestId = musicRequestId;
     }
 }

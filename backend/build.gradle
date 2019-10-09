@@ -84,7 +84,7 @@ dependencies {
     implementation project(':backend:party:party-information:party-music-requests:party-music-requests-dataaccess-port')
     implementation project(':backend:party:party-information:party-music-requests:party-music-requests-dataaccess-adapter')
 
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-web:' + springBootVersion
 
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:2.3.0'
 }

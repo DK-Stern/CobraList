@@ -16,7 +16,7 @@ public class MusicRequest {
     @Column(name = "is_played")
     private Boolean isPlayed;
 
-    // id on streaming platform<
+    // id on streaming platform
     @Column(name = "id_on_streaming_platform")
     private String trackId;
 

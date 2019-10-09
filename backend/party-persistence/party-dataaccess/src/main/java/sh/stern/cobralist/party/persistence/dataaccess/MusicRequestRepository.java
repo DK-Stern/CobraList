@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import sh.stern.cobralist.party.persistence.domain.MusicRequest;
-import sh.stern.cobralist.party.persistence.domain.Playlist;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,23 +15,45 @@ import java.util.Optional;
 public interface MusicRequestRepository extends JpaRepository<MusicRequest, Long> {
     List<MusicRequest> findByPlaylist_IdAndIsPlayed(Long playlistId, Boolean played);
 
-    Optional<MusicRequest> findByPlaylistAndTrackId(Playlist playlist, String trackId);
-
     Optional<MusicRequest> findByPlaylist_IdAndTrackId(Long playlistId, String trackId);
+
+    Optional<MusicRequest> findFirstByPlaylist_IdAndTrackId(Long playlistId, String trackId);
 
     Optional<MusicRequest> findByPlaylist_IdAndPosition(Long playlistId, int position);
 
-    Optional<MusicRequest> findTopByPlaylist_IdAndRatingOrderByPositionDesc(Long playlistId, int rating);
+    List<MusicRequest> findByPlaylist_IdAndRatingOrderByUpVotesAsc(Long playlistId, int rating);
+
+    List<MusicRequest> findByPlaylist_IdAndRatingOrderByUpVotesAscPositionAsc(Long playlistId, int rating);
+
+    Optional<MusicRequest> findTopByPlaylist_IdOrderByRatingAsc(Long playlistId);
+
+    Optional<MusicRequest> findTopByPlaylist_IdOrderByPositionAsc(Long playlistId);
+
+    Optional<MusicRequest> findTopByPlaylist_IdOrderByPositionDesc(Long playlistId);
 
     @Modifying
     @Query(
             value = "UPDATE music_request AS mr SET mr.position = mr.position + 1 WHERE mr.playlist_id = ?1 AND mr.position >= ?2",
             nativeQuery = true)
-    int increasePositions(Long playlistId, int position);
+    int incrementPositions(Long playlistId, int position);
 
     @Modifying
     @Query(
-            value = "UPDATE music_request AS mr SET mr.position = mr.position - 1 WHERE mr.playlist_id = ?1",
+            value = "UPDATE music_request AS mr SET mr.position = mr.position + 1 WHERE mr.playlist_id = ?1 AND mr.position >= ?2 AND mr.position <= ?3",
             nativeQuery = true)
-    int decreaseMusicRequestPositions(Long playlistId);
+    int incrementPositionInterval(Long playlistId, int startPosition, int endPosition);
+
+    @Modifying
+    @Query(
+            value = "UPDATE music_request AS mr SET mr.position = mr.position - 1 WHERE mr.playlist_id = ?1 AND mr.position >= ?2",
+            nativeQuery = true)
+    int decrementMusicRequestPositions(Long playlistId, int position);
+
+    @Modifying
+    @Query(
+            value = "UPDATE music_request AS mr SET mr.position = mr.position - 1 WHERE mr.playlist_id = ?1 AND mr.position >= ?2 AND mr.position <= ?3",
+            nativeQuery = true)
+    int decrementMusicRequestPositionInterval(Long playlistId, int startPosition, int endPosition);
+
+    int countById(Long musicRequestId);
 }

@@ -41,43 +41,44 @@ public class AddMusicRequestPublicApiService implements AddMusicRequestService {
         partySecurityService.checkGetPartyInformationPermission(userPrincipal, addMusicRequestDTO.getPartyCode());
 
         final Long playlistId = musicRequestPositionService.getPlaylistId(addMusicRequestDTO.getPartyCode());
-        boolean musicRequestExist = addMusicRequestDataService.doesMusicRequestExist(playlistId, addMusicRequestDTO.getTrackDTO().getId());
+        boolean musicRequestExist = addMusicRequestDataService.doesMusicRequestExist(playlistId, addMusicRequestDTO.getTrack().getStreamingId());
 
         if (musicRequestExist) {
-            throw new MusicRequestAlreadyExistException(addMusicRequestDTO.getTrackDTO().getId());
+            throw new MusicRequestAlreadyExistException(addMusicRequestDTO.getTrack().getStreamingId());
         }
 
-        final int position = musicRequestPositionService.calculateMusicRequestPosition(playlistId, 0);
+        final boolean playlistEmpty = musicRequestPositionService.isPlaylistEmpty(playlistId);
+        final int position = playlistEmpty ? 0 : musicRequestPositionService.getPositionOfLastMusicRequest(playlistId) + 1;
         final String playlistStreamingId = addMusicRequestDataService.getPlaylistStreamingId(playlistId);
-        playlistService.addTracksWithPositionToPlaylist(userPrincipal.getUsername(), playlistStreamingId, Collections.singletonList(addMusicRequestDTO.getTrackDTO()), position);
-        musicRequestPositionService.persistNewMusicRequest(playlistId, addMusicRequestDTO.getTrackDTO(), position);
+        playlistService.addTracksWithPositionToPlaylist(userPrincipal.getUsername(), playlistStreamingId, Collections.singletonList(addMusicRequestDTO.getTrack()), position);
+        musicRequestPositionService.persistNewMusicRequest(playlistId, addMusicRequestDTO.getTrack(), position);
     }
 
     private void checkAddMusicRequestDTO(AddMusicRequestDTO addMusicRequestDTO) {
         if (!StringUtils.hasText(addMusicRequestDTO.getPartyCode())) {
             throw new AddMusicRequestDTONotFulfilledException("partyCode");
-        } else if (Objects.isNull(addMusicRequestDTO.getTrackDTO())) {
-            throw new AddMusicRequestDTONotFulfilledException("trackDTO");
-        } else if (!StringUtils.hasText(addMusicRequestDTO.getTrackDTO().getId())) {
-            throw new AddMusicRequestDTONotFulfilledException("trackDTO.id");
-        } else if (Objects.isNull(addMusicRequestDTO.getTrackDTO().getArtists())
-                || addMusicRequestDTO.getTrackDTO().getArtists().isEmpty()
-                || !StringUtils.hasText(addMusicRequestDTO.getTrackDTO().getArtists().get(0))) {
-            throw new AddMusicRequestDTONotFulfilledException("trackDTO.artists");
-        } else if (!StringUtils.hasText(addMusicRequestDTO.getTrackDTO().getUri())) {
-            throw new AddMusicRequestDTONotFulfilledException("trackDTO.uri");
-        } else if (!StringUtils.hasText(addMusicRequestDTO.getTrackDTO().getName())) {
-            throw new AddMusicRequestDTONotFulfilledException("trackDTO.name");
-        } else if (!StringUtils.hasText(addMusicRequestDTO.getTrackDTO().getAlbumName())) {
-            throw new AddMusicRequestDTONotFulfilledException("trackDTO.albumName");
-        } else if (!StringUtils.hasText(addMusicRequestDTO.getTrackDTO().getImageUrl())) {
-            throw new AddMusicRequestDTONotFulfilledException("trackDTO.imageUrl");
-        } else if (Objects.isNull(addMusicRequestDTO.getTrackDTO().getImageWidth())) {
-            throw new AddMusicRequestDTONotFulfilledException("trackDTO.imageWidth");
-        } else if (Objects.isNull(addMusicRequestDTO.getTrackDTO().getImageHeight())) {
-            throw new AddMusicRequestDTONotFulfilledException("trackDTO.imageHeight");
-        } else if (Objects.isNull(addMusicRequestDTO.getTrackDTO().getDuration())) {
-            throw new AddMusicRequestDTONotFulfilledException("trackDTO.duration");
+        } else if (Objects.isNull(addMusicRequestDTO.getTrack())) {
+            throw new AddMusicRequestDTONotFulfilledException("track");
+        } else if (!StringUtils.hasText(addMusicRequestDTO.getTrack().getStreamingId())) {
+            throw new AddMusicRequestDTONotFulfilledException("track.id");
+        } else if (Objects.isNull(addMusicRequestDTO.getTrack().getArtists())
+                || addMusicRequestDTO.getTrack().getArtists().isEmpty()
+                || !StringUtils.hasText(addMusicRequestDTO.getTrack().getArtists().get(0))) {
+            throw new AddMusicRequestDTONotFulfilledException("track.artists");
+        } else if (!StringUtils.hasText(addMusicRequestDTO.getTrack().getUri())) {
+            throw new AddMusicRequestDTONotFulfilledException("track.uri");
+        } else if (!StringUtils.hasText(addMusicRequestDTO.getTrack().getName())) {
+            throw new AddMusicRequestDTONotFulfilledException("track.name");
+        } else if (!StringUtils.hasText(addMusicRequestDTO.getTrack().getAlbumName())) {
+            throw new AddMusicRequestDTONotFulfilledException("track.albumName");
+        } else if (!StringUtils.hasText(addMusicRequestDTO.getTrack().getImageUrl())) {
+            throw new AddMusicRequestDTONotFulfilledException("track.imageUrl");
+        } else if (Objects.isNull(addMusicRequestDTO.getTrack().getImageWidth())) {
+            throw new AddMusicRequestDTONotFulfilledException("track.imageWidth");
+        } else if (Objects.isNull(addMusicRequestDTO.getTrack().getImageHeight())) {
+            throw new AddMusicRequestDTONotFulfilledException("track.imageHeight");
+        } else if (Objects.isNull(addMusicRequestDTO.getTrack().getDuration())) {
+            throw new AddMusicRequestDTONotFulfilledException("track.duration");
         }
     }
 }

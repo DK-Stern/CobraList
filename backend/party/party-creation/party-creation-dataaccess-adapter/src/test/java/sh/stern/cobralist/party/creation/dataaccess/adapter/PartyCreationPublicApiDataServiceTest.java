@@ -151,7 +151,7 @@ public class PartyCreationPublicApiDataServiceTest {
         final TrackDTO track = new TrackDTO();
 
         final String trackId = "trackId";
-        track.setId(trackId);
+        track.setStreamingId(trackId);
         final String uri = "uri";
         track.setUri(uri);
         final String name = "name";

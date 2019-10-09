@@ -29,7 +29,7 @@ public class TrackValueObjectToTrackDTOMapperTest {
         final TrackDTO resultedDTO = testSubject.map(track);
 
         // then
-        assertThat(resultedDTO.getId()).isEqualTo(expectedId);
+        assertThat(resultedDTO.getStreamingId()).isEqualTo(expectedId);
     }
 
     @Test

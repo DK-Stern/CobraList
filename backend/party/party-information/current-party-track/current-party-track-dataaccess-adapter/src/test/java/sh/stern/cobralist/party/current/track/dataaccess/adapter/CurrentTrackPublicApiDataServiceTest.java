@@ -184,20 +184,15 @@ public class CurrentTrackPublicApiDataServiceTest {
     @Test
     public void musicRequestStatusPlayedIsTrue() {
         // given
-        final String partyCode = "partyCode";
-        final String trackId = "trackId";
-
-        final Party party = new Party();
+        final long musicRequestId = 123L;
         final Playlist playlist = new Playlist();
-        party.setPlaylist(playlist);
-        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(party));
-
         final MusicRequest musicRequest = new MusicRequest();
+        musicRequest.setPlaylist(playlist);
         musicRequest.setPlayed(true);
-        when(musicRequestRepositoryMock.findByPlaylistAndTrackId(playlist, trackId)).thenReturn(Optional.of(musicRequest));
+        when(musicRequestRepositoryMock.findById(musicRequestId)).thenReturn(Optional.of(musicRequest));
 
         // when
-        final boolean hasStatusPlayed = testSubject.hasMusicRequestStatusPlayed(partyCode, trackId);
+        final boolean hasStatusPlayed = testSubject.hasMusicRequestStatusPlayed(musicRequestId);
 
         // then
         assertThat(hasStatusPlayed).isTrue();
@@ -206,20 +201,16 @@ public class CurrentTrackPublicApiDataServiceTest {
     @Test
     public void musicRequestStatusPlayedIsFalse() {
         // given
-        final String partyCode = "partyCode";
-        final String trackId = "trackId";
 
-        final Party party = new Party();
+        final long musicRequestId = 456L;
         final Playlist playlist = new Playlist();
-        party.setPlaylist(playlist);
-        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(party));
-
         final MusicRequest musicRequest = new MusicRequest();
+        musicRequest.setPlaylist(playlist);
         musicRequest.setPlayed(false);
-        when(musicRequestRepositoryMock.findByPlaylistAndTrackId(playlist, trackId)).thenReturn(Optional.of(musicRequest));
+        when(musicRequestRepositoryMock.findById(musicRequestId)).thenReturn(Optional.of(musicRequest));
 
         // when
-        final boolean hasStatusPlayed = testSubject.hasMusicRequestStatusPlayed(partyCode, trackId);
+        final boolean hasStatusPlayed = testSubject.hasMusicRequestStatusPlayed(musicRequestId);
 
         // then
         assertThat(hasStatusPlayed).isFalse();
@@ -228,52 +219,29 @@ public class CurrentTrackPublicApiDataServiceTest {
     @Test
     public void musicRequestStatusPlayedIsTrueIfMusicRequestNotFound() {
         // given
-        final String partyCode = "partyCode";
-        final String trackId = "trackId";
-
-        final Party party = new Party();
-        final Playlist playlist = new Playlist();
-        party.setPlaylist(playlist);
-        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(party));
-
-        when(musicRequestRepositoryMock.findByPlaylistAndTrackId(playlist, trackId)).thenReturn(Optional.empty());
+        final long musicRequestId = 213L;
+        when(musicRequestRepositoryMock.findById(musicRequestId)).thenReturn(Optional.empty());
 
         // when
-        final boolean hasStatusPlayed = testSubject.hasMusicRequestStatusPlayed(partyCode, trackId);
+        final boolean hasStatusPlayed = testSubject.hasMusicRequestStatusPlayed(musicRequestId);
 
         // then
         assertThat(hasStatusPlayed).isTrue();
     }
 
     @Test
-    public void hasMusicRequestStatusPlayedThrowsExceptionIfPartyNotFound() {
-        // given
-        final String partyCode = "partyCode";
-        final String trackId = "trackId";
-
-        // when u. then
-        assertThatExceptionOfType(PartyNotFoundException.class)
-                .describedAs("Party mit dem Code '" + partyCode + "' konnte nicht gefunden werden.")
-                .isThrownBy(() -> testSubject.hasMusicRequestStatusPlayed(partyCode, trackId));
-    }
-
-    @Test
     public void changeMusicRequestPlayedStatus() {
         // given
-        final String partyCode = "partyCode";
-        final String trackId = "trackId";
+        final long musicRequestId = 456L;
         final boolean isPlayedStatus = true;
 
-        final Party party = new Party();
         final Playlist playlist = new Playlist();
-        party.setPlaylist(playlist);
-        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(party));
-
         final MusicRequest musicRequest = new MusicRequest();
-        when(musicRequestRepositoryMock.findByPlaylistAndTrackId(playlist, trackId)).thenReturn(Optional.of(musicRequest));
+        musicRequest.setPlaylist(playlist);
+        when(musicRequestRepositoryMock.findById(musicRequestId)).thenReturn(Optional.of(musicRequest));
 
         // when
-        testSubject.changeMusicRequestPlayedStatus(partyCode, trackId, isPlayedStatus);
+        testSubject.changeMusicRequestPlayedStatus(musicRequestId, isPlayedStatus);
 
         // then
         verify(musicRequestRepositoryMock).saveAndFlush(musicRequest);
@@ -283,24 +251,20 @@ public class CurrentTrackPublicApiDataServiceTest {
     @Test
     public void changeMusicRequestPlayedStatusResetsRatingIfPlayedIsTrue() {
         // given
-        final String partyCode = "partyCode";
-        final String trackId = "trackId";
+        final long musicRequestId = 789L;
         final boolean isPlayedStatus = true;
 
-        final Party party = new Party();
         final Playlist playlist = new Playlist();
-        party.setPlaylist(playlist);
-        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(party));
-
         final MusicRequest musicRequest = new MusicRequest();
+        musicRequest.setPlaylist(playlist);
         musicRequest.setUpVotes(3);
         musicRequest.setDownVotes(1);
         musicRequest.setRating(2);
         musicRequest.setPosition(8);
-        when(musicRequestRepositoryMock.findByPlaylistAndTrackId(playlist, trackId)).thenReturn(Optional.of(musicRequest));
+        when(musicRequestRepositoryMock.findById(musicRequestId)).thenReturn(Optional.of(musicRequest));
 
         // when
-        testSubject.changeMusicRequestPlayedStatus(partyCode, trackId, isPlayedStatus);
+        testSubject.changeMusicRequestPlayedStatus(musicRequestId, isPlayedStatus);
 
         // then
         verify(musicRequestRepositoryMock).saveAndFlush(musicRequest);
@@ -310,24 +274,20 @@ public class CurrentTrackPublicApiDataServiceTest {
     @Test
     public void changeMusicRequestPlayedStatusResetsUpVotesIfPlayedIsTrue() {
         // given
-        final String partyCode = "partyCode";
-        final String trackId = "trackId";
+        final long musicRequestId = 465L;
         final boolean isPlayedStatus = true;
 
-        final Party party = new Party();
         final Playlist playlist = new Playlist();
-        party.setPlaylist(playlist);
-        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(party));
-
         final MusicRequest musicRequest = new MusicRequest();
+        musicRequest.setPlaylist(playlist);
         musicRequest.setUpVotes(3);
         musicRequest.setDownVotes(1);
         musicRequest.setRating(2);
         musicRequest.setPosition(8);
-        when(musicRequestRepositoryMock.findByPlaylistAndTrackId(playlist, trackId)).thenReturn(Optional.of(musicRequest));
+        when(musicRequestRepositoryMock.findById(musicRequestId)).thenReturn(Optional.of(musicRequest));
 
         // when
-        testSubject.changeMusicRequestPlayedStatus(partyCode, trackId, isPlayedStatus);
+        testSubject.changeMusicRequestPlayedStatus(musicRequestId, isPlayedStatus);
 
         // then
         verify(musicRequestRepositoryMock).saveAndFlush(musicRequest);
@@ -337,24 +297,20 @@ public class CurrentTrackPublicApiDataServiceTest {
     @Test
     public void changeMusicRequestPlayedStatusResetsDownVotesIfPlayedIsTrue() {
         // given
-        final String partyCode = "partyCode";
-        final String trackId = "trackId";
+        final long musicRequestId = 465L;
         final boolean isPlayedStatus = true;
 
-        final Party party = new Party();
         final Playlist playlist = new Playlist();
-        party.setPlaylist(playlist);
-        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(party));
-
         final MusicRequest musicRequest = new MusicRequest();
+        musicRequest.setPlaylist(playlist);
         musicRequest.setUpVotes(3);
         musicRequest.setDownVotes(1);
         musicRequest.setRating(2);
         musicRequest.setPosition(8);
-        when(musicRequestRepositoryMock.findByPlaylistAndTrackId(playlist, trackId)).thenReturn(Optional.of(musicRequest));
+        when(musicRequestRepositoryMock.findById(musicRequestId)).thenReturn(Optional.of(musicRequest));
 
         // when
-        testSubject.changeMusicRequestPlayedStatus(partyCode, trackId, isPlayedStatus);
+        testSubject.changeMusicRequestPlayedStatus(musicRequestId, isPlayedStatus);
 
         // then
         verify(musicRequestRepositoryMock).saveAndFlush(musicRequest);
@@ -364,24 +320,20 @@ public class CurrentTrackPublicApiDataServiceTest {
     @Test
     public void changeMusicRequestPlayedStatusResetsPositionIfPlayedIsTrue() {
         // given
-        final String partyCode = "partyCode";
-        final String trackId = "trackId";
+        final long musicRequestId = 132L;
         final boolean isPlayedStatus = true;
 
-        final Party party = new Party();
         final Playlist playlist = new Playlist();
-        party.setPlaylist(playlist);
-        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(party));
-
         final MusicRequest musicRequest = new MusicRequest();
+        musicRequest.setPlaylist(playlist);
         musicRequest.setUpVotes(3);
         musicRequest.setDownVotes(1);
         musicRequest.setRating(2);
         musicRequest.setPosition(8);
-        when(musicRequestRepositoryMock.findByPlaylistAndTrackId(playlist, trackId)).thenReturn(Optional.of(musicRequest));
+        when(musicRequestRepositoryMock.findById(musicRequestId)).thenReturn(Optional.of(musicRequest));
 
         // when
-        testSubject.changeMusicRequestPlayedStatus(partyCode, trackId, isPlayedStatus);
+        testSubject.changeMusicRequestPlayedStatus(musicRequestId, isPlayedStatus);
 
         // then
         verify(musicRequestRepositoryMock).saveAndFlush(musicRequest);
@@ -391,42 +343,32 @@ public class CurrentTrackPublicApiDataServiceTest {
     @Test
     public void changeMusicRequestPlayedStatusDecreaseMusicRequestPositionsIfPlayedIsTrue() {
         // given
-        final String partyCode = "partyCode";
-        final String trackId = "trackId";
+        final long musicRequestId = 123L;
         final boolean isPlayedStatus = true;
         final long playlistId = 456L;
 
-        final Party party = new Party();
         final Playlist playlist = new Playlist();
         playlist.setId(playlistId);
-        party.setPlaylist(playlist);
-        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(party));
-
         final MusicRequest musicRequest = new MusicRequest();
+        musicRequest.setPlaylist(playlist);
         musicRequest.setUpVotes(3);
         musicRequest.setDownVotes(1);
         musicRequest.setRating(2);
         musicRequest.setPosition(8);
-        when(musicRequestRepositoryMock.findByPlaylistAndTrackId(playlist, trackId)).thenReturn(Optional.of(musicRequest));
+        when(musicRequestRepositoryMock.findById(musicRequestId)).thenReturn(Optional.of(musicRequest));
 
         // when
-        testSubject.changeMusicRequestPlayedStatus(partyCode, trackId, isPlayedStatus);
+        testSubject.changeMusicRequestPlayedStatus(musicRequestId, isPlayedStatus);
 
         // then
-        verify(musicRequestPositionServiceMock).decreaseMusicRequestPositions(playlistId);
+        verify(musicRequestPositionServiceMock).decreaseMusicRequestPositions(playlistId, 0);
     }
 
     @Test
     public void changeMusicRequestPlayedStatusDoesNotResetsIfPlayedIsFalse() {
         // given
-        final String partyCode = "partyCode";
-        final String trackId = "trackId";
+        final long musicRequestId = 123L;
         final boolean isPlayedStatus = false;
-
-        final Party party = new Party();
-        final Playlist playlist = new Playlist();
-        party.setPlaylist(playlist);
-        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(party));
 
         final MusicRequest musicRequest = new MusicRequest();
         final int upVotes = 3;
@@ -437,10 +379,12 @@ public class CurrentTrackPublicApiDataServiceTest {
         musicRequest.setRating(rating);
         final int position = 8;
         musicRequest.setPosition(position);
-        when(musicRequestRepositoryMock.findByPlaylistAndTrackId(playlist, trackId)).thenReturn(Optional.of(musicRequest));
+        final Playlist playlist = new Playlist();
+        musicRequest.setPlaylist(playlist);
+        when(musicRequestRepositoryMock.findById(musicRequestId)).thenReturn(Optional.of(musicRequest));
 
         // when
-        testSubject.changeMusicRequestPlayedStatus(partyCode, trackId, isPlayedStatus);
+        testSubject.changeMusicRequestPlayedStatus(musicRequestId, isPlayedStatus);
 
         // then
         verify(musicRequestRepositoryMock).saveAndFlush(musicRequest);
@@ -453,40 +397,19 @@ public class CurrentTrackPublicApiDataServiceTest {
     }
 
     @Test
-    public void changeMusicRequestPlayedStatusThrowsExceptionIfPartyNotFound() {
-        // given
-        final String partyCode = "partyCode";
-        final String trackId = "trackId";
-        final boolean isPlayedStatus = true;
-
-        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.empty());
-
-        // when u. then
-        assertThatExceptionOfType(PartyNotFoundException.class)
-                .isThrownBy(() -> testSubject.changeMusicRequestPlayedStatus(partyCode, trackId, isPlayedStatus))
-                .withMessage("Party mit dem Code '" + partyCode + "' konnte nicht gefunden werden.");
-    }
-
-    @Test
     public void changeMusicRequestPlayedStatusThrowsExceptionIfMusicRequestNotFound() {
         // given
-        final String partyCode = "partyCode";
-        final String trackId = "trackId";
+        final long musicRequestId = 1233L;
         final boolean isPlayedStatus = true;
 
-        final Party party = new Party();
-        final Playlist playlist = new Playlist();
-        final long playlistId = 123L;
-        playlist.setId(playlistId);
-        party.setPlaylist(playlist);
-        when(partyRepositoryMock.findByPartyCode(partyCode)).thenReturn(Optional.of(party));
-
-        when(musicRequestRepositoryMock.findByPlaylistAndTrackId(playlist, trackId)).thenReturn(Optional.empty());
+        when(musicRequestRepositoryMock.findById(musicRequestId)).thenReturn(Optional.empty());
 
         // when u. then
         assertThatExceptionOfType(MusicRequestNotFoundException.class)
-                .isThrownBy(() -> testSubject.changeMusicRequestPlayedStatus(partyCode, trackId, isPlayedStatus))
-                .withMessage("MusicRequest mit der PlaylistId '" + playlistId + "' und TrackId '" + trackId + "' konnte nicht gefunden werden.");
+                .isThrownBy(() -> {
+                    testSubject.changeMusicRequestPlayedStatus(musicRequestId, isPlayedStatus);
+                })
+                .withMessage("MusicRequest mit der id '" + musicRequestId + "' konnte nicht gefunden werden.");
     }
 
     @Test

@@ -8,7 +8,7 @@ import sh.stern.cobralist.search.music.request.domain.SearchMusicRequestDTO;
 public class TrackDTOToSearchMusicRequestDTOMapper {
     public SearchMusicRequestDTO map(TrackDTO trackDTO) {
         final SearchMusicRequestDTO searchMusicRequestDTO = new SearchMusicRequestDTO();
-        searchMusicRequestDTO.setTrackId(trackDTO.getId());
+        searchMusicRequestDTO.setTrackId(trackDTO.getStreamingId());
         searchMusicRequestDTO.setArtists(trackDTO.getArtists());
         searchMusicRequestDTO.setUri(trackDTO.getUri());
         searchMusicRequestDTO.setName(trackDTO.getName());
