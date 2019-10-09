@@ -15,3 +15,17 @@ th.mat-sort-header-sorted {
   height: 80%;
   overflow: auto;
 }
+
+mat-icon {
+  padding: 3px;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.voted {
+  opacity: 0.3;
+  pointer-events: none;
+  cursor: not-allowed;
+}

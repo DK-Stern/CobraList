@@ -7,7 +7,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import sh.stern.cobralist.party.persistence.dataaccess.MusicRequestRepository;
 import sh.stern.cobralist.party.persistence.dataaccess.PartyRepository;
-import sh.stern.cobralist.party.persistence.dataaccess.PlaylistRepository;
 import sh.stern.cobralist.party.persistence.dataaccess.VoteRepository;
 import sh.stern.cobralist.party.persistence.domain.MusicRequest;
 import sh.stern.cobralist.party.persistence.domain.Party;
@@ -42,14 +41,10 @@ public class MusicRequestPublicApiDataServiceTest {
     @Mock
     private MusicRequestToMusicRequestDTOMapper musicRequestToMusicRequestDTOMapperMock;
 
-    @Mock
-    private PlaylistRepository playlistRepositoryMock;
-
     @Before
     public void setUp() {
         testSubject = new MusicRequestPublicApiDataService(
                 partyRepositoryMock,
-                playlistRepositoryMock,
                 musicRequestRepositoryMock,
                 voteRepositoryMock,
                 musicRequestToMusicRequestDTOMapperMock);

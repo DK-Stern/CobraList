@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sh.stern.cobralist.party.persistence.dataaccess.MusicRequestRepository;
 import sh.stern.cobralist.party.persistence.dataaccess.PartyRepository;
-import sh.stern.cobralist.party.persistence.dataaccess.PlaylistRepository;
 import sh.stern.cobralist.party.persistence.dataaccess.VoteRepository;
 import sh.stern.cobralist.party.persistence.domain.MusicRequest;
 import sh.stern.cobralist.party.persistence.domain.Party;
@@ -24,7 +23,6 @@ public class MusicRequestPublicApiDataService implements MusicRequestDataService
 
     @Autowired
     public MusicRequestPublicApiDataService(PartyRepository partyRepository,
-                                            PlaylistRepository playlistRepository,
                                             MusicRequestRepository musicRequestRepository,
                                             VoteRepository voteRepository,
                                             MusicRequestToMusicRequestDTOMapper musicRequestToMusicRequestDTOMapper) {

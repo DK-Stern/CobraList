@@ -1,0 +1,9 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    compile project(":backend:party:party-information:party-information-dataaccess-port")
+    compile project(':backend:party-persistence:party-dataaccess')
+    compile project(':backend:party-persistence:party-exceptions')
+}

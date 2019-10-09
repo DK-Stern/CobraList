@@ -9,6 +9,8 @@ import {MatTableModule} from "@angular/material/table";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {MatIconModule} from "@angular/material/icon";
+import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 describe('MusicRequestsComponent', () => {
   let component: MusicRequestsComponent;
@@ -16,6 +18,8 @@ describe('MusicRequestsComponent', () => {
   let initialState: AppState = {
     authentication: null,
     party: {
+      partyCode: null,
+      downVotable: true,
       currentPlayback: {
         currentTrack: {
           albumName: "string",
@@ -44,7 +48,9 @@ describe('MusicRequestsComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         MatAutocompleteModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        HttpClientTestingModule,
+        MatIconModule
       ],
       providers: [
         provideMockStore({initialState})

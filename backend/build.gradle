@@ -48,6 +48,8 @@ dependencies {
     implementation project(':backend:party:party-information:party-information-api')
     implementation project(':backend:party:party-information:party-information-domain')
     implementation project(':backend:party:party-information:party-information-usecases')
+    implementation project(':backend:party:party-information:party-information-dataaccess-port')
+    implementation project(':backend:party:party-information:party-information-dataaccess-adapter')
     implementation project(':backend:music-request:search-music-request:search-music-request-controller')
     implementation project(':backend:music-request:search-music-request:search-music-request-api')
     implementation project(':backend:music-request:search-music-request:search-music-request-usecases')

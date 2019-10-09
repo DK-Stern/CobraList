@@ -10,6 +10,8 @@ describe('PlayerComponent', () => {
   let initialState: AppState = {
     authentication: null,
     party: {
+      partyCode: null,
+      downVotable: true,
       currentPlayback: {
         currentTrack: {
           albumName: "string",

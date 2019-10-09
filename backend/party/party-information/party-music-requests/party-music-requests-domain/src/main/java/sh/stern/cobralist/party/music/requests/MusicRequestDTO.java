@@ -5,7 +5,7 @@ import java.util.List;
 
 public class MusicRequestDTO {
 
-    private String trackId;
+    private Long musicRequestId;
 
     private Integer position;
 
@@ -31,12 +31,12 @@ public class MusicRequestDTO {
 
     private Integer rating;
 
-    public String getTrackId() {
-        return trackId;
+    public Long getMusicRequestId() {
+        return musicRequestId;
     }
 
-    public void setTrackId(String trackId) {
-        this.trackId = trackId;
+    public void setMusicRequestId(Long musicRequestId) {
+        this.musicRequestId = musicRequestId;
     }
 
     public List<String> getArtist() {

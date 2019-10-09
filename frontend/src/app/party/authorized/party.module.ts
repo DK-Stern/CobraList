@@ -17,6 +17,7 @@ import {SearchMusicRequestComponent} from './search-music-request/search-music-r
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {HttpClientModule} from "@angular/common/http";
+import {MatIconModule} from "@angular/material/icon";
 
 @NgModule({
   declarations: [PartyDetailsComponent, PartyComponent, PartyInformationComponent, MusicRequestsComponent, PlayerComponent, SearchMusicRequestComponent],
@@ -35,7 +36,8 @@ import {HttpClientModule} from "@angular/common/http";
     MatInputModule,
     MatAutocompleteModule,
     HttpClientModule,
-    EffectsModule.forFeature([PartyEffect])
+    EffectsModule.forFeature([PartyEffect]),
+    MatIconModule
   ]
 })
 export class PartyModule {

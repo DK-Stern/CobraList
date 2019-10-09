@@ -8,6 +8,9 @@ dependencies {
     compile project(":backend:party:party-information:party-information-api")
     runtimeOnly project(":backend:party:party-information:party-information-usecases")
 
+    compile project(":backend:party:party-information:party-information-dataaccess-port")
+    runtimeOnly project(":backend:party:party-information:party-information-dataaccess-port")
+
     compile project(":backend:party:party-information:current-party-track:current-party-track-api")
     runtimeOnly project(":backend:party:party-information:current-party-track:current-party-track-usecases")
 

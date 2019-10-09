@@ -1,4 +1,6 @@
 export interface PartyInformationDto {
+  partyCode: string | null,
+  downVotable: boolean | null,
   currentPlayback: CurrentPlaybackDTO | null,
   musicRequests: MusicRequestDTO[] | null
 }

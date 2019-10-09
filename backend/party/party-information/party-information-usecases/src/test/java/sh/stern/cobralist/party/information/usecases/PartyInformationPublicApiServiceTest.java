@@ -8,6 +8,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import sh.stern.cobralist.party.current.track.api.CurrentTrackService;
 import sh.stern.cobralist.party.current.track.domain.CurrentPlaybackDTO;
+import sh.stern.cobralist.party.information.dataaccess.port.PartyInformationDataService;
 import sh.stern.cobralist.party.information.domain.PartyInformationDTO;
 import sh.stern.cobralist.party.music.requests.MusicRequestDTO;
 import sh.stern.cobralist.party.music.requests.MusicRequestService;
@@ -36,9 +37,16 @@ public class PartyInformationPublicApiServiceTest {
     @Mock
     private MusicRequestService musicRequestServiceMock;
 
+    @Mock
+    private PartyInformationDataService partyInformationDataService;
+
     @Before
     public void setUp() {
-        testSubject = new PartyInformationPublicApiService(partySecurityServiceMock, currentTrackServiceMock, musicRequestServiceMock);
+        testSubject = new PartyInformationPublicApiService(
+                partySecurityServiceMock,
+                currentTrackServiceMock,
+                musicRequestServiceMock,
+                partyInformationDataService);
     }
 
     @Test

@@ -7,6 +7,7 @@ import java.util.List;
 
 public class PartyInformationDTO {
     private String partyCode;
+    private boolean isDownVotable;
     private CurrentPlaybackDTO currentPlayback;
     private List<MusicRequestDTO> musicRequests;
 
@@ -32,5 +33,13 @@ public class PartyInformationDTO {
 
     public void setMusicRequests(List<MusicRequestDTO> musicRequests) {
         this.musicRequests = musicRequests;
+    }
+
+    public boolean isDownVotable() {
+        return isDownVotable;
+    }
+
+    public void setDownVotable(boolean downVotable) {
+        isDownVotable = downVotable;
     }
 }

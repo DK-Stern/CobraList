@@ -5,6 +5,9 @@ import {MusicRequestDTO} from "../store/party-information.dto";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
 import {FormControl} from "@angular/forms";
+import {MatIconRegistry} from "@angular/material/icon";
+import {DomSanitizer} from "@angular/platform-browser";
+import {MusicRequestVotingServiceService} from "./music-request-voting-service.service";
 
 @Component({
   selector: 'app-music-requests',
@@ -13,32 +16,55 @@ import {FormControl} from "@angular/forms";
 })
 export class MusicRequestsComponent implements OnInit {
 
-  displayedColumns: string[] = [
+  displayedColumns: string[];
+  columnsWithoutDownVote = [
+    'position',
+    'artist',
+    'title',
+    'duration',
+    'upVotes',
+    'vote'
+  ];
+  columnsWithDownVote = [
     'position',
     'artist',
     'title',
     'duration',
     'upVotes',
     'downVotes',
-    'rating'];
+    'rating',
+    'vote'
+  ];
 
   musicRequests: MusicRequestDTO[];
   dataSource;
   filterCtrl: FormControl = new FormControl();
+  partyCode: string;
+  downVotable: boolean;
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  constructor(private store: Store<AppState>) {
+  constructor(private store: Store<AppState>,
+              private iconRegistry: MatIconRegistry,
+              private sanitizer: DomSanitizer,
+              public musicRequestVotingService: MusicRequestVotingServiceService) {
+    iconRegistry.addSvgIcon('upVote', sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/song/thumb_up.svg'))
+    iconRegistry.addSvgIcon('downVote', sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/song/thumb_down.svg'))
   }
 
   ngOnInit() {
-    this.store.select(state => state.party.musicRequests).subscribe(musicRequests => {
+    this.store.select(state => state.party).subscribe(party => {
+      this.partyCode = party.partyCode;
+      this.downVotable = party.downVotable;
       this.dataSource = new MatTableDataSource<MusicRequestDTO>(this.musicRequests);
       this.dataSource.sort = this.sort;
       if (this.filterCtrl.value !== "" && this.filterCtrl.value !== null) {
         this.applyFilter();
       }
-      return this.musicRequests = musicRequests;
+
+      this.displayedColumns = party.downVotable ? this.columnsWithDownVote : this.columnsWithoutDownVote;
+
+      return this.musicRequests = party.musicRequests;
     });
   }
 

@@ -5,6 +5,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import sh.stern.cobralist.party.current.track.api.CurrentTrackService;
 import sh.stern.cobralist.party.information.api.PartyInformationService;
+import sh.stern.cobralist.party.information.dataaccess.port.PartyInformationDataService;
 import sh.stern.cobralist.party.information.domain.PartyInformationDTO;
 import sh.stern.cobralist.party.music.requests.MusicRequestDTO;
 import sh.stern.cobralist.party.music.requests.MusicRequestService;
@@ -21,14 +22,17 @@ public class PartyInformationPublicApiService implements PartyInformationService
     private final PartySecurityService partySecurityService;
     private final CurrentTrackService currentTrackService;
     private final MusicRequestService musicRequestService;
+    private final PartyInformationDataService partyInformationDataService;
 
     @Autowired
     public PartyInformationPublicApiService(PartySecurityService partySecurityService,
                                             CurrentTrackService currentTrackService,
-                                            MusicRequestService musicRequestService) {
+                                            MusicRequestService musicRequestService,
+                                            PartyInformationDataService partyInformationDataService) {
         this.partySecurityService = partySecurityService;
         this.currentTrackService = currentTrackService;
         this.musicRequestService = musicRequestService;
+        this.partyInformationDataService = partyInformationDataService;
     }
 
     @Override
@@ -37,6 +41,7 @@ public class PartyInformationPublicApiService implements PartyInformationService
 
         final PartyInformationDTO partyInformationDTO = new PartyInformationDTO();
         partyInformationDTO.setPartyCode(partyCode);
+        partyInformationDTO.setDownVotable(partyInformationDataService.isPartyDownvotable(partyCode));
         partyInformationDTO.setCurrentPlayback(currentTrackService.getCurrentTrack(partyCode));
 
         final List<MusicRequestDTO> musicRequests = musicRequestService.getMusicRequests(partyCode, userPrincipal.getId(), hasRoleUser(userPrincipal));

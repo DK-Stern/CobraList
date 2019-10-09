@@ -19,11 +19,11 @@ public class MusicRequestToMusicRequestDTOMapperTest {
     }
 
     @Test
-    public void mapTrackId() {
+    public void mapMusicRequestId() {
         // given
+        final long expectedMusicRequestId = 123L;
         final MusicRequest musicRequest = new MusicRequest();
-        final String trackId = "trackId";
-        musicRequest.setTrackId(trackId);
+        musicRequest.setId(expectedMusicRequestId);
         musicRequest.setUpVotes(1);
         musicRequest.setDownVotes(1);
 
@@ -31,7 +31,7 @@ public class MusicRequestToMusicRequestDTOMapperTest {
         final MusicRequestDTO musicRequestDTO = testSubject.map(musicRequest);
 
         // then
-        assertThat(musicRequestDTO.getTrackId()).isEqualTo(trackId);
+        assertThat(musicRequestDTO.getMusicRequestId()).isEqualTo(expectedMusicRequestId);
     }
 
     @Test

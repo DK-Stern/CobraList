@@ -7,7 +7,7 @@ import sh.stern.cobralist.party.persistence.domain.MusicRequest;
 public class MusicRequestToMusicRequestDTOMapper {
     public MusicRequestDTO map(MusicRequest musicRequest) {
         final MusicRequestDTO musicRequestDTO = new MusicRequestDTO();
-        musicRequestDTO.setTrackId(musicRequest.getTrackId());
+        musicRequestDTO.setMusicRequestId(musicRequest.getId());
         musicRequestDTO.setPosition(musicRequest.getPosition());
         musicRequestDTO.setUpVotes(musicRequest.getUpVotes());
         musicRequestDTO.setDownVotes(musicRequest.getDownVotes());

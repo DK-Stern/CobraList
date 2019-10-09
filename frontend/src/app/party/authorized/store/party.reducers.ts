@@ -4,6 +4,8 @@ import {PartyInformationDto} from "./party-information.dto";
 
 
 export const initialPartyState: PartyInformationDto = {
+  partyCode: null,
+  downVotable: null,
   currentPlayback: null,
   musicRequests: null
 };
@@ -12,6 +14,8 @@ const partyReducers = createReducer(
   initialPartyState,
   on(saveParty, (state, {party}) => ({
     ...state,
+    partyCode: party.partyCode,
+    downVotable: party.downVotable,
     currentPlayback: party.currentPlayback,
     musicRequests: party.musicRequests
   }))
