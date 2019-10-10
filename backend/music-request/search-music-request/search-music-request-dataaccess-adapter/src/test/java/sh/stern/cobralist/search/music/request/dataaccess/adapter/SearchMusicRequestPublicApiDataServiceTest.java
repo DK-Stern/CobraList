@@ -71,7 +71,7 @@ public class SearchMusicRequestPublicApiDataServiceTest {
         final long playlistId = 12L;
         final String trackId = "trackId";
 
-        when(musicRequestRepositoryMock.findByPlaylist_IdAndTrackId(playlistId, trackId)).thenReturn(Optional.empty());
+        when(musicRequestRepositoryMock.findByPlaylist_IdAndTrackIdAndIsPlayed(playlistId, trackId, false)).thenReturn(Optional.empty());
 
         // when
         final boolean isInPlaylist = testSubject.isMusicRequestAlreadyInPlaylist(playlistId, trackId);
@@ -88,7 +88,7 @@ public class SearchMusicRequestPublicApiDataServiceTest {
 
         final MusicRequest musicRequest = new MusicRequest();
         musicRequest.setPlayed(true);
-        when(musicRequestRepositoryMock.findByPlaylist_IdAndTrackId(playlistId, trackId)).thenReturn(Optional.of(musicRequest));
+        when(musicRequestRepositoryMock.findByPlaylist_IdAndTrackIdAndIsPlayed(playlistId, trackId, false)).thenReturn(Optional.of(musicRequest));
 
         // when
         final boolean isInPlaylist = testSubject.isMusicRequestAlreadyInPlaylist(playlistId, trackId);
@@ -105,7 +105,7 @@ public class SearchMusicRequestPublicApiDataServiceTest {
 
         final MusicRequest musicRequest = new MusicRequest();
         musicRequest.setPlayed(false);
-        when(musicRequestRepositoryMock.findByPlaylist_IdAndTrackId(playlistId, trackId)).thenReturn(Optional.of(musicRequest));
+        when(musicRequestRepositoryMock.findByPlaylist_IdAndTrackIdAndIsPlayed(playlistId, trackId, false)).thenReturn(Optional.of(musicRequest));
 
         // when
         final boolean isInPlaylist = testSubject.isMusicRequestAlreadyInPlaylist(playlistId, trackId);

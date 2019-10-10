@@ -7,7 +7,7 @@ import {MatSort} from "@angular/material/sort";
 import {FormControl} from "@angular/forms";
 import {MatIconRegistry} from "@angular/material/icon";
 import {DomSanitizer} from "@angular/platform-browser";
-import {MusicRequestVotingServiceService} from "./music-request-voting-service.service";
+import {MusicRequestVotingService} from "./music-request-voting.service";
 
 @Component({
   selector: 'app-music-requests',
@@ -47,7 +47,7 @@ export class MusicRequestsComponent implements OnInit {
   constructor(private store: Store<AppState>,
               private iconRegistry: MatIconRegistry,
               private sanitizer: DomSanitizer,
-              public musicRequestVotingService: MusicRequestVotingServiceService) {
+              public musicRequestVotingService: MusicRequestVotingService) {
     iconRegistry.addSvgIcon('upVote', sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/song/thumb_up.svg'))
     iconRegistry.addSvgIcon('downVote', sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/song/thumb_down.svg'))
   }

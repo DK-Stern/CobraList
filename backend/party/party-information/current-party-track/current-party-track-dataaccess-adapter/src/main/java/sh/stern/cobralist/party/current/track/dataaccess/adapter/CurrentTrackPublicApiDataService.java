@@ -64,14 +64,14 @@ public class CurrentTrackPublicApiDataService implements CurrentTrackDataService
 
         musicRequest.setPlayed(isPlayedStatus);
         if (isPlayedStatus) {
+            decrementMusicRequestPositions(musicRequest.getPlaylist().getId(), musicRequest.getPosition());
             resetRatingAndPosition(musicRequest);
-            decrementMusicRequestPositions(musicRequest.getPlaylist().getId());
         }
         musicRequestRepository.saveAndFlush(musicRequest);
     }
 
-    private void decrementMusicRequestPositions(Long playlistId) {
-        musicRequestPositionService.decreaseMusicRequestPositions(playlistId, 0);
+    private void decrementMusicRequestPositions(Long playlistId, int position) {
+        musicRequestPositionService.decreaseMusicRequestPositions(playlistId, position);
     }
 
     private void resetRatingAndPosition(MusicRequest musicRequest) {
@@ -89,10 +89,9 @@ public class CurrentTrackPublicApiDataService implements CurrentTrackDataService
     }
 
     @Override
-    public Long getMusicRequestId(Long playlistId, String streamingId) {
-        return musicRequestRepository.findFirstByPlaylist_IdAndTrackId(playlistId, streamingId)
-                .map(MusicRequest::getId)
-                .orElseThrow(MusicRequestNotFoundException::new);
+    public Optional<Long> getMusicRequestIdOfUnplayedTrack(Long playlistId, String trackStreamingId) {
+        return musicRequestRepository.findFirstByPlaylist_IdAndTrackIdAndIsPlayed(playlistId, trackStreamingId, false)
+                .map(MusicRequest::getId);
     }
 
     @Override

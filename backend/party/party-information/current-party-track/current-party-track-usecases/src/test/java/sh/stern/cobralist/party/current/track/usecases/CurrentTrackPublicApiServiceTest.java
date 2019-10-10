@@ -14,6 +14,7 @@ import sh.stern.cobralist.streaming.api.CurrentTrackStreamingService;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -133,7 +134,7 @@ public class CurrentTrackPublicApiServiceTest {
         final long playlistId = 1234L;
         when(currentTrackDataServiceMock.getPlaylistId(partyCode)).thenReturn(playlistId);
         final long musicRequestId = 23L;
-        when(currentTrackDataServiceMock.getMusicRequestId(playlistId, currentTrackId)).thenReturn(musicRequestId);
+        when(currentTrackDataServiceMock.getMusicRequestIdOfUnplayedTrack(playlistId, currentTrackId)).thenReturn(Optional.of(musicRequestId));
 
         final String playlistStreamingId = "playlistStreamingId";
         when(currentTrackDataServiceMock.getPlaylistStreamingId(partyCode)).thenReturn(playlistStreamingId);

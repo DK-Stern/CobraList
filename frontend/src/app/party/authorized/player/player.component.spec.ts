@@ -3,12 +3,22 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {PlayerComponent} from './player.component';
 import {provideMockStore} from "@ngrx/store/testing";
 import {AppState} from "../../../storage/app-state.reducer";
+import {MatIconModule} from "@angular/material/icon";
+import {UserApiService} from "../../../user/user-api.service";
+import {HttpClientTestingModule} from "@angular/common/http/testing";
+import createSpyObj = jasmine.createSpyObj;
 
 describe('PlayerComponent', () => {
   let component: PlayerComponent;
   let fixture: ComponentFixture<PlayerComponent>;
   let initialState: AppState = {
-    authentication: null,
+    authentication: {
+      isGuest: false,
+      isAuthenticated: true,
+      error: null,
+      token: null,
+      user: null
+    },
     party: {
       partyCode: null,
       downVotable: true,
@@ -19,7 +29,7 @@ describe('PlayerComponent', () => {
           duration: 38383838,
           id: "string",
           imageHeight: 2,
-          imageUrl: "",
+          imageUrl: "url",
           imageWidth: 2,
           name: "string",
           uri: "string"
@@ -32,7 +42,12 @@ describe('PlayerComponent', () => {
   };
 
   beforeEach(async(() => {
+    const userApiServiceSpy = createSpyObj('UserApiService', ['getUser']);
     TestBed.configureTestingModule({
+      imports: [
+        MatIconModule,
+        HttpClientTestingModule
+      ],
       providers: [
         provideMockStore({initialState})
       ],

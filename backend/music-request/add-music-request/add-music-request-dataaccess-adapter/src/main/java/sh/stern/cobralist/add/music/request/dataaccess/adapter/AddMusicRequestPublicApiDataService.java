@@ -40,7 +40,7 @@ public class AddMusicRequestPublicApiDataService implements AddMusicRequestDataS
 
     @Override
     public boolean doesMusicRequestExist(Long playlistId, String trackStreamingId) {
-        final Optional<MusicRequest> musicRequestOptional = musicRequestRepository.findByPlaylist_IdAndTrackId(playlistId, trackStreamingId);
+        final Optional<MusicRequest> musicRequestOptional = musicRequestRepository.findByPlaylist_IdAndTrackIdAndIsPlayed(playlistId, trackStreamingId, false);
         return musicRequestOptional.isPresent() && !musicRequestOptional.get().getPlayed();
     }
 }

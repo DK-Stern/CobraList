@@ -34,7 +34,7 @@ public class SearchMusicRequestPublicApiDataService implements SearchMusicReques
 
     @Override
     public boolean isMusicRequestAlreadyInPlaylist(Long playlistId, String trackId) {
-        final Optional<MusicRequest> optionalMusicRequest = musicRequestRepository.findByPlaylist_IdAndTrackId(playlistId, trackId);
+        final Optional<MusicRequest> optionalMusicRequest = musicRequestRepository.findByPlaylist_IdAndTrackIdAndIsPlayed(playlistId, trackId, false);
 
         return optionalMusicRequest.isPresent() && !optionalMusicRequest.get().getPlayed();
     }

@@ -43,9 +43,8 @@ public class CurrentTrackPublicApiService implements CurrentTrackService {
             Long playlistId = currentTrackDataService.getPlaylistId(partyCode);
             final TrackDTO currentTrack = currentPlaybackDTO.getCurrentTrack();
             if (currentTrack != null) {
-                Long musicRequestId = currentTrackDataService.getMusicRequestId(playlistId, currentTrack.getStreamingId());
-                final boolean isPlayed = currentTrackDataService.hasMusicRequestStatusPlayed(musicRequestId);
-                if (!isPlayed) {
+                final Optional<Long> musicRequestIdOptional = currentTrackDataService.getMusicRequestIdOfUnplayedTrack(playlistId, currentTrack.getStreamingId());
+                if (musicRequestIdOptional.isPresent()) {
                     final Optional<String> username = activeParties.stream()
                             .filter(activePartyDTO -> activePartyDTO.getPartyCode().equals(partyCode))
                             .map(ActivePartyDTO::getCreatorEmail)
@@ -53,7 +52,7 @@ public class CurrentTrackPublicApiService implements CurrentTrackService {
                     if (username.isPresent()) {
                         final String playlistStreamingId = currentTrackDataService.getPlaylistStreamingId(partyCode);
                         currentTrackStreamingService.removeTrackFromPlaylist(username.get(), playlistStreamingId, currentPlaybackDTO.getCurrentTrack().getStreamingId());
-                        currentTrackDataService.changeMusicRequestPlayedStatus(musicRequestId, true);
+                        currentTrackDataService.changeMusicRequestPlayedStatus(musicRequestIdOptional.get(), true);
                     }
                 }
             }

@@ -238,6 +238,7 @@ public class CurrentTrackPublicApiDataServiceTest {
         final Playlist playlist = new Playlist();
         final MusicRequest musicRequest = new MusicRequest();
         musicRequest.setPlaylist(playlist);
+        musicRequest.setPosition(1);
         when(musicRequestRepositoryMock.findById(musicRequestId)).thenReturn(Optional.of(musicRequest));
 
         // when
@@ -354,14 +355,15 @@ public class CurrentTrackPublicApiDataServiceTest {
         musicRequest.setUpVotes(3);
         musicRequest.setDownVotes(1);
         musicRequest.setRating(2);
-        musicRequest.setPosition(8);
+        final int position = 8;
+        musicRequest.setPosition(position);
         when(musicRequestRepositoryMock.findById(musicRequestId)).thenReturn(Optional.of(musicRequest));
 
         // when
         testSubject.changeMusicRequestPlayedStatus(musicRequestId, isPlayedStatus);
 
         // then
-        verify(musicRequestPositionServiceMock).decreaseMusicRequestPositions(playlistId, 0);
+        verify(musicRequestPositionServiceMock).decreaseMusicRequestPositions(playlistId, position);
     }
 
     @Test

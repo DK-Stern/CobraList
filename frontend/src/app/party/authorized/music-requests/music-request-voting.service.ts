@@ -5,7 +5,7 @@ import {environment} from "../../../../environments/environment";
 @Injectable({
   providedIn: 'root'
 })
-export class MusicRequestVotingServiceService {
+export class MusicRequestVotingService {
 
   url = environment.apiUrl + '/api/musicrequest/vote';
 

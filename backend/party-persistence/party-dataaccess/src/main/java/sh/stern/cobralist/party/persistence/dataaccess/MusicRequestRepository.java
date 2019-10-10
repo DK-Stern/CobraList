@@ -15,9 +15,9 @@ import java.util.Optional;
 public interface MusicRequestRepository extends JpaRepository<MusicRequest, Long> {
     List<MusicRequest> findByPlaylist_IdAndIsPlayed(Long playlistId, Boolean played);
 
-    Optional<MusicRequest> findByPlaylist_IdAndTrackId(Long playlistId, String trackId);
+    Optional<MusicRequest> findByPlaylist_IdAndTrackIdAndIsPlayed(Long playlistId, String trackId, Boolean isPlayed);
 
-    Optional<MusicRequest> findFirstByPlaylist_IdAndTrackId(Long playlistId, String trackId);
+    Optional<MusicRequest> findFirstByPlaylist_IdAndTrackIdAndIsPlayed(Long playlistId, String trackId, Boolean isPlayed);
 
     Optional<MusicRequest> findByPlaylist_IdAndPosition(Long playlistId, int position);
 

@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {Store} from "@ngrx/store";
 import {AppState} from "../../../storage/app-state.reducer";
 import {CurrentPlaybackDTO, CurrentTrackDTO} from "../store/party-information.dto";
+import {MatIconRegistry} from "@angular/material/icon";
+import {DomSanitizer} from "@angular/platform-browser";
+import {PlayerService} from "./player.service";
 
 @Component({
   selector: 'app-player',
@@ -10,17 +13,27 @@ import {CurrentPlaybackDTO, CurrentTrackDTO} from "../store/party-information.dt
 })
 export class PlayerComponent implements OnInit {
 
+  isCreator: boolean;
+  partyCode: string;
   currentPlayback: CurrentPlaybackDTO;
   currentTrack: CurrentTrackDTO;
 
-  constructor(private store: Store<AppState>) {
+  constructor(private store: Store<AppState>,
+              private iconRegistry: MatIconRegistry,
+              private sanitizer: DomSanitizer,
+              public playerService: PlayerService) {
+    iconRegistry.addSvgIcon('play', sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/player/play.svg'))
+    iconRegistry.addSvgIcon('pause', sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/player/pause.svg'))
+    iconRegistry.addSvgIcon('skip', sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/player/skip_next.svg'))
   }
 
   ngOnInit() {
-    this.store.select(state => state.party.currentPlayback).subscribe(currentPlayback => {
-      this.currentPlayback = currentPlayback;
-      if (currentPlayback !== null) {
-        this.currentTrack = currentPlayback.currentTrack;
+    this.store.select(state => state).subscribe(state => {
+      this.isCreator = !state.authentication.isGuest;
+      this.partyCode = state.party.partyCode;
+      this.currentPlayback = state.party.currentPlayback;
+      if (this.currentPlayback !== null) {
+        this.currentTrack = this.currentPlayback.currentTrack;
       }
     });
   }
