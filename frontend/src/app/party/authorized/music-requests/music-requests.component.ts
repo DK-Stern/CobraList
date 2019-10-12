@@ -36,7 +36,6 @@ export class MusicRequestsComponent implements OnInit {
     'vote'
   ];
 
-  musicRequests: MusicRequestDTO[];
   dataSource;
   filterCtrl: FormControl = new FormControl();
   partyCode: string;
@@ -47,7 +46,7 @@ export class MusicRequestsComponent implements OnInit {
   constructor(private store: Store<AppState>,
               private iconRegistry: MatIconRegistry,
               private sanitizer: DomSanitizer,
-              public musicRequestVotingService: MusicRequestVotingService) {
+              private musicRequestVotingService: MusicRequestVotingService) {
     iconRegistry.addSvgIcon('upVote', sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/song/thumb_up.svg'))
     iconRegistry.addSvgIcon('downVote', sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/song/thumb_down.svg'))
   }
@@ -56,15 +55,13 @@ export class MusicRequestsComponent implements OnInit {
     this.store.select(state => state.party).subscribe(party => {
       this.partyCode = party.partyCode;
       this.downVotable = party.downVotable;
-      this.dataSource = new MatTableDataSource<MusicRequestDTO>(this.musicRequests);
+      this.dataSource = new MatTableDataSource<MusicRequestDTO>(party.musicRequests);
       this.dataSource.sort = this.sort;
       if (this.filterCtrl.value !== "" && this.filterCtrl.value !== null) {
         this.applyFilter();
       }
 
       this.displayedColumns = party.downVotable ? this.columnsWithDownVote : this.columnsWithoutDownVote;
-
-      return this.musicRequests = party.musicRequests;
     });
   }
 
@@ -72,5 +69,15 @@ export class MusicRequestsComponent implements OnInit {
     if (this.filterCtrl.value !== "" && this.filterCtrl.value !== null) {
       this.dataSource.filter = this.filterCtrl.value.trim().toLowerCase();
     }
+  }
+
+  doUpVote(musicRequest: MusicRequestDTO) {
+    musicRequest.alreadyVoted = true;
+    this.musicRequestVotingService.voteMusicRequest(musicRequest.musicRequestId, false, this.partyCode);
+  }
+
+  doDownVote(musicRequest: MusicRequestDTO) {
+    musicRequest.alreadyVoted = true;
+    this.musicRequestVotingService.voteMusicRequest(musicRequest.musicRequestId, true, this.partyCode);
   }
 }

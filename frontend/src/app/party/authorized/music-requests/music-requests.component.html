@@ -52,10 +52,10 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Abstimmen</th>
       <td mat-cell *matCellDef="let row">
         <mat-icon [class.clickable]="!row.alreadyVoted" [class.voted]="row.alreadyVoted"
-                  (click)="musicRequestVotingService.voteMusicRequest(row.musicRequestId, false, partyCode)"
+                  (click)="doUpVote(row)"
                   svgIcon="upVote"></mat-icon>
         <mat-icon *ngIf="downVotable" [class.clickable]="!row.alreadyVoted" [class.voted]="row.alreadyVoted"
-                  (click)="musicRequestVotingService.voteMusicRequest(row.musicRequestId, true, partyCode)"
+                  (click)="doDownVote(row)"
                   svgIcon="downVote"></mat-icon>
       </td>
     </ng-container>

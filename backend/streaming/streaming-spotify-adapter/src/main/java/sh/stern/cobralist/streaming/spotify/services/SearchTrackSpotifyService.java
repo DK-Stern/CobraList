@@ -10,8 +10,6 @@ import sh.stern.cobralist.streaming.spotify.mapper.TrackValueObjectToTrackDTOMap
 import sh.stern.cobralist.streaming.spotify.valueobjects.SearchTrackValueObject;
 import sh.stern.cobralist.user.domain.StreamingProvider;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +29,7 @@ public class SearchTrackSpotifyService implements SearchTrackStreamingService {
 
     @Override
     public List<TrackDTO> searchTrack(String username, String searchString) {
-        final String url = API_SEARCH_URL + "?q=" + URLEncoder.encode(searchString, StandardCharsets.UTF_8) + "&type=track";
+        final String url = String.format("%s?q=%s&type=track", API_SEARCH_URL, searchString);
 
         final SearchTrackValueObject resultedTracksValueObject = searchSpotifyTrack(username, url);
 
