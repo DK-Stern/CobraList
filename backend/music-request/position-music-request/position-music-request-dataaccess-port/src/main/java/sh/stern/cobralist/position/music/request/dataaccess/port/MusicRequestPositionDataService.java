@@ -3,6 +3,7 @@ package sh.stern.cobralist.position.music.request.dataaccess.port;
 import sh.stern.cobralist.party.creation.domain.TrackDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MusicRequestPositionDataService {
     int getPositionOfLastMusicRequest(Long playlistId);
@@ -32,4 +33,6 @@ public interface MusicRequestPositionDataService {
     boolean isPlaylistEmpty(Long playlistId);
 
     int getUpVotes(Long musicRequestId);
+
+    Optional<Integer> getPositionOfMusicRequestWithNegativeRatingAndLowestPosition(Long playlistId);
 }

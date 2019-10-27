@@ -16,8 +16,11 @@ import sh.stern.cobralist.streaming.api.PlaylistService;
 import sh.stern.cobralist.user.userprincipal.UserPrincipal;
 
 import java.util.Collections;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -367,5 +370,125 @@ public class AddMusicRequestPublicApiServiceTest {
         assertThatExceptionOfType(AddMusicRequestDTONotFulfilledException.class)
                 .isThrownBy(() -> testSubject.addMusicRequest(userPrincipal, addMusicRequestDTO))
                 .withMessage("Das Request-Objekt ist nicht vollstaendig. Das Attribute 'track.duration' ist leer.");
+    }
+
+    @Test
+    public void newMusicRequestPositionIsTheSameAsMusicRequestsWithNegativeRating() {
+        // given
+        final UserPrincipal userPrincipal = new UserPrincipal();
+        final String userPrincipalUsername = "email";
+        userPrincipal.setEmail(userPrincipalUsername);
+
+        final AddMusicRequestDTO addMusicRequestDTO = new AddMusicRequestDTO();
+        final String partyCode = "partyCode";
+        addMusicRequestDTO.setPartyCode(partyCode);
+        final TrackDTO trackDTO = new TrackDTO();
+        trackDTO.setStreamingId("id");
+        trackDTO.setArtists(Collections.singletonList("artist"));
+        trackDTO.setUri("uri");
+        trackDTO.setName("name");
+        trackDTO.setAlbumName("albumName");
+        trackDTO.setImageUrl("imageUrl");
+        trackDTO.setImageWidth(1);
+        trackDTO.setImageHeight(1);
+        trackDTO.setDuration(123);
+        addMusicRequestDTO.setTrack(trackDTO);
+
+        final long playlistId = 1L;
+        when(musicRequestPositionServiceMock.getPlaylistId(partyCode)).thenReturn(playlistId);
+
+        final int expectedPositionOfNegativeMusicRequest = 2;
+        when(musicRequestPositionServiceMock.getPositionOfMusicRequestWithNegativeRatingAndLowestPosition(playlistId)).thenReturn(Optional.of(expectedPositionOfNegativeMusicRequest));
+
+        final String playlistStreamingId = "streamingId";
+        when(addMusicRequestDataServiceMock.getPlaylistStreamingId(playlistId)).thenReturn(playlistStreamingId);
+
+        // when
+        testSubject.addMusicRequest(userPrincipal, addMusicRequestDTO);
+
+        // then
+        verify(playlistServiceMock).addTracksWithPositionToPlaylist(eq(userPrincipalUsername), eq(playlistStreamingId), anyList(), eq(expectedPositionOfNegativeMusicRequest));
+        verify(musicRequestPositionServiceMock).persistNewMusicRequest(playlistId, trackDTO, expectedPositionOfNegativeMusicRequest);
+    }
+
+    @Test
+    public void newMusicRequestPositionIsZeroIfPlaylistIsEmpty() {
+        // given
+        final UserPrincipal userPrincipal = new UserPrincipal();
+        final String userPrincipalUsername = "email";
+        userPrincipal.setEmail(userPrincipalUsername);
+
+        final AddMusicRequestDTO addMusicRequestDTO = new AddMusicRequestDTO();
+        final String partyCode = "partyCode";
+        addMusicRequestDTO.setPartyCode(partyCode);
+        final TrackDTO trackDTO = new TrackDTO();
+        final String trackStramingId = "id";
+        trackDTO.setStreamingId(trackStramingId);
+        trackDTO.setArtists(Collections.singletonList("artist"));
+        trackDTO.setUri("uri");
+        trackDTO.setName("name");
+        trackDTO.setAlbumName("albumName");
+        trackDTO.setImageUrl("imageUrl");
+        trackDTO.setImageWidth(1);
+        trackDTO.setImageHeight(1);
+        trackDTO.setDuration(123);
+        addMusicRequestDTO.setTrack(trackDTO);
+
+        final long playlistId = 1L;
+        when(musicRequestPositionServiceMock.getPlaylistId(partyCode)).thenReturn(playlistId);
+
+        when(musicRequestPositionServiceMock.isPlaylistEmpty(playlistId)).thenReturn(true);
+
+        final String playlistStreamingId = "streamingId";
+        when(addMusicRequestDataServiceMock.getPlaylistStreamingId(playlistId)).thenReturn(playlistStreamingId);
+
+        // when
+        testSubject.addMusicRequest(userPrincipal, addMusicRequestDTO);
+
+        // then
+        verify(playlistServiceMock).addTracksWithPositionToPlaylist(eq(userPrincipalUsername), eq(playlistStreamingId), anyList(), eq(0));
+        verify(musicRequestPositionServiceMock).persistNewMusicRequest(playlistId, trackDTO, 0);
+    }
+
+    @Test
+    public void newMusicRequestPositionIsLastPositionOfPlaylistIfPlaylistIsNotEmpty() {
+        // given
+        final UserPrincipal userPrincipal = new UserPrincipal();
+        final String userPrincipalUsername = "email";
+        userPrincipal.setEmail(userPrincipalUsername);
+
+        final AddMusicRequestDTO addMusicRequestDTO = new AddMusicRequestDTO();
+        final String partyCode = "partyCode";
+        addMusicRequestDTO.setPartyCode(partyCode);
+        final TrackDTO trackDTO = new TrackDTO();
+        final String trackStramingId = "id";
+        trackDTO.setStreamingId(trackStramingId);
+        trackDTO.setArtists(Collections.singletonList("artist"));
+        trackDTO.setUri("uri");
+        trackDTO.setName("name");
+        trackDTO.setAlbumName("albumName");
+        trackDTO.setImageUrl("imageUrl");
+        trackDTO.setImageWidth(1);
+        trackDTO.setImageHeight(1);
+        trackDTO.setDuration(123);
+        addMusicRequestDTO.setTrack(trackDTO);
+
+        final long playlistId = 1L;
+        when(musicRequestPositionServiceMock.getPlaylistId(partyCode)).thenReturn(playlistId);
+
+        final int lastPositionOfMusicRequest = 2;
+        when(musicRequestPositionServiceMock.getPositionOfLastMusicRequest(playlistId)).thenReturn(lastPositionOfMusicRequest);
+
+        final String playlistStreamingId = "streamingId";
+        when(addMusicRequestDataServiceMock.getPlaylistStreamingId(playlistId)).thenReturn(playlistStreamingId);
+
+        int expectedPosition = lastPositionOfMusicRequest + 1;
+
+        // when
+        testSubject.addMusicRequest(userPrincipal, addMusicRequestDTO);
+
+        // then
+        verify(playlistServiceMock).addTracksWithPositionToPlaylist(eq(userPrincipalUsername), eq(playlistStreamingId), anyList(), eq(expectedPosition));
+        verify(musicRequestPositionServiceMock).persistNewMusicRequest(playlistId, trackDTO, expectedPosition);
     }
 }

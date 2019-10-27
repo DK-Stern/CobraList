@@ -85,6 +85,12 @@ public class MusicRequestPositionPublicApiDataService implements MusicRequestPos
     }
 
     @Override
+    public Optional<Integer> getPositionOfMusicRequestWithNegativeRatingAndLowestPosition(Long playlistId) {
+        return musicRequestRepository.findFirstByPlaylist_IdAndAndIsPlayedAndRatingLessThanOrderByPositionAsc(playlistId, false, 0)
+                .map(MusicRequest::getPosition);
+    }
+
+    @Override
     public Long getPlaylistId(String partyCode) {
         final Party party = partyRepository.findByPartyCode(partyCode)
                 .orElseThrow(() -> new PartyNotFoundException(partyCode));

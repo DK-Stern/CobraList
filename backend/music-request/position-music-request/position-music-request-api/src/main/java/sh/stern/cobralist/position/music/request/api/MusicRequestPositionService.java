@@ -2,10 +2,14 @@ package sh.stern.cobralist.position.music.request.api;
 
 import sh.stern.cobralist.party.creation.domain.TrackDTO;
 
+import java.util.Optional;
+
 public interface MusicRequestPositionService {
     int calculateMusicRequestPosition(Long playlistId, Long musicRequestId, int rating, boolean isDownVote);
 
     int getPositionOfLastMusicRequest(Long playlistId);
+
+    Optional<Integer> getPositionOfMusicRequestWithNegativeRatingAndLowestPosition(Long playlistId);
 
     Long getPlaylistId(String partyCode);
 

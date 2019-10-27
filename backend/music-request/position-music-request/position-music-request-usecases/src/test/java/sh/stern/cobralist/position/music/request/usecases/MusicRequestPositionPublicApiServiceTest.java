@@ -79,4 +79,16 @@ public class MusicRequestPositionPublicApiServiceTest {
         // then
         verify(musicRequestPositionDataServiceMock).decrementMusicRequestPositions(playlistId, position);
     }
+
+    @Test
+    public void getPositionOfMusicRequestWithNegativeRatingAndLowestPosition() {
+        // given
+        final long playlistId = 3L;
+
+        // when
+        testSubject.getPositionOfMusicRequestWithNegativeRatingAndLowestPosition(playlistId);
+
+        // then
+        verify(musicRequestPositionDataServiceMock).getPositionOfMusicRequestWithNegativeRatingAndLowestPosition(playlistId);
+    }
 }

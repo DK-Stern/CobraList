@@ -9,6 +9,7 @@ import sh.stern.cobralist.position.music.request.dataaccess.port.MusicRequestPos
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MusicRequestPositionPublicApiService implements MusicRequestPositionService {
@@ -97,6 +98,11 @@ public class MusicRequestPositionPublicApiService implements MusicRequestPositio
     @Override
     public int getPositionOfLastMusicRequest(Long playlistId) {
         return musicRequestPositionDataService.getPositionOfLastMusicRequest(playlistId);
+    }
+
+    @Override
+    public Optional<Integer> getPositionOfMusicRequestWithNegativeRatingAndLowestPosition(Long playlistId) {
+        return musicRequestPositionDataService.getPositionOfMusicRequestWithNegativeRatingAndLowestPosition(playlistId);
     }
 
     @Override

@@ -15,6 +15,7 @@ import sh.stern.cobralist.user.userprincipal.UserPrincipal;
 
 import java.util.Collections;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class AddMusicRequestPublicApiService implements AddMusicRequestService {
@@ -47,8 +48,13 @@ public class AddMusicRequestPublicApiService implements AddMusicRequestService {
             throw new MusicRequestAlreadyExistException(addMusicRequestDTO.getTrack().getStreamingId());
         }
 
+        Integer position = 0;
         final boolean playlistEmpty = musicRequestPositionService.isPlaylistEmpty(playlistId);
-        final int position = playlistEmpty ? 0 : musicRequestPositionService.getPositionOfLastMusicRequest(playlistId) + 1;
+        if (!playlistEmpty) {
+            final Optional<Integer> negativeMuiscRequestOptional = musicRequestPositionService.getPositionOfMusicRequestWithNegativeRatingAndLowestPosition(playlistId);
+            position = negativeMuiscRequestOptional.orElseGet(() -> musicRequestPositionService.getPositionOfLastMusicRequest(playlistId) + 1);
+        }
+
         final String playlistStreamingId = addMusicRequestDataService.getPlaylistStreamingId(playlistId);
         playlistService.addTracksWithPositionToPlaylist(userPrincipal.getUsername(), playlistStreamingId, Collections.singletonList(addMusicRequestDTO.getTrack()), position);
         musicRequestPositionService.persistNewMusicRequest(playlistId, addMusicRequestDTO.getTrack(), position);

@@ -15,15 +15,17 @@ import java.util.Optional;
 public interface MusicRequestRepository extends JpaRepository<MusicRequest, Long> {
     List<MusicRequest> findByPlaylist_IdAndIsPlayed(Long playlistId, Boolean played);
 
+    Optional<MusicRequest> findFirstByPlaylist_IdAndAndIsPlayedAndRatingLessThanOrderByPositionAsc(Long playlistId, Boolean isPlayed, Integer rating);
+
     Optional<MusicRequest> findByPlaylist_IdAndTrackIdAndIsPlayed(Long playlistId, String trackId, Boolean isPlayed);
 
     Optional<MusicRequest> findFirstByPlaylist_IdAndTrackIdAndIsPlayed(Long playlistId, String trackId, Boolean isPlayed);
 
-    Optional<MusicRequest> findByPlaylist_IdAndPosition(Long playlistId, int position);
+    Optional<MusicRequest> findByPlaylist_IdAndPosition(Long playlistId, Integer position);
 
-    List<MusicRequest> findByPlaylist_IdAndRatingOrderByUpVotesAsc(Long playlistId, int rating);
+    List<MusicRequest> findByPlaylist_IdAndRatingOrderByUpVotesAsc(Long playlistId, Integer rating);
 
-    List<MusicRequest> findByPlaylist_IdAndRatingOrderByUpVotesAscPositionAsc(Long playlistId, int rating);
+    List<MusicRequest> findByPlaylist_IdAndRatingOrderByUpVotesAscPositionAsc(Long playlistId, Integer rating);
 
     Optional<MusicRequest> findTopByPlaylist_IdOrderByRatingAsc(Long playlistId);
 
@@ -53,7 +55,7 @@ public interface MusicRequestRepository extends JpaRepository<MusicRequest, Long
     @Query(
             value = "UPDATE music_request AS mr SET mr.position = mr.position - 1 WHERE mr.playlist_id = ?1 AND mr.position >= ?2 AND mr.position <= ?3",
             nativeQuery = true)
-    int decrementMusicRequestPositionInterval(Long playlistId, int startPosition, int endPosition);
+    int decrementMusicRequestPositionInterval(Long playlistId, Integer startPosition, Integer endPosition);
 
     int countById(Long musicRequestId);
 }

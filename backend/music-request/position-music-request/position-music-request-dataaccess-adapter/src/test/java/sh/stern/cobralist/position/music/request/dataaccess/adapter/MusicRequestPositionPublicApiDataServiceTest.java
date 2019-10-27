@@ -158,4 +158,21 @@ public class MusicRequestPositionPublicApiDataServiceTest {
                 .isThrownBy(() -> testSubject.saveMusicRequest(playlistId, trackDTO, position))
                 .withMessage("Playlist mit der id '" + playlistId + "' konnte nicht gefunden werden.");
     }
+
+    @Test
+    public void getPositionOfMusicRequestWithNegativeRatingAndLowestPosition() {
+        // given
+        final long playlistId = 2L;
+
+        final MusicRequest musicRequest = new MusicRequest();
+        final int expectedPosition = 1;
+        musicRequest.setPosition(expectedPosition);
+        when(musicRequestRepositoryMock.findFirstByPlaylist_IdAndAndIsPlayedAndRatingLessThanOrderByPositionAsc(playlistId, false, 0)).thenReturn(Optional.of(musicRequest));
+
+        // when
+        final Optional<Integer> resultedOptional = testSubject.getPositionOfMusicRequestWithNegativeRatingAndLowestPosition(playlistId);
+
+        // then
+        assertThat(resultedOptional).get().isEqualTo(expectedPosition);
+    }
 }
