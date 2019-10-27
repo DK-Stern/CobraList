@@ -7,10 +7,14 @@
       <p>Titel: {{currentTrack.name}}</p>
       <span>Artist: {{currentTrack.artists}}</span>
     </div>
-    <mat-icon (click)="playerService.startParty(partyCode)" *ngIf="currentTrack == null" class="controller-icon"
+
+    <mat-icon (click)="playerService.startParty(partyCode)" *ngIf="currentPlayback == null && isCreator"
+              class="controller-icon"
               svgIcon="play"></mat-icon>
-    <mat-icon (click)="playerService.stopParty(partyCode)" *ngIf="currentTrack != null" class="controller-icon"
+    <mat-icon (click)="playerService.stopParty(partyCode)" *ngIf="currentPlayback != null && isCreator"
+              class="controller-icon"
               svgIcon="pause"></mat-icon>
-    <mat-icon (click)="playerService.skipParty(partyCode)" class="controller-icon" svgIcon="skip"></mat-icon>
+    <mat-icon (click)="playerService.skipParty(partyCode)" *ngIf="isCreator" class="controller-icon"
+              svgIcon="skip"></mat-icon>
   </div>
 </div>
