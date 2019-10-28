@@ -1,0 +1,13 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    compile project(':backend:party:delete-party:delete-party-api')
+    runtimeOnly project(':backend:party:delete-party:delete-party-usecase')
+    compile project(':backend:user:userprincipal')
+    implementation project(':backend:security')
+
+    implementation 'org.springframework.boot:spring-boot-starter-web:' + springBootVersion
+    implementation 'org.springframework.boot:spring-boot-starter-security:' + springBootVersion
+}

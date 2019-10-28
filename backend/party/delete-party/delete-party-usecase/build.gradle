@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    compile project(':backend:party:delete-party:delete-party-api')
+    compile project(':backend:party:delete-party:delete-party-dataaccess-port')
+    runtimeOnly project(':backend:party:delete-party:delete-party-dataaccess-adapter')
+
+    compile project(':backend:streaming:streaming-api')
+    runtimeOnly project(':backend:streaming:streaming-spotify-adapter')
+
+    compile project(':backend:party:party-security:party-security-api')
+    runtimeOnly project(':backend:party:party-security:party-security-usecases')
+
+    compile('org.springframework:spring-context:' + springVersion)
+}

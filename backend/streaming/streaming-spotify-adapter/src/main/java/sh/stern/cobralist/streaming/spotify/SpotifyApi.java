@@ -12,6 +12,7 @@ import sh.stern.cobralist.streaming.spotify.errorhandler.AccessTokenExpiredError
 import sh.stern.cobralist.streaming.spotify.valueobjects.*;
 import sh.stern.cobralist.streaming.spotify.valueobjects.requests.*;
 
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -216,6 +217,16 @@ public class SpotifyApi extends ApiBinding {
         final ResponseEntity<String> response = restTemplate.exchange(
                 url,
                 HttpMethod.POST,
+                null,
+                String.class);
+
+        checkStatusCode(response.getStatusCode());
+    }
+
+    public void deleteParty(String url) throws AccessTokenExpiredException {
+        LOG.info(MessageFormat.format("Delete Party: {0}", url));
+        final ResponseEntity<String> response = restTemplate.exchange(url,
+                HttpMethod.DELETE,
                 null,
                 String.class);
 

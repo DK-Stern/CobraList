@@ -36,6 +36,7 @@ import {LoginComponent} from './authentication/login/login.component';
 import {JoinPartyComponent} from './party/join-party/join-party.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
+import {DeletePartyComponent} from './delete-party/delete-party.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
     LogoComponent,
     LogoutComponent,
     LoginComponent,
-    JoinPartyComponent
+    JoinPartyComponent,
+    DeletePartyComponent
   ],
   imports: [
     BrowserModule,

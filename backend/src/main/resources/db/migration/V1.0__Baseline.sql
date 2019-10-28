@@ -33,12 +33,12 @@ CREATE TABLE party
     PRIMARY KEY (id),
     CONSTRAINT `fk_party_user_id`
         FOREIGN KEY (creator_id) REFERENCES user (id)
-            ON DELETE CASCADE
+            ON DELETE NO ACTION
             ON UPDATE RESTRICT,
     CONSTRAINT `fk_party_playlist_id`
         FOREIGN KEY (playlist_id) REFERENCES playlist (id)
-            ON DELETE SET NULL
-            ON UPDATE SET NULL
+            ON DELETE CASCADE
+            ON UPDATE RESTRICT
 );
 
 CREATE TABLE guest

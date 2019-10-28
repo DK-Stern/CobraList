@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
   title = 'CobraList';
   spotify_auth_url = environment.apiUrl + '/oauth2/authorize/spotify?redirect_uri=' + environment.oauthRedirect;
   username: string = '';
+  hasDeleteElement = (el) => el.name === 'Lösche Party';
   hasLogoutElement = (el) => el.name === 'Logout';
 
   private readonly _mobileQueryListener: () => void;
@@ -72,6 +73,14 @@ export class AppComponent implements OnInit {
           this.navElements.pop();
         }
         this.username = '';
+      }
+    });
+
+    this.store.select(state => state.party.partyCode).subscribe(partyCode => {
+      if (partyCode != null && !this.navElements.some(this.hasDeleteElement)) {
+        this.navElements.push({name: 'Lösche Party', navigate: 'delete'});
+      } else if (partyCode == null && this.navElements.some(this.hasDeleteElement)) {
+        this.navElements.pop();
       }
     });
   }

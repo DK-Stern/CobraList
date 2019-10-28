@@ -2,6 +2,11 @@ rootProject.name = 'cobralist'
 
 include 'backend',
         ':backend:app-properties',
+        ':backend:party:delete-party:delete-party-api',
+        ':backend:party:delete-party:delete-party-usecase',
+        ':backend:party:delete-party:delete-party-controller',
+        ':backend:party:delete-party:delete-party-dataaccess-port',
+        ':backend:party:delete-party:delete-party-dataaccess-adapter',
         ':backend:party:party-creation:party-creation-api',
         ':backend:party:party-creation:party-creation-domain',
         ':backend:party:party-creation:party-creation-usecases',

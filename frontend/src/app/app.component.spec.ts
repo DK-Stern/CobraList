@@ -20,7 +20,12 @@ describe('AppComponent', () => {
       user: null,
       error: null
     },
-    party: null
+    party: {
+      partyCode: '123456',
+      downVotable: null,
+      currentPlayback: null,
+      musicRequests: null
+    }
   };
   let localStorageServiceLoadItemSpy;
 
@@ -83,7 +88,12 @@ describe('AppComponent', () => {
           name: expectedName
         }
       },
-      party: null
+      party: {
+        partyCode: '123456',
+        downVotable: null,
+        currentPlayback: null,
+        musicRequests: null
+      }
     });
 
     // when

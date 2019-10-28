@@ -189,4 +189,14 @@ public class SpotifyPlaylistPublicApiService implements PlaylistService {
             return reorderTrackPosition(username, url, oldPosition, newPosition);
         }
     }
+
+    @Override
+    public void deleteParty(String username, String playlistId) {
+        try {
+            spotifyApi.setAuthentication(StreamingProvider.spotify, username);
+            spotifyApi.deleteParty(String.format("%splaylists/%s/followers", API_URL, playlistId));
+        } catch (AccessTokenExpiredException e) {
+            deleteParty(username, playlistId);
+        }
+    }
 }

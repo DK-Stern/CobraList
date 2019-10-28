@@ -26,21 +26,21 @@ public class PartyPlayerPublicApiService implements PartyPlayerService {
 
     @Override
     public void startParty(UserPrincipal userPrincipal, String partyCode) {
-        partySecurityService.checkControlPlayerPermission(userPrincipal, partyCode);
+        partySecurityService.checkIsPartyCreator(userPrincipal, partyCode);
         playerStreamingService.startPlaylist(userPrincipal.getUsername(), partyPlayerDataService.getPlaylistStreamingId(partyCode));
         partyPlayerDataService.setPartyStatus(partyCode, true);
     }
 
     @Override
     public void stopParty(UserPrincipal userPrincipal, String partyCode) {
-        partySecurityService.checkControlPlayerPermission(userPrincipal, partyCode);
+        partySecurityService.checkIsPartyCreator(userPrincipal, partyCode);
         playerStreamingService.stopPlaylist(userPrincipal.getUsername());
         partyPlayerDataService.setPartyStatus(partyCode, false);
     }
 
     @Override
     public void skipMusicRequest(UserPrincipal userPrincipal, String partyCode) {
-        partySecurityService.checkControlPlayerPermission(userPrincipal, partyCode);
+        partySecurityService.checkIsPartyCreator(userPrincipal, partyCode);
         playerStreamingService.skipSong(userPrincipal.getUsername());
     }
 }

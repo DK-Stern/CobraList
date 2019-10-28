@@ -19,4 +19,6 @@ public interface PlaylistService {
     List<TrackDTO> getTracksFromPlaylist(String userName, String playlistId);
 
     String moveTrackPosition(String userName, String playlistId, int oldPosition, int newPosition);
+
+    void deleteParty(String username, String playlistId);
 }

@@ -19,6 +19,11 @@ repositories {
 
 dependencies {
     implementation project(':backend:app-properties')
+    implementation project(':backend:party:delete-party:delete-party-api')
+    implementation project(':backend:party:delete-party:delete-party-usecase')
+    implementation project(':backend:party:delete-party:delete-party-controller')
+    implementation project(':backend:party:delete-party:delete-party-dataaccess-port')
+    implementation project(':backend:party:delete-party:delete-party-dataaccess-adapter')
     implementation project(':backend:party:party-creation:party-creation-api')
     implementation project(':backend:party:party-creation:party-creation-domain')
     implementation project(':backend:party:party-creation:party-creation-usecases')

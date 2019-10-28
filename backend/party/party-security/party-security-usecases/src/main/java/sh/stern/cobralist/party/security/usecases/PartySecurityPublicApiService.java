@@ -42,7 +42,7 @@ public class PartySecurityPublicApiService implements PartySecurityService {
     }
 
     @Override
-    public void checkControlPlayerPermission(UserPrincipal userPrincipal, String partyCode) {
+    public void checkIsPartyCreator(UserPrincipal userPrincipal, String partyCode) {
         final boolean partyCreator = partySecurityDataService.isPartyCreator(userPrincipal.getId(), partyCode);
         if (!partyCreator) {
             throw new NoPartyCreatorException(userPrincipal.getId(), partyCode);

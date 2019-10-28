@@ -5,5 +5,5 @@ import sh.stern.cobralist.user.userprincipal.UserPrincipal;
 public interface PartySecurityService {
     void checkGetPartyInformationPermission(UserPrincipal userPrincipal, String partyCode);
 
-    void checkControlPlayerPermission(UserPrincipal userPrincipal, String partyCode);
+    void checkIsPartyCreator(UserPrincipal userPrincipal, String partyCode);
 }

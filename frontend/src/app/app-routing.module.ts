@@ -7,6 +7,7 @@ import {PartyModule} from './party/authorized/party.module';
 import {LogoutComponent} from './authentication/logout/logout.component';
 import {LoginComponent} from './authentication/login/login.component';
 import {JoinPartyComponent} from './party/join-party/join-party.component';
+import {DeletePartyComponent} from "./delete-party/delete-party.component";
 
 const routes: Routes = [
   {
@@ -32,6 +33,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'delete',
+    component: DeletePartyComponent
   },
   {
     path: 'logout',
