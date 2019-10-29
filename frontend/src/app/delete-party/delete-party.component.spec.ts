@@ -1,11 +1,11 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {DeletePartyComponent} from './delete-party.component';
-import {RouterTestingModule} from "@angular/router/testing";
 import {provideMockStore} from "@ngrx/store/testing";
 import {DeletePartyService} from "./delete-party.service";
 import {of} from "rxjs";
 import {empty} from "rxjs/internal/Observer";
+import {Router} from "@angular/router";
 
 describe('DeletePartyComponent', () => {
   let component: DeletePartyComponent;
@@ -31,15 +31,18 @@ describe('DeletePartyComponent', () => {
     let deletePartyServiceSpy = jasmine.createSpyObj('DeletePartyService', ['deleteParty']);
     deletePartyServiceSpy.deleteParty.withArgs('123456').and.returnValue(of(empty));
 
+    let routerStub = jasmine.createSpyObj('Router', ['navigateByUrl']);
+
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
       providers: [
         provideMockStore({initialState}),
         {
           provide: DeletePartyService,
           useValue: deletePartyServiceSpy
+        },
+        {
+          provide: Router,
+          useValue: routerStub
         }
       ],
       declarations: [DeletePartyComponent]
