@@ -8,7 +8,7 @@ import {SessionTimedOutRedirectService} from '../oauth2-redirect/session-timed-o
 })
 export class LoginComponent implements OnInit {
 
-  constructor(public loginRediectService: SessionTimedOutRedirectService) {
+  constructor(public loginRedirectService: SessionTimedOutRedirectService) {
   }
 
   ngOnInit() {

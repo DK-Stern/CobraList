@@ -4,6 +4,8 @@ import {DeletePartyComponent} from './delete-party.component';
 import {RouterTestingModule} from "@angular/router/testing";
 import {provideMockStore} from "@ngrx/store/testing";
 import {DeletePartyService} from "./delete-party.service";
+import {of} from "rxjs";
+import {empty} from "rxjs/internal/Observer";
 
 describe('DeletePartyComponent', () => {
   let component: DeletePartyComponent;
@@ -17,11 +19,17 @@ describe('DeletePartyComponent', () => {
       user: null,
       error: null
     },
-    party: null
+    party: {
+      partyCode: '123456',
+      downVotable: null,
+      currentPlayback: null,
+      musicRequests: null
+    }
   };
 
   beforeEach(async(() => {
     let deletePartyServiceSpy = jasmine.createSpyObj('DeletePartyService', ['deleteParty']);
+    deletePartyServiceSpy.deleteParty.withArgs('123456').and.returnValue(of(empty));
 
     TestBed.configureTestingModule({
       imports: [
