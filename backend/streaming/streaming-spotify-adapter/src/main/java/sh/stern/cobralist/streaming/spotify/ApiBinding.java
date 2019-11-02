@@ -25,7 +25,7 @@ public abstract class ApiBinding {
 
         this.restTemplate.getInterceptors().clear();
         if (oAuth2AuthorizedClient != null) {
-            accessTokenExpiredErrorHandler.setAuthentication(oAuth2AuthorizedClient);
+            accessTokenExpiredErrorHandler.setAuthentication(oAuth2AuthorizedClient, userName);
             final SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
             requestFactory.setConnectTimeout(3000);
             requestFactory.setReadTimeout(3000);

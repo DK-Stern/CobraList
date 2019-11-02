@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -16,9 +17,10 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
-import sh.stern.cobralist.security.SecurityContextFacade;
+import sh.stern.cobralist.security.CustomUserDetailsService;
 import sh.stern.cobralist.streaming.spotify.RestTemplateFactory;
 import sh.stern.cobralist.streaming.spotify.valueobjects.UserTokenObject;
+import sh.stern.cobralist.user.userprincipal.UserPrincipal;
 
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -33,21 +35,23 @@ public class AccessTokenExpiredErrorHandler implements ResponseErrorHandler {
     private static final Logger LOG = LoggerFactory.getLogger(AccessTokenExpiredErrorHandler.class);
 
     private final OAuth2AuthorizedClientService oAuth2AuthorizedClientService;
-    private final SecurityContextFacade securityContextFacade;
     private final RestTemplate restTemplate;
+    private final CustomUserDetailsService customUserDetailsService;
     private OAuth2AuthorizedClient oAuth2AuthorizedClient;
+    private String userName;
 
     @Autowired
     public AccessTokenExpiredErrorHandler(OAuth2AuthorizedClientService oAuth2AuthorizedClientService,
-                                          SecurityContextFacade securityContextFacade,
-                                          RestTemplateFactory restTemplateFactory) {
+                                          RestTemplateFactory restTemplateFactory,
+                                          CustomUserDetailsService customUserDetailsService) {
         this.oAuth2AuthorizedClientService = oAuth2AuthorizedClientService;
-        this.securityContextFacade = securityContextFacade;
         this.restTemplate = restTemplateFactory.create();
+        this.customUserDetailsService = customUserDetailsService;
     }
 
-    public void setAuthentication(OAuth2AuthorizedClient oAuth2AuthorizedClient) {
+    public void setAuthentication(OAuth2AuthorizedClient oAuth2AuthorizedClient, String userName) {
         this.oAuth2AuthorizedClient = oAuth2AuthorizedClient;
+        this.userName = userName;
     }
 
     @Override
@@ -61,7 +65,9 @@ public class AccessTokenExpiredErrorHandler implements ResponseErrorHandler {
             throw new IllegalStateException("Refresh Token muss vorhanden sein!");
         }
 
-        final Authentication authentication = securityContextFacade.getContext().getAuthentication();
+        final UserPrincipal userPrincipal = customUserDetailsService.loadUserByUsername(userName);
+        final Authentication authentication =
+                new UsernamePasswordAuthenticationToken(userPrincipal, null, userPrincipal.getAuthorities());
 
         final HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
