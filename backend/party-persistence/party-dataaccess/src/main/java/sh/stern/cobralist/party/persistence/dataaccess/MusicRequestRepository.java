@@ -23,9 +23,9 @@ public interface MusicRequestRepository extends JpaRepository<MusicRequest, Long
 
     Optional<MusicRequest> findByPlaylist_IdAndPosition(Long playlistId, Integer position);
 
-    List<MusicRequest> findByPlaylist_IdAndRatingOrderByUpVotesAsc(Long playlistId, Integer rating);
+    List<MusicRequest> findByPlaylist_IdAndRatingAndIsPlayedOrderByUpVotesAsc(Long playlistId, Integer rating, Boolean isPlayed);
 
-    List<MusicRequest> findByPlaylist_IdAndRatingOrderByUpVotesAscPositionAsc(Long playlistId, Integer rating);
+    List<MusicRequest> findByPlaylist_IdAndRatingAndIsPlayedOrderByUpVotesAscPositionAsc(Long playlistId, Integer rating, Boolean isPlayed);
 
     Optional<MusicRequest> findTopByPlaylist_IdOrderByRatingAsc(Long playlistId);
 

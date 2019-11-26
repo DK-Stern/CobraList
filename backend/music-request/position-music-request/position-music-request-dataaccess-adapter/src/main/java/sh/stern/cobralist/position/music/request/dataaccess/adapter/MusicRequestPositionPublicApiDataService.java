@@ -47,7 +47,7 @@ public class MusicRequestPositionPublicApiDataService implements MusicRequestPos
 
     @Override
     public List<MusicRequestPositionDTO> getMusicRequestWithSameRatingForUpVote(Long playlistId, int rating) {
-        return musicRequestRepository.findByPlaylist_IdAndRatingOrderByUpVotesAsc(playlistId, rating)
+        return musicRequestRepository.findByPlaylist_IdAndRatingAndIsPlayedOrderByUpVotesAsc(playlistId, rating, false)
                 .stream()
                 .map(currentMusicRequest -> new MusicRequestPositionDTO(currentMusicRequest.getId(), currentMusicRequest.getPosition(), currentMusicRequest.getRating(), currentMusicRequest.getUpVotes()))
                 .collect(Collectors.toList());
@@ -55,7 +55,7 @@ public class MusicRequestPositionPublicApiDataService implements MusicRequestPos
 
     @Override
     public List<MusicRequestPositionDTO> getMusicRequestWithSameRatingForDownVote(Long playlistId, int rating) {
-        return musicRequestRepository.findByPlaylist_IdAndRatingOrderByUpVotesAscPositionAsc(playlistId, rating)
+        return musicRequestRepository.findByPlaylist_IdAndRatingAndIsPlayedOrderByUpVotesAscPositionAsc(playlistId, rating, false)
                 .stream()
                 .map(foundedMusicRequest -> new MusicRequestPositionDTO(foundedMusicRequest.getId(), foundedMusicRequest.getPosition(), foundedMusicRequest.getRating(), foundedMusicRequest.getUpVotes()))
                 .collect(Collectors.toList());
