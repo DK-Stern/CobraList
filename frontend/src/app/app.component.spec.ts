@@ -8,6 +8,7 @@ import {Store} from '@ngrx/store';
 import {LocalStorageService, STORAGE_KEY} from './storage/local-storage.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {UserRoles} from "./user/user.roles";
 
 describe('AppComponent', () => {
 
@@ -27,8 +28,6 @@ describe('AppComponent', () => {
       musicRequests: null
     }
   };
-  let localStorageServiceLoadItemSpy;
-
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -50,10 +49,6 @@ describe('AppComponent', () => {
         AppComponent
       ],
     }).compileComponents();
-
-    const localStorageService = TestBed.get(LocalStorageService);
-    localStorageServiceLoadItemSpy = spyOn(localStorageService, 'loadItem').withArgs(STORAGE_KEY.TOKEN).and.returnValue(null);
-    spyOn(localStorageService, 'saveItem');
 
     mockStore = TestBed.get(Store);
   }));
@@ -82,7 +77,7 @@ describe('AppComponent', () => {
         token: '123',
         error: null,
         user: {
-          authorities: ['USER'],
+          authorities: [UserRoles.USER],
           email: 'email@mail.de',
           id: 1,
           name: expectedName

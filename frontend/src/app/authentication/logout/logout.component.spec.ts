@@ -16,7 +16,7 @@ describe('LogoutComponent', () => {
   };
 
   beforeEach(async(() => {
-    let localStorageSpy = jasmine.createSpyObj('LocalStorageService', ['removeItem']);
+    let localStorageSpy = jasmine.createSpyObj('LocalStorageService', ['clearAll']);
 
     TestBed.configureTestingModule({
       imports: [

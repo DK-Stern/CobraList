@@ -12,6 +12,8 @@ import {AppState} from "../../storage/app-state.reducer";
 import {Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {UserDto} from "../../user/user.dto";
+import {LocalStorageService, STORAGE_KEY} from "../../storage/local-storage.service";
+import {UserRoles} from "../../user/user.roles";
 
 @Component({
   selector: 'app-join-party',
@@ -32,6 +34,7 @@ export class JoinPartyComponent implements OnInit {
               private store: Store<AppState>,
               private router: Router,
               private snackBar: MatSnackBar,
+              private localStorageService: LocalStorageService,
               iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon(
@@ -85,8 +88,10 @@ export class JoinPartyComponent implements OnInit {
             id: null,
             name: guestName,
             email: null,
-            authorities: ['GUEST']
+            authorities: [UserRoles.GUEST]
           };
+          this.localStorageService.saveItem(STORAGE_KEY.TOKEN, response.token);
+          this.localStorageService.saveItem(STORAGE_KEY.USER, guest);
           this.store.dispatch(loginGuestSuccess({token: response.token, guest: guest}));
           this.router.navigate(['/party', response.partyCode]);
         },

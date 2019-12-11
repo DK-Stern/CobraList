@@ -19,6 +19,10 @@ export class LocalStorageService {
   removeItem(key: STORAGE_KEY) {
     localStorage.removeItem(key);
   }
+
+  clearAll() {
+    localStorage.clear();
+  }
 }
 
 export enum STORAGE_KEY {

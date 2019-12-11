@@ -5,6 +5,8 @@ import {UserApiService} from '../../user/user-api.service';
 import {of} from 'rxjs';
 import {loadedUser, loadedUserFail, loginSuccess} from './auth.actions';
 import {LocalStorageService, STORAGE_KEY} from '../../storage/local-storage.service';
+import {UserDto} from "../../user/user.dto";
+import {UserRoles} from "../../user/user.roles";
 
 @Injectable()
 export class AuthEffects {
@@ -18,9 +20,12 @@ export class AuthEffects {
     ofType(loginSuccess),
     mergeMap(() => this.userApiService.getUser()
       .pipe(
-        map(user => loadedUser({user: user})),
+        map(user => {
+          user.authorities = [UserRoles.USER];
+          this.localStorageService.saveItem(STORAGE_KEY.USER, user);
+          return loadedUser({user: user})}),
         catchError(error => {
-          this.localStorageService.removeItem(STORAGE_KEY.TOKEN);
+          this.localStorageService.clearAll();
           return of(loadedUserFail({error: error}));
         })
       ))

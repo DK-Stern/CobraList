@@ -18,8 +18,7 @@ export class LogoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.localStorageService.removeItem(STORAGE_KEY.TOKEN);
-    this.localStorageService.removeItem(STORAGE_KEY.USER);
+    this.localStorageService.clearAll();
     this.store.dispatch(logout());
 
     setTimeout(() => this.router.navigateByUrl('home'), 2000);

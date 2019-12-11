@@ -3,10 +3,12 @@ import {environment} from '../environments/environment';
 import {select, Store} from '@ngrx/store';
 import {AppState} from './storage/app-state.reducer';
 import {LocalStorageService, STORAGE_KEY} from './storage/local-storage.service';
-import {loginSuccess} from './authentication/store/auth.actions';
+import {loginGuestSuccess, loginSuccess} from './authentication/store/auth.actions';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {MatIconRegistry} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
+import {UserDto} from "./user/user.dto";
+import {UserRoles} from "./user/user.roles";
 
 @Component({
   selector: 'app-root',
@@ -45,9 +47,14 @@ export class AppComponent implements OnInit {
     this.store.pipe(select(state => state.authentication.token))
       .subscribe(tokenState => {
         if (tokenState === null) {
-          let token = <string>this.localStorageService.loadItem(STORAGE_KEY.TOKEN);
-          if (token) {
-            this.store.dispatch(loginSuccess({token: token}));
+          let token = <string> this.localStorageService.loadItem(STORAGE_KEY.TOKEN);
+          let user = this.localStorageService.loadItem(STORAGE_KEY.USER) as UserDto;
+          if (token !== null && user !== null) {
+            if (user.authorities.includes(UserRoles.USER)) {
+              this.store.dispatch(loginSuccess({token: token}));
+            } else if (user.authorities.includes(UserRoles.GUEST)) {
+              this.store.dispatch(loginGuestSuccess({token: String(token), guest: user}));
+            }
           }
         }
       });
