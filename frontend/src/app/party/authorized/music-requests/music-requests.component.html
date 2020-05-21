@@ -1,8 +1,8 @@
-<div class="mr-container">
-  <mat-form-field>
-    <input matInput [formControl]="filterCtrl" (keyup)="applyFilter()" placeholder="Filter">
-  </mat-form-field>
+<mat-form-field>
+  <input matInput [formControl]="filterCtrl" (keyup)="applyFilter()" placeholder="Filter">
+</mat-form-field>
 
+<div class="mr-container">
   <table mat-table matSort [dataSource]="dataSource">
 
     <!-- Position Column -->

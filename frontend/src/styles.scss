@@ -1,5 +1,10 @@
+@import "theme";
+
+$dark-background-palette: map-get($candy-app-theme, background);
+
 body {
-  margin: 0px;
+  margin: 0;
+  background-color: mat-color($dark-background-palette, background);
 }
 
 a {

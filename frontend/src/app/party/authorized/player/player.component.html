@@ -1,13 +1,15 @@
-<div id="player">
-  <div *ngIf="currentPlayback === null">Aktuell wird kein Lied abgespielt</div>
+<div id="player" class="mat-body">
+  <div *ngIf="currentPlayback === null"><span>Aktuell wird kein Lied abgespielt</span></div>
 
+  <img *ngIf="currentPlayback !== null" id="album-cover" [src]="currentTrack.imageUrl">
   <div id="player-details">
-    <img *ngIf="currentPlayback !== null" id="album-cover" [src]="currentTrack.imageUrl" width="8%" height="8%">
     <div *ngIf="currentPlayback !== null" id="track-information">
       <p>Titel: {{currentTrack.name}}</p>
       <span>Artist: {{currentTrack.artists}}</span>
     </div>
+  </div>
 
+  <div id="player-controls">
     <mat-icon (click)="playerService.startParty(partyCode)" *ngIf="currentPlayback == null && isCreator"
               class="controller-icon"
               svgIcon="play"></mat-icon>

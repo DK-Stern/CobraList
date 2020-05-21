@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {Store} from "@ngrx/store";
-import {AppState} from "../../../storage/app-state.reducer";
-import {CurrentPlaybackDTO, CurrentTrackDTO} from "../store/party-information.dto";
-import {MatIconRegistry} from "@angular/material/icon";
-import {DomSanitizer} from "@angular/platform-browser";
-import {PlayerService} from "./player.service";
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../storage/app-state.reducer';
+import {CurrentPlaybackDTO, CurrentTrackDTO} from '../store/party-information.dto';
+import {MatIconRegistry} from '@angular/material/icon';
+import {DomSanitizer} from '@angular/platform-browser';
+import {PlayerService} from './player.service';
 
 @Component({
   selector: 'app-player',
@@ -22,9 +22,9 @@ export class PlayerComponent implements OnInit {
               private iconRegistry: MatIconRegistry,
               private sanitizer: DomSanitizer,
               public playerService: PlayerService) {
-    iconRegistry.addSvgIcon('play', sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/player/play.svg'))
-    iconRegistry.addSvgIcon('pause', sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/player/pause.svg'))
-    iconRegistry.addSvgIcon('skip', sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/player/skip_next.svg'))
+    iconRegistry.addSvgIcon('play', sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/player/play.svg'));
+    iconRegistry.addSvgIcon('pause', sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/player/pause.svg'));
+    iconRegistry.addSvgIcon('skip', sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/player/skip_next.svg'));
   }
 
   ngOnInit() {
