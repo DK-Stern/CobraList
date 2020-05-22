@@ -1,5 +1,5 @@
 <mat-form-field>
-  <input matInput placeholder="Suche" aria-label="State" [matAutocomplete]="auto"
+  <input matInput placeholder="Musikwunsch hinzufügen" aria-label="State" [matAutocomplete]="auto"
          [formControl]="searchMusicRequestCtrl">
   <mat-autocomplete #auto=matAutocomplete>
     <mat-option *ngIf="isLoading" class="is-loading">Lade...</mat-option>

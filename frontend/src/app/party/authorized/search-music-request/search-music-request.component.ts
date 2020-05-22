@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {SearchMusicRequestDto} from "./search.music-request.dto";
-import {FormControl} from "@angular/forms";
-import {ActivatedRoute, ParamMap} from "@angular/router";
-import {debounceTime, finalize, switchMap, tap} from "rxjs/operators";
-import {SearchMusicRequestService} from "./search-music-request.service";
-import {NEVER, Observable, of} from "rxjs";
-import {AddMusicRequestDto} from "./add.music-request.dto";
+import {SearchMusicRequestDto} from './search.music-request.dto';
+import {FormControl} from '@angular/forms';
+import {ActivatedRoute, ParamMap} from '@angular/router';
+import {debounceTime, finalize, switchMap, tap} from 'rxjs/operators';
+import {SearchMusicRequestService} from './search-music-request.service';
+import {NEVER, Observable, of} from 'rxjs';
+import {AddMusicRequestDto} from './add.music-request.dto';
 
 @Component({
   selector: 'app-search-music-request',
@@ -15,7 +15,7 @@ import {AddMusicRequestDto} from "./add.music-request.dto";
 export class SearchMusicRequestComponent implements OnInit {
   searchMusicRequestCtrl: FormControl = new FormControl();
   foundMusicRequests: SearchMusicRequestDto[] | Observable<never>;
-  isLoading: boolean = false;
+  isLoading = false;
   errorMessage: string;
   partyCode: string;
 
@@ -25,25 +25,25 @@ export class SearchMusicRequestComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe((params: ParamMap) => {
-      this.partyCode = params.get("id");
+      this.partyCode = params.get('id');
       this.searchMusicRequestCtrl.valueChanges
         .pipe(debounceTime(500),
           tap(() => {
             this.foundMusicRequests = [];
-            this.errorMessage = "";
+            this.errorMessage = '';
             this.isLoading = true;
           }),
           switchMap(value => {
-              return value !== "" && 'undefined' !== typeof value
-                ? this.searchMusicRequestService.searchMusicRequest(this.partyCode, value)
-                  .pipe(
-                    finalize(() => this.isLoading = false))
-                : of(NEVER);
+            return value !== '' && 'undefined' !== typeof value
+              ? this.searchMusicRequestService.searchMusicRequest(this.partyCode, value)
+                .pipe(
+                  finalize(() => this.isLoading = false))
+              : of(NEVER);
             }
           )
         )
         .subscribe(data => {
-          if (data['message'] == undefined && data !== NEVER) {
+          if (data['message'] === undefined && data !== NEVER) {
             this.foundMusicRequests = data;
           } else {
             this.errorMessage = data['message'];
@@ -68,7 +68,7 @@ export class SearchMusicRequestComponent implements OnInit {
           uri: musicRequest.uri
         }
       };
-      this.searchMusicRequestService.addMusicRequest(addMusicRequestDTO).subscribe(data => console.log("Musikwunsch hinzugefügt."));
+      this.searchMusicRequestService.addMusicRequest(addMusicRequestDTO).subscribe(data => console.log('Musikwunsch hinzugefügt.'));
     }
   }
 
