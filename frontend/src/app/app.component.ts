@@ -1,94 +1,114 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {environment} from '../environments/environment';
-import {select, Store} from '@ngrx/store';
-import {AppState} from './storage/app-state.reducer';
-import {LocalStorageService, STORAGE_KEY} from './storage/local-storage.service';
-import {loginGuestSuccess, loginSuccess} from './authentication/store/auth.actions';
-import {MediaMatcher} from '@angular/cdk/layout';
-import {MatIconRegistry} from '@angular/material';
-import {DomSanitizer} from '@angular/platform-browser';
-import {UserDto} from "./user/user.dto";
-import {UserRoles} from "./user/user.roles";
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { environment } from '../environments/environment';
+import { select, Store } from '@ngrx/store';
+import { AppState } from './storage/app-state.reducer';
+import {
+  LocalStorageService,
+  STORAGE_KEY,
+} from './storage/local-storage.service';
+import {
+  loginGuestSuccess,
+  loginSuccess,
+} from './authentication/store/auth.actions';
+import { MediaMatcher } from '@angular/cdk/layout';
+import { MatIconRegistry } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
+import { UserDto } from './user/user.dto';
+import { UserRoles } from './user/user.roles';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  navElements = Array.of({name: 'Start', navigate: 'home'});
+  navElements = Array.of({ name: 'Start', navigate: 'home' });
 
   mobileQuery: MediaQueryList;
   title = 'CobraList';
-  spotify_auth_url = environment.apiUrl + '/oauth2/authorize/spotify?redirect_uri=' + environment.oauthRedirect;
-  username: string = '';
+  spotifyAuthUrl =
+    environment.apiUrl +
+    '/oauth2/authorize/spotify?redirect_uri=' +
+    environment.oauthRedirect;
+  username = '';
   hasDeleteElement = (el) => el.name === 'Lösche Party';
   hasLogoutElement = (el) => el.name === 'Logout';
 
-  private readonly _mobileQueryListener: () => void;
-
-  constructor(private store: Store<AppState>,
-              private localStorageService: LocalStorageService,
-              changeDetectorRef: ChangeDetectorRef,
-              media: MediaMatcher,
-              iconRegistry: MatIconRegistry,
-              sanitizer: DomSanitizer) {
+  constructor(
+    private store: Store<AppState>,
+    private localStorageService: LocalStorageService,
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher,
+    iconRegistry: MatIconRegistry,
+    sanitizer: DomSanitizer
+  ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addListener(this._mobileQueryListener);
+    this.mobileQuery.addEventListener('detectChanges', () =>
+      changeDetectorRef.detectChanges()
+    );
 
     iconRegistry.addSvgIcon(
       'menu',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/menu.svg'));
+      sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/menu.svg')
+    );
   }
 
   ngOnInit() {
     // load authToken from localStorage and dispatch it to redux store, if no authToken is present in redux store
-    this.store.pipe(select(state => state.authentication.token))
-      .subscribe(tokenState => {
+    this.store
+      .pipe(select((state) => state.authentication.token))
+      .subscribe((tokenState) => {
         if (tokenState === null) {
-          let token = <string> this.localStorageService.loadItem(STORAGE_KEY.TOKEN);
-          let user = this.localStorageService.loadItem(STORAGE_KEY.USER) as UserDto;
+          const token = this.localStorageService.loadItem(
+            STORAGE_KEY.TOKEN
+          ) as string;
+          const user = this.localStorageService.loadItem(
+            STORAGE_KEY.USER
+          ) as UserDto;
           if (token !== null && user !== null) {
             if (user.authorities.includes(UserRoles.USER)) {
-              this.store.dispatch(loginSuccess({token: token}));
+              this.store.dispatch(loginSuccess({ token }));
             } else if (user.authorities.includes(UserRoles.GUEST)) {
-              this.store.dispatch(loginGuestSuccess({token: String(token), guest: user}));
+              this.store.dispatch(
+                loginGuestSuccess({ token: String(token), guest: user })
+              );
             }
           }
         }
       });
 
-    this.store.select(state => state.authentication.isGuest).subscribe(isGuest => {
-      if (isGuest) {
-        this.navElements = Array.of({name: 'Start', navigate: 'home'});
-      } else {
-        this.navElements = Array.of({name: 'Start', navigate: 'home'},
-          {name: 'Dashboard', navigate: 'user'},
-          {name: 'Party erstellen', navigate: 'user/party/create'});
-      }
-    });
+    const defaultMenuElements = Array.of(
+      { name: 'Start', navigate: 'home' },
+      { name: 'Dashboard', navigate: 'user' },
+      { name: 'Party erstellen', navigate: 'user/party/create' }
+    );
+    this.store
+      .select((state) => state)
+      .subscribe((state) => {
+        const partyCode = state.party.partyCode;
+        const isGuest = state.authentication.isGuest;
+        this.username =
+          state.authentication.user != null
+            ? state.authentication.user.name
+            : '';
 
-    this.store.select(state => state.authentication.user).subscribe(user => {
-      if (user !== null) {
-        if (!this.navElements.some(this.hasLogoutElement)) {
-          this.navElements.push({name: 'Logout', navigate: 'logout'});
+        if (isGuest) {
+          this.navElements = Array.of(
+            { name: 'Start', navigate: 'home' },
+            { name: 'Logout', navigate: 'logout' }
+          );
+        } else if (
+          partyCode != null &&
+          !isGuest &&
+          state.authentication.user != null &&
+          !this.navElements.some(this.hasDeleteElement)
+        ) {
+          // benutzer menu
+          this.navElements.push({ name: 'Lösche Party', navigate: 'delete' });
+          this.navElements.push({ name: 'Logout', navigate: 'logout' });
+        } else {
+          this.navElements = defaultMenuElements;
         }
-        this.username = user.name
-      } else {
-        if (this.navElements.some(this.hasLogoutElement)) {
-          this.navElements.pop();
-        }
-        this.username = '';
-      }
-    });
-
-    this.store.select(state => state.party.partyCode).subscribe(partyCode => {
-      if (partyCode != null && !this.navElements.some(this.hasDeleteElement)) {
-        this.navElements.push({name: 'Lösche Party', navigate: 'delete'});
-      } else if (partyCode == null && this.navElements.some(this.hasDeleteElement)) {
-        this.navElements.pop();
-      }
-    });
+      });
   }
 }

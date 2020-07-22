@@ -1,57 +1,62 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {HomeComponent} from './home/home.component';
-import {Oauth2RedirectComponent} from './authentication/oauth2-redirect/oauth2-redirect.component';
-import {UserModule} from './user/user.module';
-import {PartyModule} from './party/authorized/party.module';
-import {LogoutComponent} from './authentication/logout/logout.component';
-import {LoginComponent} from './authentication/login/login.component';
-import {JoinPartyComponent} from './party/join-party/join-party.component';
-import {DeletePartyComponent} from "./delete-party/delete-party.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './home/home.component';
+import { Oauth2RedirectComponent } from './authentication/oauth2-redirect/oauth2-redirect.component';
+import { UserModule } from './user/user.module';
+import { PartyModule } from './party/authorized/party.module';
+import { LogoutComponent } from './authentication/logout/logout.component';
+import { LoginComponent } from './authentication/login/login.component';
+import { JoinPartyComponent } from './party/join-party/join-party.component';
+import { DeletePartyComponent } from './delete-party/delete-party.component';
 
 const routes: Routes = [
   {
     path: 'home',
-    component: HomeComponent
+    component: HomeComponent,
   },
   {
     path: 'user',
-    loadChildren: () => import('./user/user.module').then(mod => mod.UserModule)
+    loadChildren: () =>
+      import('./user/user.module').then((mod) => mod.UserModule),
   },
   {
     path: 'party',
-    loadChildren: () => import('./party/authorized/party.module').then(mod => mod.PartyModule)
+    loadChildren: () =>
+      import('./party/authorized/party.module').then((mod) => mod.PartyModule),
   },
   {
     path: 'join',
-    component: JoinPartyComponent
+    component: JoinPartyComponent,
+  },
+  {
+    path: 'join/:id',
+    component: JoinPartyComponent,
   },
   {
     path: 'oauth2/redirect',
-    component: Oauth2RedirectComponent
+    component: Oauth2RedirectComponent,
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: 'delete',
-    component: DeletePartyComponent
+    component: DeletePartyComponent,
   },
   {
     path: 'logout',
-    component: LogoutComponent
+    component: LogoutComponent,
   },
   {
     path: '',
     redirectTo: 'home',
-    pathMatch: 'full'
-  }
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({
   imports: [UserModule, PartyModule, RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}
