@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { environment } from '../environments/environment';
 import { select, Store } from '@ngrx/store';
 import { AppState } from './storage/app-state.reducer';
@@ -37,16 +37,10 @@ export class AppComponent implements OnInit {
   constructor(
     private store: Store<AppState>,
     private localStorageService: LocalStorageService,
-    changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher,
+    private media: MediaMatcher,
     iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer
   ) {
-    this.mobileQuery = media.matchMedia('(max-width: 600px)');
-    this.mobileQuery.addEventListener('detectChanges', () =>
-      changeDetectorRef.detectChanges()
-    );
-
     iconRegistry.addSvgIcon(
       'menu',
       sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/menu.svg')
@@ -54,6 +48,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.mobileQuery = this.media.matchMedia('(max-width: 600px)');
     // load authToken from localStorage and dispatch it to redux store, if no authToken is present in redux store
     this.store
       .pipe(select((state) => state.authentication.token))
