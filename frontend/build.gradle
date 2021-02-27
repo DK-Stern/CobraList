@@ -1,28 +1,28 @@
 task npmInstallWebApp(type: Exec) {
-    group = BasePlugin.BUILD_GROUP
-    if (System.getProperty("os.name").toUpperCase().contains("WINDOWS")) {
-        commandLine "npm.cmd", "install"
-    } else {
-        commandLine "npm", "install"
-    }
+  group = BasePlugin.BUILD_GROUP
+  if (System.getProperty("os.name").toUpperCase().contains("WINDOWS")) {
+    commandLine "npm.cmd", "install"
+  } else {
+    commandLine "npm", "install"
+  }
 }
 
 task buildWebApp(type: Exec) {
-    dependsOn "npmInstallWebApp"
-    group = BasePlugin.BUILD_GROUP
-    if (System.getProperty("os.name").toUpperCase().contains("WINDOWS")){
-        commandLine "npm.cmd", "run", "build", "--", "--prod"
-    } else {
-        commandLine "npm", "run", "build", "--", "--prod"
-    }
+  dependsOn "npmInstallWebApp"
+  group = BasePlugin.BUILD_GROUP
+  if (System.getProperty("os.name").toUpperCase().contains("WINDOWS")){
+    commandLine "npm.cmd", "run", "build"
+  } else {
+    commandLine "npm", "run", "build"
+  }
 }
 
 task runWebApp(type: Exec) {
-    dependsOn "npmInstallWebApp"
-    group = BasePlugin.BUILD_GROUP
-    if (System.getProperty("os.name").toUpperCase().contains("WINDOWS")) {
-        commandLine "npm.cmd", "run", "serve", "--", "--aot"
-    } else {
-        commandLine "npm", "run", "serve", "--", "--aot"
-    }
+  dependsOn "npmInstallWebApp"
+  group = BasePlugin.BUILD_GROUP
+  if (System.getProperty("os.name").toUpperCase().contains("WINDOWS")) {
+    commandLine "npm.cmd", "run", "start"
+  } else {
+    commandLine "npm", "run", "start"
+  }
 }

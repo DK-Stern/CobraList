@@ -36,7 +36,7 @@ jobs:
           name: Test Frontend with Code Coverage
           command: |-
             cd frontend/
-            npm test --- --watch=false --code-coverage
+            npm test --- --watch=false --coverage
       - store_artifacts:
           path:  backend/build
       - codecov/upload:
@@ -47,7 +47,7 @@ jobs:
       - store_artifacts:
           path:  frontend/dist
       - codecov/upload:
-          file: frontend/coverage/cobra-list/coverage-final.json
+          file: frontend/coverage/coverage-final.json
           flags: frontend
 
 workflows:
