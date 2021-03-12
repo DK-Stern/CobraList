@@ -13,7 +13,6 @@ jobs:
           - MYSQL_DATABASE: cobralist
           - MYSQL_USER: cobra
           - MYSQL_PASSWORD: cobrapw
-    executor: docker
     steps:
       - checkout
       - run:
