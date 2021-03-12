@@ -1,136 +1,15 @@
 <template>
   <div class="container">
     <svg
-      version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       x="0px"
       y="0px"
       viewBox="0 0 210 129.2"
-      style="enable-background: new 0 0 210 129.2"
       xml:space="preserve"
     >
-      <style type="text/css">
-
-        line {
-          stroke: url(#gradient);
-        }
-
-        path {
-          stroke: url(#gradient);
-
-        }
-
-        polygon {
-          stroke: url(#gradient);
-
-        }
-
-        .st1 {
-          fill: none;
-          stroke-miterlimit: 10;
-        }
-
-        .st2 {
-          fill: none;
-          stroke-miterlimit: 10;
-        }
-
-        .st3 {
-          fill: none;
-          stroke-miterlimit: 10;
-        }
-
-        .st4 {
-          fill: none;
-          stroke-miterlimit: 10;
-        }
-
-        .st5 {
-          fill: none;
-          stroke-miterlimit: 10;
-        }
-
-        .st6 {
-          fill: none;
-          stroke-miterlimit: 10;
-        }
-
-        .st7 {
-          fill: none;
-          stroke-miterlimit: 10;
-        }
-
-        .st8 {
-          fill: none;
-          stroke-miterlimit: 10;
-        }
-
-        .st9 {
-          fill: none;
-          stroke-miterlimit: 10;
-        }
-
-        .st10 {
-          fill: none;
-          stroke-miterlimit: 10;
-        }
-
-        .st11 {
-          fill: none;
-          stroke-miterlimit: 10;
-        }
-
-        .st12 {
-          fill: none;
-          stroke-miterlimit: 10;
-        }
-
-        .st13 {
-          fill: none;
-          stroke-width: 2;
-          stroke-miterlimit: 10;
-        }
-
-        .st14 {
-          fill: none;
-          stroke-width: 2;
-          stroke-miterlimit: 10;
-        }
-
-        .st15 {
-          fill: none;
-          stroke-width: 2;
-          stroke-miterlimit: 10;
-        }
-
-        .st16 {
-          fill: none;
-          stroke-width: 2;
-          stroke-linecap: round;
-          stroke-miterlimit: 10;
-        }
-
-        .st17 {
-          fill: none;
-          stroke-width: 2;
-          stroke-miterlimit: 10;
-        }
-
-        .st18 {
-          fill: none;
-          stroke-width: 2;
-          stroke-miterlimit: 10;
-        }
-
-        .st37 {
-          fill: url(#gradient);
-        );
-        }
-      </style>
       <switch>
-        <g i:extraneous="self">
-          <g id="Ebene_3"></g>
-          <g id="Ebene_2">
+        <g>
+          <g>
             <g>
               <g>
                 <defs>
@@ -287,10 +166,123 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 @keyframes appear {
   0% {
     opacity: 0;
   }
+}
+
+line {
+  stroke: url(#gradient);
+}
+
+path {
+  stroke: url(#gradient);
+}
+
+polygon {
+  stroke: url(#gradient);
+}
+
+.st1 {
+  fill: none;
+  stroke-miterlimit: 10;
+}
+
+.st2 {
+  fill: none;
+  stroke-miterlimit: 10;
+}
+
+.st3 {
+  fill: none;
+  stroke-miterlimit: 10;
+}
+
+.st4 {
+  fill: none;
+  stroke-miterlimit: 10;
+}
+
+.st5 {
+  fill: none;
+  stroke-miterlimit: 10;
+}
+
+.st6 {
+  fill: none;
+  stroke-miterlimit: 10;
+}
+
+.st7 {
+  fill: none;
+  stroke-miterlimit: 10;
+}
+
+.st8 {
+  fill: none;
+  stroke-miterlimit: 10;
+}
+
+.st9 {
+  fill: none;
+  stroke-miterlimit: 10;
+}
+
+.st10 {
+  fill: none;
+  stroke-miterlimit: 10;
+}
+
+.st11 {
+  fill: none;
+  stroke-miterlimit: 10;
+}
+
+.st12 {
+  fill: none;
+  stroke-miterlimit: 10;
+}
+
+.st13 {
+  fill: none;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+}
+
+.st14 {
+  fill: none;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+}
+
+.st15 {
+  fill: none;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+}
+
+.st16 {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-miterlimit: 10;
+}
+
+.st17 {
+  fill: none;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+}
+
+.st18 {
+  fill: none;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+}
+
+.st37 {
+  fill: url(#gradient);
 }
 </style>
